@@ -7,4 +7,4 @@ app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://g25proyecto:g25proyecto106
 
 from app import models, views
 
-#models.db.init_app(app)
+models.db.init_app(app)
