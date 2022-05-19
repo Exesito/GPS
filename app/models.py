@@ -16,6 +16,8 @@ class User(db.Model, UserMixin):
     @password.setter
     def password(self, password):
         self.password_hash = bcrypt.hashpw(password, bcrypt.gensalt())
+        print(self.password_hash)
         
     def verify_password(self, password):
-        return bcrypt.hashpw(password,bcrypt.gensalt()) == self.password_hash
+        return bcrypt.checkpw(password, self.password_hash)
+        
