@@ -14,3 +14,4 @@ def editor_horario():
 @app.route('/mi_restaurante')
 def mi_restaurante():
     return render_template("mirestaurante.html")
+    return(render_template('editor_horario.html'))
