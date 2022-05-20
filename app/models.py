@@ -41,3 +41,16 @@ class domo_region(db.Model):
     reg_id = db.Column(db.Integer, primary_key = true)
     reg_nombre = db.Column(db.String(30))
 
+class domo_aforo(db.Model):
+    afo_id = db.Column(db.Integer, primary_key = true)
+    rtr_id = db.Column(db.Integer, db.ForeignKey('domo_region.reg_id'))
+    afo_capacidadmax = db.Column(db.Integer)
+    afo_capacidadactual = db.Column(db.Integer)
+
+class domo_tiporestaurante(db.Model):
+    tpr_id = db.Column(db.Integer, primary_key = true)
+    tpr_nombre = db.Column(db.String(40))
+    tpr_descripcion = db.Column(db.Text)
+
+class domo_encargadortr(db.Model):
+    enc_id = db.Column(db.Serial, primary_key = true)
