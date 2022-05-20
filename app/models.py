@@ -54,3 +54,36 @@ class domo_tiporestaurante(db.Model):
 
 class domo_encargadortr(db.Model):
     enc_id = db.Column(db.Serial, primary_key = true)
+
+class domo_mesa(db.Model):
+    rtr_id = db.Column(db.Integer, db.ForeignKey('domo_rtr.rtr_id'))
+    msa_id = db.Column(db.Integer, primary_key = true)
+    msa_numero = db.Column(db.Integer)
+    msa_capacidad = db.Column(db.Integer)
+    msa_descripcion = db.Column(db.Text)
+
+class domo_tipodepago(db.Model):
+    tpg_id = db.Column(db.Serial, primary_key = true)
+    tpg_etiqueta =  db.Column(db.String(30))
+    tpg_descripcion = db.Column(db.String(50))
+
+class domo_reserva(db.Model):
+    rsv_id = db.Column(db.Serial, primary_key = true)
+    msa_id = db.Column(db.Integer, db.ForeignKey('domo_mesa.msa_id'))
+    tpg_id = db.Column(db.Integer, db.ForeignKey('domo_tipodepago.tpg_id'))
+    rsv_hora = db.Column(db.Time)
+    rsv_fecha = db.Column(db.Date)
+    rsv_asistencia = db.Column(db.String(30))
+    rsv_fechaderegistro = db.Column(db.Date)
+
+class domo_tipousuario(db.Model):
+    tip_id = db.Column(db.Serial, primary_key = true)
+    tip_nombre = db.Column(db.String(20))
+    tip_descripcion = db.Column(db.Text)
+
+class domo_usuario(db.Model):
+    usr_id = db.Column(db.Serial, primary_key = true)
+    tip_id = db.Column(db.Integer, db.ForeignKey('domo_tipousuario.tip_id')
+    usr_login = db.Column(db.String(20))
+    usr_contrasena = db.Column(db.String(80))
+    usr_estado = db.Column(db.String(20))
