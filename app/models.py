@@ -12,7 +12,7 @@ class domo_horario(db.Model):
     hor_diatermino = db.Column(db.Integer)
     hor_horainicio = db.Column(db.Time)
     hor_horatermino = db.Column(db.Time)
-    hor_disponibilidad = db.Column(db.Bool)
+    hor_disponibilidad = db.Column(db.Boolean)
 
 class domo_rtr(db.Model):
     rtr_id = db.Column(db.Integer, primary_key = true)
@@ -20,4 +20,4 @@ class domo_rtr(db.Model):
     tpr_id = db.Column(db.Integer)
     rtr_nombre = db.Column(db.String(50))
     rtr_rutacarta = db.Column(db.Text)
-    
+
