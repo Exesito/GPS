@@ -6,8 +6,12 @@ DOMO - Regístrate
 
 {% block body %}
 
+<div class="card" style="width: 22rem;">
+  <div class="card-header">
+    Regístrate
+  </div>
 <form action="{{ url_for('register') }}" method=post>
- 
+  <ul class="list-group list-group-flush">
     {{ form.email.label }}
     {{ form.email(class_="form-control") }}
  
@@ -17,7 +21,9 @@ DOMO - Regístrate
     {{ form.confirm.label }}
     {{ form.confirm(class_="form-control") }}
  
-    {{ form.submit(class_="btn btn-danger") }}
+    {{ form.submit(class_="btn btn-primary") }}
+    </ul>
 </form>
-
+  
+</div>
 {% endblock %}
