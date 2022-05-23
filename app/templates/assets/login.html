@@ -1,0 +1,37 @@
+
+
+{% extends "index.html" %}
+
+{% block title %}
+DOMO- Inicio de sesión
+{% endblock %}
+
+
+{% block body %}
+
+
+<form class="mb-5" action="{{ url_for('login') }}" method=post>
+    <div class="mb-4">
+      <label for="InputEmail" class="form-label font-weight-bold">Email</label>
+      <input type="email" class="form-control bg-dark-x border-0" id="InputEmail" placeholder="Ingresa tu email" aria-describedby="emailHelp">
+    </div>
+    <div class="mb-4">
+      <label for="InputPassword" class="form-label font-weight-bold">Contraseña</label>
+      <input type="password" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa tu contraseña" id="InputPassword">
+      <a href="" id="emailHelp" class="form-text text-muted text-decoration-none">¿Has olvidado tu contraseña?</a>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+  </form>
+
+{% endblock %}
+
+
+
+
+{% block script %}
+
+{% endblock %}
+
+
+<input type="text"></input>
+<input type="password"></input>
