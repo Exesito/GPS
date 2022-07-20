@@ -69,11 +69,11 @@ def login():
                 session['tipo']=phashed['tipo']
 
                 if session['tipo']==1:
-                    return render_template("")
+                    return render_template("HOME/cl_home")
                 elif session['tipo']==2:
-                    return render_template("")
+                    return render_template("HOME/res_home")
                 elif session['tipo'] ==3:
-                    return render_template("")
+                    return render_template("HOME/adm_home")
 
 
             else:
