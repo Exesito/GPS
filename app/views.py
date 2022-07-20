@@ -3,6 +3,7 @@ from app import app, models
 from app.forms import RegisterForm
 from app.models import User
 from flask import render_template, request,session, redirect,url_for
+from sqlalchemy import func
 
 db = models.db
 
@@ -76,3 +77,40 @@ def login():
 
     
 
+@app.route('/ingresar_restaurante')
+def ingresar_restaurante():
+
+    return render_template("ingresar_restaurante.html")
+
+@app.route('/ingresar_restaurante', methods=['POST'])
+def ingresar_restaurante_post():
+    if (request.method=='POST'):
+        nombre = request.form['nombre']
+        calle = request.form['calle']
+        numero = request.form['numero']
+        ciudad = request.form['ciudad']
+        region = request.form['region']
+        tipo_rest = request.form['tipo_rest']
+        nombre_dueno = request.form['nombre_dueno']
+        apellido_dueno = request.form['apellido_dueno']
+        descripcion = request.form['descripcion']
+        max_id = db.db.session.query(func.max(db.DOMO_DIRECCION.id)).scalar() + 1
+
+        id_ciu = db.db.session.query(db.domo_ciudad.id).filter(db.DOMO_CIUDAD.nombre == ciudad).scalar()
+        id_reg = db.db.session.query(db.domo_region.id).filter(db.DOMO_REGION.nombre == region).scalar()
+
+        if (max_id == None):
+            max_id = 1
+        direccion = db.domo_direccion(id=max_id, ciu_id=id_ciu, dir_numerocalle=numero, dir_nombrecalle=calle) 
+
+        db.db.session.add(direccion)
+        db.session.commit()
+
+        max_id = db.db.session.query(func.max(db.domo_restaurante.id)).scalar() + 1
+        if(max_id == None):
+            max_id = 1
+        
+        
+        
+        db.session.commit()
+        return render_template("ingresar_restaurante.html")
