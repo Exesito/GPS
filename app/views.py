@@ -9,8 +9,6 @@ db = models.db
 @app.route('/')
 def index():
 
-    form = RegisterForm()
-    
     return render_template("home.html")
 
 @app.route('/register', methods=['GET','POST'])
@@ -58,8 +56,8 @@ def login():
     loginform=LoginForm()
     if request.method == "POST":
 
-        user = db.Usuario.query.filter(db.Usuario.login == request.form.get("user")).first()
-        pw = request.form.get("pass")
+        user = request.form.get('email')
+        pw = request.form.get('pass')
 
         if user and  user.contrasena == pw:
             session['user'] = user.login
@@ -72,7 +70,7 @@ def login():
 
             return redirect(url_for('index'))
 
-    return render_template('login.html')
+    return render_template('assets/login.html')
 
     
 
