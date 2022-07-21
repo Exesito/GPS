@@ -2,7 +2,7 @@ from flask_security import LoginForm
 from app import app, models
 from app.forms import RegisterForm
 from app.models import User
-from notifypy import Notify
+from notifypy import notify
 from flask import render_template, request,session, redirect,url_for
 from sqlalchemy import func
 import bcrypt
