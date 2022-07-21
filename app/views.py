@@ -2,7 +2,7 @@ from flask_security import LoginForm
 from app import app, models
 from app.forms import RegisterForm
 from app.models import User
-from notifypy import notify
+from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
 from sqlalchemy import func
 import bcrypt
@@ -35,12 +35,15 @@ def register():
 @app.route('/login',methods=['GET','POST'])
 def login():
     session.clear
-    notification=notify()
+    notification=Notify()
+
     form=LoginForm()
+    form.remember_me=True
     if request.method == "POST":
 
         user = request.form.get('email')
         pw = request.form.get('password')
+        rmb_me=request.form.get('remember_me')
         phashed= db.User.query.filter(db.email== user).first()
 
         if len(phashed.email)>0:
