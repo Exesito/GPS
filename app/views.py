@@ -1,13 +1,12 @@
 from flask_security import LoginForm
-from app import app, models
+from app import app
+from app import models as db
 from app.forms import RegisterForm
 from app.models import User
 from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
 from sqlalchemy import func
 import bcrypt
-
-db = models.db
 
 @app.route('/')
 def index():
@@ -96,24 +95,30 @@ def ingresar_restaurante_post():
         nombre_dueno = request.form['nombre_dueno']
         apellido_dueno = request.form['apellido_dueno']
         descripcion = request.form['descripcion']
-        max_id = db.db.session.query(func.max(db.DOMO_DIRECCION.id)).scalar() + 1
+        tipo_rest=1
 
-        id_ciu = db.db.session.query(db.domo_ciudad.id).filter(db.DOMO_CIUDAD.nombre == ciudad).scalar()
-        id_reg = db.db.session.query(db.domo_region.id).filter(db.DOMO_REGION.nombre == region).scalar()
+        id_ciu = db.db.session.query(db.domo_ciudad.ciu_id).filter(db.domo_ciudad.ciu_nombre == ciudad).scalar()
+        id_reg = db.db.session.query(db.domo_region.reg_id).filter(db.domo_region.reg_nombre == region).scalar()
 
-        if (max_id == None):
+        if (db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() == None):
+            max_id_dir = 1
+        else:
+            max_id_dir = db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() + 1
+        direccion = db.domo_direccion(dir_id=max_id_dir, ciu_id=id_ciu, dir_numerocalle=numero, dir_nombrecalle=calle) 
+        
+
+        db.db.session.add(direccion)
+        db.db.session.commit()
+
+        if(db.db.session.query(func.max(db.domo_restaurante.rtr_id)).scalar() == None):
             max_id = 1
-        direccion = db.domo_direccion(id=max_id, ciu_id=id_ciu, dir_numerocalle=numero, dir_nombrecalle=calle) 
+        else:
+            max_id = db.db.session.query(func.max(db.domo_restaurante.id)).scalar() + 1
         
-
-        db.session.add(direccion)
-        db.session.commit()
-
-        max_id = db.session.query(func.max(db.domo_restaurante.id)).scalar() + 1
-        if(max_id == None):
-            max_id = 1
+        new_rest = db.domo_restaurante(rtr_id=max_id, rtr_nombre=nombre, rtr_descripcion=descripcion, 
+                                        rtr_tipo=tipo_rest, rtr_nombredueno=nombre_dueno, 
+                                        rtr_apellidodueno=apellido_dueno, dir_id=max_id_dir)
         
-        
-        
-        db.session.commit()
+        db.db.session.add(new_rest)
+        db.db.session.commit()
         return render_template("ingresar_restaurante.html")
