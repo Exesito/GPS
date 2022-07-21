@@ -13,7 +13,7 @@ class RegisterForm(Form):
 
 
 class LoginForm(Form):
-    email=StringField('Correo electrónico', )
-    password= PasswordField('Contraseña',)
+    email=StringField('Correo electrónico',[validators.Length(min=6, max=35)])
+    password= PasswordField('Contraseña')
 
     submit=SubmitField('Iniciar sesión')

@@ -9,7 +9,7 @@ DOMO- Inicio de sesión
 
 
 
-  {% block body %}
+{% block body %}
   <section>
     <div class="row g-0">
         <div class="col-lg-7 d-none d-lg-block">
@@ -44,27 +44,24 @@ DOMO- Inicio de sesión
         </div>
         <div class="col-lg-5 bg-dark d-flex flex-column align-items-end min-vh-100">
             <div class="px-lg-5 pt-lg-4 pb-lg-3 p-4 mb-auto w-100">
-                <img src="Logo.svg" class="img-fluid" />
+                <img src="domo-icon.png" class="img-fluid" />
             </div>
             <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
             <h1 class="font-weight-bold mb-4">Bienvenido de vuelta</h1>
-            <form class="form" action="/login" method="POST">
-                <div class="form-control">
-                  <label for="exampleInputEmail1" class="form-label font-weight-bold">Email</label>
-                  <input type="email" class="form-input bg-dark-x border-0" name="email" id="exampleInputEmail1" placeholder="Ingresa tu email" aria-describedby="emailHelp">
-                </div>
-                <div class="form-control>
-                  <label for="exampleInputPassword1" class="form-label font-weight-bold">Contraseña</label>
-                  <input type="password" class="form-control bg-dark-x border-0 mb-2" placeholder="Ingresa tu contraseña" id="exampleInputPassword1">
+            <form action="{{ url_for('login') }}" method=post>
+               
+                  {{ form.email.label }}
+                  {{ form.email(class_="form-control bg-dark-x border-0") }}
+                  {{ form.password.label }}
+                  {{ form.password(class_="form-control") }}
                   <a href="" id="emailHelp" class="form-text text-muted text-decoration-none">¿Has olvidado tu contraseña?</a>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Iniciar sesión</button>
+                {{ form.submit(class_="btn btn-primary w-100") }}
+                
               </form>
 
             <p class="font-weight-bold text-center text-muted">O inicia sesión con</p>
             <div class="d-flex justify-content-around">
                 <button type="button" class="btn btn-outline-light flex-grow-1 mr-2"><i class="fab fa-google lead mr-2"></i> Google</button>
-                <button type="button" class="btn btn-outline-light flex-grow-1 ml-2"><i class="fab fa-facebook-f lead mr-2"></i> Facebook</button>
             </div>
             </div>
             <div class="text-center px-lg-5 pt-lg-3 pb-lg-4 p-4 mt-auto w-100">
@@ -74,16 +71,4 @@ DOMO- Inicio de sesión
     </div>
   </section>
   
-  {% endblock %}
-
-
-
-
-
-{% block script %}
-
 {% endblock %}
-
-
-<input type="text"></input>
-<input type="password"></input>

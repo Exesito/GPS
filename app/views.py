@@ -2,7 +2,7 @@ from flask_security import LoginForm
 from app import app, models
 from app.forms import RegisterForm
 from app.models import User
-from notifypy import Notify
+from notifypy import notify
 from flask import render_template, request,session, redirect,url_for
 from sqlalchemy import func
 import bcrypt
@@ -30,36 +30,17 @@ def register():
     
     return render_template("assets/register.html", form = form)
 
-def fetch_user(email):
-
-    usuario = db.Usuario.query.filter(db.do == session['user']).first()
-    if usuario.id_permiso == '2':
-        usuario = db.Alumno.query.filter(db.Alumno.rut == usuario.login).first()
-    elif usuario.id_permiso == '1':
-        usuario = db.Apoderado.query.filter(db.Apoderado.rut == usuario.login).first()
-    elif usuario.id_permiso == '3':
-        usuario = db.Profesor.query.filter(db.Profesor.rut == usuario.rut).login()
-    return usuario
-
-
-@app.route('/dashboard')
-def dashboard():
-    
-    user = session['user']
-    usuario = fetch_user(user)
-    
-    return render_template('dashboard.html', usuario = usuario)
 
 
 @app.route('/login',methods=['GET','POST'])
 def login():
     session.clear
-    notification=Notify()
-    loginform=LoginForm()
+    notification=notify()
+    form=LoginForm()
     if request.method == "POST":
 
         user = request.form.get('email')
-        pw = request.form.get('pass')
+        pw = request.form.get('password')
         phashed= db.User.query.filter(db.email== user).first()
 
         if len(phashed.email)>0:
@@ -87,12 +68,9 @@ def login():
             notification.title= "Error de Acceso"
             notification.message="Usuario incorrecto"
             notification.send()
-            
+            return redirect(url_for('index.html'))
 
-
-            return redirect(url_for('index'))
-
-    return render_template('assets/login.html')
+    return render_template("assets/login.html", form = form)
 
     
 
