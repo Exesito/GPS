@@ -2,16 +2,16 @@ from flask_security import LoginForm
 from app import app, models
 from app.forms import RegisterForm
 from app.models import User
+from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
 from sqlalchemy import func
+import bcrypt
 
 db = models.db
 
 @app.route('/')
 def index():
 
-    form = RegisterForm()
-    
     return render_template("home.html")
 
 @app.route('/register', methods=['GET','POST'])
@@ -39,8 +39,6 @@ def fetch_user(email):
         usuario = db.Apoderado.query.filter(db.Apoderado.rut == usuario.login).first()
     elif usuario.id_permiso == '3':
         usuario = db.Profesor.query.filter(db.Profesor.rut == usuario.rut).login()
-    elif usuario.id_permiso == '4':
-        usuario = db.Supervisor_Academico.query.filter(db.Supervisor_Academico.rut)
     return usuario
 
 
@@ -56,24 +54,45 @@ def dashboard():
 @app.route('/login',methods=['GET','POST'])
 def login():
     session.clear
+    notification=Notify()
     loginform=LoginForm()
     if request.method == "POST":
 
-        user = db.Usuario.query.filter(db.Usuario.login == request.form.get("user")).first()
-        pw = request.form.get("pass")
+        user = request.form.get('email')
+        pw = request.form.get('pass')
+        phashed= db.User.query.filter(db.email== user).first()
 
-        if user and  user.contrasena == pw:
-            session['user'] = user.login
-            session['tipo_usuario'] = user.id_permiso
+        if len(phashed.email)>0:
+            if bcrypt.checkpw(pw, phashed.password_hash):
+                print("Coinciden")
+                session['nombre']= phashed['nombre']
+                session['email']= phashed['email']
+                session['tipo']=phashed['tipo']
+
+                if session['tipo']==1:
+                    return render_template("HOME/cl_home")
+                elif session['tipo']==2:
+                    return render_template("HOME/res_home")
+                elif session['tipo'] ==3:
+                    return render_template("HOME/adm_home")
+
+
+            else:
+                print("No coinciden")
+                notification.title= "Error de Acceso"
+                notification.message="Correo o contraseña incorrecta"
+                notification.send()
+        
+        else:
+            notification.title= "Error de Acceso"
+            notification.message="Usuario incorrecto"
+            notification.send()
             
 
-            colegio = db.Colegio.query.filter(db.Colegio.id == session["colegio"]).first()
-
-            session['colegio_nombre'] = colegio.nombre
 
             return redirect(url_for('index'))
 
-    return render_template('login.html')
+    return render_template('assets/login.html')
 
     
 
