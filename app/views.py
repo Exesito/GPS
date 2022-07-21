@@ -99,11 +99,12 @@ def ingresar_restaurante_post():
         if (max_id == None):
             max_id = 1
         direccion = db.domo_direccion(id=max_id, ciu_id=id_ciu, dir_numerocalle=numero, dir_nombrecalle=calle) 
+        
 
-        db.db.session.add(direccion)
+        db.session.add(direccion)
         db.session.commit()
 
-        max_id = db.db.session.query(func.max(db.domo_restaurante.id)).scalar() + 1
+        max_id = db.session.query(func.max(db.domo_restaurante.id)).scalar() + 1
         if(max_id == None):
             max_id = 1
         
