@@ -25,6 +25,8 @@ def register():
         password = request.form.get('password')
         
         new_user = User(email = email, password = password)
+
+        
         
         return new_user.email + " - " +new_user.estado+ " - " + str(new_user.password_hash)
     
@@ -43,7 +45,7 @@ def login():
 
         user = request.form.get('email')
         pw = request.form.get('password')
-        rmb_me=request.form.get('remember_me')
+        #rmb_me=request.form.get('remember_me')
         phashed= db.User.query.filter(db.email== user).first()
 
         if len(phashed.email)>0:
