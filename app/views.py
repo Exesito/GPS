@@ -77,7 +77,7 @@ def login():
 @app.route('/ingresar_restaurante')
 def ingresar_restaurante():
 
-    return render_template("ingresar_restaurante.html")
+    return render_template("assets/ingresar_restaurante.html")
 
 @app.route('/ingresar_restaurante', methods=['POST'])
 def ingresar_restaurante_post():

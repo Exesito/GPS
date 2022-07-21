@@ -1,125 +1,89 @@
 {% extends "index.html" %}
 
 {% block title %}
-Home
+Ingresar Restaurante
 {% endblock %}
 
 {% block body %}
-    <!--Imprimir cajas de texto para ingresar los datos de la actividad, y crear un botón de guardado.-->
+<!--Imprimir cajas de texto para ingresar los datos de la actividad, y crear un botón de guardado.-->
 <div class="container">
-    <div class="row header">
-      <h1>Ingresar un Alumno: &nbsp;</h1>
-      <h3>Por favor, llene el siguiente formulario.</h3>
-    </div>
-    <div class="row body">
-       <!--Acción de la forma-->
-      <form action="{{url_for('ingresar_restaurante_post')}}", method = "post">
-        <ul>
-         <!--Rut del Alumno-->
-         <li>
-             <p class="left">
-               <label for="Rut">Rut del Alumno:</label>
-               <input type="text" name="rut" placeholder="1.111.111-1" required/> 
-             </p>
-         </li>
-           <!--Nombre del Alumno-->
-          <li>
-            <p class="left">
-              <label for="nombre">Nombre del Alumno:</label>
-              <input type="text" name="nombre" placeholder="Juan" />
-            </p>
-            <li>
-              <!--Apellido Paterno del Alumno-->
-                <p class="left">
-                 <label for="Apellido Paterno">Apellido Paterno del Alumno:</label>
-                 <input type="text" name="apellido_p" placeholder="Manzano"/>
-                </p>
-            </li>
-            <li>
-              <!--Apellido Materno del Alumno-->
-                <p class="left">
-                 <label for="Apellido Materno">Apellido Materno del Alumno:</label>
-                 <input type="text" name="apellido_m" placeholder="Rubio"/>
-                </p>  
-            </li>
-            <li>
-              <!--Numero de Emergencia del Alumno-->
-                <p class="left">
-                    <label for="Numero Emergencia"> Numero de Emergencia:</label>
-                    <input type="text" name="n_emergencia" placeholder="911111111"/>
-                </p>
-            </li>
-            <li>
-              <!--Correo del Alumno-->
-               <p class="left">
-                 <label for="correo"> Correo</label>
-                 <input type="text" name="correo" placeholder="ejemplo@gmail.com"/>
-               </p>
-            </li>
-            <li>
-              <!--Direccion del Alumno-->
-              <p class="left">
-                <label for="direccion"> Direccion</label>
-                <input type="text" name="direccion" placeholder="calle 1,Concepcion"/>
-              </p>
-            </li>
-            <li>
-              <!--Fecha de Nacimiento del ALumno-->
-              <p class="left">
-                <label for="fecha_nac"> Fecha de Nacimiento</label>
-                <input type="date" name="fecha_nac" placeholder="01/01/2000"/>
-              </p>
-            </li>
-            <li>
-              <!--Genero del Alumno-->
-              <p class="left">
-               <label for="genero">Genero </label>
-               <select name="genero">
-                <option value="1"selected>Hombre</option>
-                <option value="2">Mujer</option>
-                <option value="3">Otro</option>
-                <option value="4">No Binario</option>
-                <option value="5">Agenero</option>
-                <option value="6">Fluido</option>
-              </select>
-              </p>
-            </li>
-            <li>
-              <!--Ciudad del Alumno-->
-              <p class="left">
-               <label for="ciudad">Ciudad</label>
-               <select name="ciudad"> 
-  
-                {% for item in ciudad %}
-                
-                <option value="{{item.id}}">{{item.nombre}}</option>
-        
-                {% endfor %}
-              </p>
-              </select>
-            </li>
-            <li>
-             <!--Curso al que ingresar al Alumno-->
-             <p class="left">
-               <label for="curso">Curso</label>
-               <select name="curso"> 
-  
-                 {% for item in curso %}
-                 
-                 <option value="{{item.Curso.id}}">{{item.Nivel.nivel}}° {{item.Nivel.ciclo}}° {{item.Curso.letra}}</option>
-         
-                 {% endfor %}
-             </p>
-            </li>
-          </li>
-          <!--Boton-->
-          <li>
-            <input class="btn btn-submit" type="submit" value="[INGRESAR]" />
-            <small>o presione <strong>enter</strong></small>
-          </li>
-          
-        </ul>
-      </form>  
-    </div>
+  <div class="row header">
+    <h1>Ingresar un Restaurante: &nbsp;</h1>
+    <h3>Por favor, llene el siguiente formulario.</h3>
   </div>
+  <div class="row body">
+    <!--Acción de la forma-->
+    <form action="{{url_for('ingresar_restaurante_post')}}" , method="post">
+      <ul type="square">
+        <!--Nombre Restaurante-->
+        <li>
+          <p class="left">
+            <label for="nombre">Nombre del Restaurante:</label>
+            <input type="text" name="nombre" placeholder="La picá de Alcachofas" required />
+          </p>
+        </li>
+        <!--Calle-->
+        <li>
+          <p class="left">
+            <label for="calle">Calle:</label>
+            <input type="text" name="nombre" placeholder="21 de mayo" />
+          </p>
+        </li>
+        <li>
+          <!--Numero de domicilio-->
+          <p class="left">
+            <label for="numero">Número de domicilio:</label>
+            <input type="text" name="apellido_p" placeholder="774" />
+          </p>
+        </li>
+        <li>
+          <!--Ciudad-->
+          <p class="left">
+            <label for="ciudad">Ciudad:</label>
+            <input type="text" name="ciudad" placeholder="Arauco" />
+          </p>
+        </li>
+        <li>
+          <!--Region-->
+          <p class="left">
+            <label for="region"> Región:</label>
+            <input type="text" name="region" placeholder="Arica" />
+          </p>
+        </li>
+        <li>
+          <!--Tipo de Restaurante-->
+          <p class="left">
+            <label for="tipo restaurante"> Tipo de Restaurante</label>
+            <input type="text" name="tipo_rest" placeholder="Comida rápida" />
+          </p>
+        </li>
+        <li>
+          <!--Nombre del Dueño-->
+          <p class="left">
+            <label for="nombre dueño"> Nombre del dueño: </label>
+            <input type="text" name="nombre_dueno" placeholder="Juan" />
+          </p>
+        </li>
+        <li>
+          <!--Apellido del Dueño-->
+          <p class="left">
+            <label for="apellido_dueno"> Apellido del dueño:</label>
+            <input type="text" name="apellido_dueno" placeholder="Arias" />
+          </p>
+        </li>
+        <li>
+          <!--Descripcion del retaurante-->
+          <p class="left">
+            <textarea name="descripcion" rows="5" cols="40" placeholder="Descripción del restaurante"></textarea>
+          </p>
+        </li>
+        <!--Boton-->
+        <li>
+          <input class="btn btn-submit" type="submit" value="[INGRESAR]" />
+          <small>o presione <strong>enter</strong></small>
+        </li>
+      </ul>
+    </form>
+  </div>
+</div>
 {% endblock %}
