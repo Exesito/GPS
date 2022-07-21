@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from notifypy import notify
+from notifypy import Notify
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'Secret'
