@@ -1,13 +1,8 @@
 #from flask_security import LoginForm
 from app import app
 from app import models as db
-<<<<<<< HEAD
-from app.forms import RegisterForm
-from app.models import User, domo_ciudad, domo_region
-=======
 from app.forms import RegisterForm, LoginForm
 from app.models import User
->>>>>>> 44fef7835ffd3d4338ac10055fc4f3e12e07c9e6
 from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
 from sqlalchemy import func
@@ -40,10 +35,9 @@ def login():
     form.remember_me=True   
     if request.method == "POST":
         
-
         user = request.form.get('email')
         pw = request.form.get('password')
-        a="hola mundo"
+        #a="hola mundo"
         #rmb_me=request.form.get('remember_me')
         phashed= db.User.query.filter(db.email== user).first()
 

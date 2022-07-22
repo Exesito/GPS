@@ -1,5 +1,5 @@
 from wtforms import Form, SubmitField, StringField, PasswordField, BooleanField, validators
-  
+from wtforms import EmailField  
 class RegisterForm(Form):
     
     #username = StringField('', [validators.Length(min=4, max=25)])
@@ -13,9 +13,8 @@ class RegisterForm(Form):
 
 
 class LoginForm(Form):
-    email=StringField('Correo electrónico',[validators.Length(min=6, max=35)])
+    email=EmailField('Correo electrónico',[validators.DataRequired(), validators.Email(), validators.Length(min=6, max=35)])
     password= PasswordField('Contraseña')
     #remember_me = BooleanField('Mantener conectado')
-    
 
     submit=SubmitField('Iniciar sesión')
