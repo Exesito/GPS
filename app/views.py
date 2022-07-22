@@ -1,8 +1,13 @@
-from flask_security import LoginForm
+#from flask_security import LoginForm
 from app import app
 from app import models as db
+<<<<<<< HEAD
 from app.forms import RegisterForm
 from app.models import User, domo_ciudad, domo_region
+=======
+from app.forms import RegisterForm, LoginForm
+from app.models import User
+>>>>>>> 44fef7835ffd3d4338ac10055fc4f3e12e07c9e6
 from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
 from sqlalchemy import func
@@ -19,30 +24,27 @@ def register():
     form = RegisterForm()
     
     if request.method == 'POST':
-        
         email = request.form.get('email')
         password = request.form.get('password')
-        
         new_user = User(email = email, password = password)
-        
+
         return new_user.email + " - " +new_user.estado+ " - " + str(new_user.password_hash)
     
     return render_template("assets/register.html", form = form)
 
-
-
 @app.route('/login',methods=['GET','POST'])
 def login():
-    session.clear
+    #session.clear
     notification=Notify()
-
-    form=LoginForm()
-    form.remember_me=True
+    form = LoginForm()
+    form.remember_me=True   
     if request.method == "POST":
+        
 
         user = request.form.get('email')
         pw = request.form.get('password')
-        rmb_me=request.form.get('remember_me')
+        a="hola mundo"
+        #rmb_me=request.form.get('remember_me')
         phashed= db.User.query.filter(db.email== user).first()
 
         if len(phashed.email)>0:
@@ -53,19 +55,18 @@ def login():
                 session['tipo']=phashed['tipo']
 
                 if session['tipo']==1:
-                    return render_template("HOME/cl_home")
+                    return render_template("HOME/cl_home", tipo=session['tipo'])
                 elif session['tipo']==2:
-                    return render_template("HOME/res_home")
+                    return render_template("HOME/res_home",tipo=session['tipo'])
                 elif session['tipo'] ==3:
-                    return render_template("HOME/adm_home")
-
+                    return render_template("HOME/adm_home",tipo=session['tipo'])
 
             else:
                 print("No coinciden")
                 notification.title= "Error de Acceso"
                 notification.message="Correo o contraseña incorrecta"
                 notification.send()
-        
+                return redirect(url_for('index.html'))
         else:
             notification.title= "Error de Acceso"
             notification.message="Usuario incorrecto"

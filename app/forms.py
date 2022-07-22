@@ -16,5 +16,6 @@ class LoginForm(Form):
     email=StringField('Correo electrónico',[validators.Length(min=6, max=35)])
     password= PasswordField('Contraseña')
     #remember_me = BooleanField('Mantener conectado')
+    
 
     submit=SubmitField('Iniciar sesión')

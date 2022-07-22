@@ -3,7 +3,7 @@
 :root {
     --dark: #601b90;
     --dark-x: #310746; 
-    --light: #af55f8b0;
+    --light: #B0B5F8;
 }
 
 .navbar{
@@ -35,9 +35,21 @@ body {
     background-color: var(--dark-x);
     outline: none;
 }
+.form-text {
+    color: #BDBAD1 !important;
+}
+.other-text{
+    color: #BDBAD1 !important;
+}
 
-.img-login {
-    background-image: url('media/img1.jpg');
+.img-1 {
+    background-image: url('../static/media/img0.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.img-2 {
+    background-image: url('../static/media/img2.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -54,6 +66,5 @@ body {
     font-family: sans-serif;
     font-size: 15pt;
 }
-
 
 
