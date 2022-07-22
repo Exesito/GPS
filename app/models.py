@@ -52,12 +52,12 @@ class domo_restaurante(db.Model):
     dir_id = db.Column('dir_id', db.Integer, db.ForeignKey('domo_direccion.dir_id'))
     tpr_id = db.Column('tpr_id', db.Integer)
     rtr_nombre = db.Column('rtr_nombre', db.String(50))
-    rtr_rutacarta = db.Column('rtr_rutacarta', db.Text)
+    rtr_rutacarta = db.Column('rtr_carta', db.Text)
     rtr_descripcion = db.Column('rtr_descripcion', db.Text)
     rtr_opvega = db.Column('rtr_opvega', db.Boolean)
     rtr_opvege = db.Column('rtr_opvege', db.Boolean)
-    rtr_duenonombre = db.Column('rtr_duenonombre', db.String(40))
-    rtr_duenoapellido = db.Column('rtr_duenoapellido', db.String(40))
+    rtr_duenonombre = db.Column('rtr_nombredueno', db.String(40))
+    rtr_duenoapellido = db.Column('rtr_apellidodueno', db.String(40))
 
 class domo_direccion(db.Model):
     __tablename__ = 'domo_direccion'
@@ -135,3 +135,14 @@ class domo_encargadortr(db.Model):
     rtr_id = db.Column('rtr_id', db.Integer)
     enc_nombre = db.Column('enc_nombre', db.String(40))
     enc_apellido = db.Column('enc_apellido', db.String(40))
+
+class domo_cliente(db.Model):
+    __tablename__ = 'domo_cliente'
+    cli_id = db.Column('cli_id', db.Integer, primary_key = true)
+    usr_id = db.Column('usr_id', db.Integer)
+    cli_nombre = db.Column('cli_nombre', db.String(40))
+    cli_apellido = db.Column('cli_apellido', db.String(40))
+    dir_id = db.Column('dir_id', db.Integer)
+    cli_telefono = db.Column('cli_telefono', db.String(20))
+    cli_rut = db.Column('cli_rut', db.String(20))
+    cli_tipo = db.Column('cli_tipo', db.String(1))

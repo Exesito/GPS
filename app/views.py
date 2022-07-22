@@ -2,7 +2,7 @@ from flask_security import LoginForm
 from app import app
 from app import models as db
 from app.forms import RegisterForm
-from app.models import User
+from app.models import User, domo_ciudad, domo_region
 from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
 from sqlalchemy import func
@@ -79,7 +79,9 @@ def login():
 @app.route('/ingresar_restaurante')
 def ingresar_restaurante():
 
-    return render_template("assets/ingresar_restaurante.html")
+    tipo_restaurante=db.domo_tiporestaurante.query.all()
+
+    return render_template("assets/ingresar_restaurante.html", tipo_restaurante=tipo_restaurante)
 
 @app.route('/ingresar_restaurante', methods=['POST'])
 def ingresar_restaurante_post():
@@ -93,7 +95,8 @@ def ingresar_restaurante_post():
         nombre_dueno = request.form['nombre_dueno']
         apellido_dueno = request.form['apellido_dueno']
         descripcion = request.form['descripcion']
-        tipo_rest=1
+        vegetariana = request.form['vegetariana']
+        vegana = request.form['vegana']
 
         id_ciu = db.db.session.query(db.domo_ciudad.ciu_id).filter(db.domo_ciudad.ciu_nombre == ciudad).scalar()
         id_reg = db.db.session.query(db.domo_region.reg_id).filter(db.domo_region.reg_nombre == region).scalar()
@@ -111,12 +114,33 @@ def ingresar_restaurante_post():
         if(db.db.session.query(func.max(db.domo_restaurante.rtr_id)).scalar() == None):
             max_id = 1
         else:
-            max_id = db.db.session.query(func.max(db.domo_restaurante.id)).scalar() + 1
+            max_id = db.db.session.query(func.max(db.domo_restaurante.rtr_id)).scalar() + 1
+
+        if(vegetariana == "true"):
+            vegetariana = True
+        else:
+            vegetariana = False
+
+        if(vegana == "true"):
+            vegana = True
+        else:
+            vegana = False
         
-        new_rest = db.domo_restaurante(rtr_id=max_id, rtr_nombre=nombre, rtr_descripcion=descripcion, 
-                                        rtr_tipo=tipo_rest, rtr_nombredueno=nombre_dueno, 
-                                        rtr_apellidodueno=apellido_dueno, dir_id=max_id_dir)
+        new_rest = db.domo_restaurante(rtr_id=max_id,dir_id=max_id_dir,tpr_id=tipo_rest,
+                                       rtr_nombre=nombre,rtr_rutacarta="xd",rtr_descripcion=descripcion, rtr_opvege=vegetariana, 
+                                       rtr_opvega=vegana,rtr_duenonombre=nombre_dueno,rtr_duenoapellido=apellido_dueno)
         
         db.db.session.add(new_rest)
         db.db.session.commit()
-        return render_template("ingresar_restaurante.html")
+        return render_template("assets/ingresar_restaurante.html")
+
+@app.route('/gestionar_restaurantes')
+def gestionar_restaurantes():
+    restaurantes = db.db.session.query(db.domo_restaurante, db.domo_direccion, db.domo_ciudad, db.domo_region, db.domo_tiporestaurante).filter(
+                                        db.domo_restaurante.dir_id == db.domo_direccion.dir_id,
+                                        db.domo_tiporestaurante.tpr_id == db.domo_restaurante.tpr_id,
+                                        db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id,
+                                        db.domo_ciudad.reg_id==db.domo_region.reg_id).all()
+    
+    print(restaurantes)
+    return render_template("assets/gestionar_restaurantes.html", restaurantes=restaurantes)

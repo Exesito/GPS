@@ -13,7 +13,7 @@ Ingresar Restaurante
   </div>
   <div class="row body">
     <!--Acción de la forma-->
-    <form action="{{url_for('ingresar_restaurante_post')}}" , method="post">
+    <form action="{{url_for('ingresar_restaurante_post')}}" , method="post" id="ingresar_restaurante">
       <ul type="square">
         <!--Nombre Restaurante-->
         <li>
@@ -51,13 +51,6 @@ Ingresar Restaurante
           </p>
         </li>
         <li>
-          <!--Tipo de Restaurante-->
-          <p class="left">
-            <label for="tipo restaurante"> Tipo de Restaurante</label>
-            <input type="text" name="tipo_rest" placeholder="Comida rápida" />
-          </p>
-        </li>
-        <li>
           <!--Nombre del Dueño-->
           <p class="left">
             <label for="nombre dueño"> Nombre del dueño: </label>
@@ -75,6 +68,37 @@ Ingresar Restaurante
           <!--Descripcion del retaurante-->
           <p class="left">
             <textarea name="descripcion" rows="5" cols="40" placeholder="Descripción del restaurante"></textarea>
+          </p>
+        </li>
+        <!--Select de tipos de restaurante-->
+        <li>
+          <p class="left">Tipo de Restaurante:
+            <select name="tipo_rest" required>
+              <option value="xd">Seleccione tipo</option>
+              {% for item in tipo_restaurante %}
+                <option value="{{item.tpr_id}}">{{item.tpr_nombre}}</option>
+              {% endfor %}
+            </select>
+          </p>
+        </li>
+        <!--Opcion Vegetariana-->
+        <li>
+          <p class="left">Opcion Vegetariana:
+            <select name="vegetariana" required>
+              <option value="xd">Seleccione opción</option>
+              <option value=true>Si</option>
+              <option value=false>No no</option>
+            </select>
+          </p>
+        </li>
+        <!--Opcion de Vegana-->
+        <li>
+          <p class="left">Opcion Vegana:
+            <select name="vegana" required>
+              <option value="xd">Seleccione opción</option>
+              <option value=true>Si</option>
+              <option value=false>No no</option>
+            </select>
           </p>
         </li>
         <!--Boton-->
