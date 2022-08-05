@@ -1,0 +1,28 @@
+<!--Esta página contiene el menú de configuraciones del restaurante
+en cuestión, posee tres opciones principales (CARTA, HORARIOS, MESAS)
+a lo cual cada uno también tiene su propia landing page.-->
+<!--Landing Page Principal-->
+{% extends "index.html" %}
+
+{% block title %}
+Mi Restaurante
+{% endblock %}
+
+{% block body %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        
+    </head>
+<body>
+    <p>Por favor haga una selección:</p>
+
+    <a class="button button1">Editor de Mesas</a>
+    <a class="button button2">Editor de Carta</a>
+    <a class="button button3"  href="{{url_for('editor_horario')}}">Editor de Horarios</a>
+
+</body>
+</html>
+
+{% endblock %}

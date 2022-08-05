@@ -1,11 +1,12 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from notifypy import Notify
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'Secret'
-#app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://g25proyecto:g25proyecto1061@146.83.198.35:5432/g25proyecto_bd'
-app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:peterfields@190.47.90.186:5432/domo_testing'
-
+app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:peterfields@127.0.0.1:5432/domo_local'
+app.config['SECURITY_PASSWORD_HASH'] = 'scrtcript'
+app.config['SECURITY_PASSWORD_SALT'] = 'fhasdgihwntlgy8f'
 
 from app import models, views
 

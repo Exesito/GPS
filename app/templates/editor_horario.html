@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+
+{% block title %}
+Horarios Restaurante
+{% endblock %}
+
+{% block body %}
+    <h2>Aquí se podrán editar y consultar los horarios del restaurante</h2>
+    
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apertura</th>
+            <th scope="col">Cierre </th>
+            <th scope="col">Día Inicio</th>
+            <th scope="col">Día Fin </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for data in horarios %}
+          <tr>
+            <th scope="row">{{data.domo_horario.hor_id}}</th>
+            <td>Nombre genérico</td>
+            <td>{{data.domo_horario.hor_horainicio}}</td>
+            <td>{{data.domo_horario.hor_horatermino}}</td>
+            <td>{{data.domo_horario.hor_diainicio}}</td>
+            <td>{{data.domo_horario.hor_diatermino}}</td>
+          {% endfor%}
+          </tr>
+        </tbody>
+      </table>
+    
+{% endblock %}
+{% block script %}
+<script>
+    
+</script>
+{% endblock %}
