@@ -1,0 +1,62 @@
+{% extends "index.html" %}
+{% block title %}
+Gestionar Restaurantes
+{% endblock %}
+{% block body %}
+
+<div class="container-fluid py-4">
+    <h1>Lista de Restaurantes</h1>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover table-fixed tablecustom" table id="restaurantes">
+
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Tipo de Restaurante</th>
+                    <th>Calle</th>
+                    <th>Número de Domicilio</th>
+                    <th>Ciudad</th>
+                    <th>Región</th>
+                    <th>Opcion Vegetariana</th>
+                    <th>Opción Vegana</th>
+                    <th>Nombre del Dueño</th>
+                    <th>Apellido Dueño</th>
+                    <th>Opciones</th>
+
+                </tr>
+            </thead>
+
+
+            {% for item in restaurantes %}
+            <tr>
+                <td>{{item.domo_restaurante.rtr_nombre}}</td>
+                <td>{{item.domo_restaurante.rtr_descripcion}}</td>
+                <td>{{item.domo_tiporestaurante.tpr_nombre}}</td>
+                <td>{{item.domo_direccion.dir_nombrecalle}}</td>
+                <td>{{item.domo_direccion.dir_numerocalle}}</td>
+                <td>{{item.domo_ciudad.ciu_nombre}}</td>
+                <td>{{item.domo_region.reg_nombre}}</td>
+                {% if item.domo_restaurante.rtr_opvege == true %}
+                <td>Si</td>
+                {% else %}
+                <td>No</td>
+                {% endif %}
+                {% if item.domo_restaurante.rtr_opvegan == TRUE %}
+                <td>Si</td>
+                {% else %}
+                <td>No</td>
+                {% endif %}
+                <td>{{item.domo_restaurante.rtr_duenonombre}}</td>
+                <td>{{item.domo_restaurante.rtr_duenoapellido}}</td>
+                <td>
+                    Editar
+                    Eliminar
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+{% endblock %}
