@@ -4,10 +4,11 @@
 Horarios Restaurante
 {% endblock %}
 
-{% block body %}
-    <h2>Aquí se podrán editar y consultar los horarios del restaurante</h2>
+{% block content %}
+    <div>
+      <h2>Aquí se podrán editar y consultar los horarios del restaurante</h2>
     
-    <table class="table">
+    <table class="table table-striped table-bordered table-hover tablecustom table1" id="horarios" >
         <thead>
           <tr>
             <th scope="col">#</th>
@@ -16,25 +17,102 @@ Horarios Restaurante
             <th scope="col">Cierre </th>
             <th scope="col">Día Inicio</th>
             <th scope="col">Día Fin </th>
+              {% if isGestionable %}
+            <th>Editar</th>
+            <th>Eliminar</th>
+              {% endif %}
           </tr>
         </thead>
         <tbody>
-          {% for data in horarios %}
+          {% for data, i in horarios_count %}
           <tr>
-            <th scope="row">{{data.domo_horario.hor_id}}</th>
-            <td>Nombre genérico</td>
+            <th scope="row">{{i}}</th>
+            <td>
+              Arreglar dps
+              
+            </td>
             <td>{{data.domo_horario.hor_horainicio}}</td>
             <td>{{data.domo_horario.hor_horatermino}}</td>
             <td>{{data.domo_horario.hor_diainicio}}</td>
             <td>{{data.domo_horario.hor_diatermino}}</td>
+              {% if isGestionable %}
+                <th><a class="btn btn-secondary table-row-edit edit-button" >Editar</a></th>
+                <th><a href="#" class="btn btn-danger btn-delete" onclick="return confirm('¿Estás seguro de eliminar este entregable?');">Eliminar</a></th>
+                
+              {% endif %}
           {% endfor%}
           </tr>
         </tbody>
       </table>
+    </div>
+    
     
 {% endblock %}
+
+
 {% block script %}
 <script>
-    
+    jQuery(document).ready( function () {
+      jQuery('#horarios').DataTable({
+            "bDeferRender": true,
+            "oLanguage": {
+            "sEmptyTable": "No hay registros disponibles",
+            "sInfo": "Hay _TOTAL_ registros. Mostrando de (_START_ a _END_)",
+            "sLoadingRecords": "Por favor espera - Cargando...",
+            "sSearch": "Filtro:",
+            "sLengthMenu": "Mostrar _MENU_",
+            "oPaginate": {
+            "sLast": "Última página",
+            "sFirst": "Primera",
+            "sNext": "Siguiente",
+            "sPrevious": "Anterior"
+            }
+            }
+         } );
+
+        $('.edit-button').on('click',function() {
+          //var ro = $(this).show().parents(".toggle-input").attr("readonly")
+          
+          // var ro = $(this.parents()).show().filter('input').attr('readonly')
+          // alert(ro)
+          // if(ro == 'readonly'){
+          //   $('input').show().filter('.toggle-input').attr('readonly', false)
+          //   $(this).html('Guardar')
+          // }else{
+          //   $('input').show().filter('.toggle-input').attr('readonly', true)
+          //   $(this).html('Editar')
+          // }
+
+          var currentTD = $(this).parents('tr').find('td');
+          if ($(this).html() == 'Editar') {                  
+              $.each(currentTD, function () {
+                  $(this).prop('contenteditable', true)
+                  
+              });
+              $(this).html("Guardar")
+          } else {
+             $.each(currentTD, function () {
+                  $(this).prop('contenteditable', false)
+                  
+              });
+              var nombre = currentTD.get(0).textContent
+              var apertura = currentTD.get(1).textContent
+              var cierre = currentTD.get(2).textContent
+              var dia_inicio = currentTD.get(3).textContent
+              var dia_fin = currentTD.get(4).textContent
+              
+              alert(nombre)
+              $(this).html("Editar")
+          }
+        });
+        
+        $("body").on("click", ".btn-delete", function(){  
+          $(this).parents("tr").remove();  
+        });  
+
+        }
+    ); 
+
+ 
 </script>
 {% endblock %}

@@ -13,7 +13,7 @@
 }
 
 body {
-    padding-top: 20px;
+    padding-top: 5%;
     font-family: 'Spartan', sans-serif;
     font-weight: 300;
     color: var(--light);
@@ -24,7 +24,7 @@ body {
 .bg-dark-x { background-color: var(--dark-x); }
 
 .btn {
-    min-height: 3.125rem;
+    height: 100%;
     font-weight: 600;
 }
 
@@ -74,5 +74,17 @@ body {
     font-family: sans-serif;
     font-size: 15pt;
 }
+.table1{
+    position: relative;
+    width: 60%;
+    
+    
+  }
+
+.read-only{
+    cursor: not-allowed;
+}
+
+
 
 

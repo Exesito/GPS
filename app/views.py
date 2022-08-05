@@ -1,5 +1,5 @@
 #from flask_security import LoginForm
-from app import app
+from app import app, functions
 from app import models as db
 from app.forms import RegisterForm, LoginForm
 from app.models import User
@@ -149,4 +149,15 @@ def editor_horarios():
                                     db.domo_usuario.usr_login == email, db.domo_encargadortr.usr_id == db.domo_usuario.usr_id,
                                     db.domo_restaurante.rtr_id == db.domo_encargadortr.rtr_id, db.domo_horario.rtr_id == db.domo_restaurante.rtr_id).all()
     
-    return render_template("editor_horario.html", horarios = horarios )
+    return render_template("editor_horario.html", horarios_count = zip(horarios, range(len(horarios))), isGestionable = True )
+
+@app.route('/editor_horarios_post_editar', methods=['POST'])
+def editor_horarios_post_editar(nombre, apertura, cierre, dia_inicio, dia_fin):
+    if(request.method == 'POST'):
+           nombre = nombre
+           apertura = apertura
+           cierre = cierre
+           dia_inicio = dia_inicio
+           dia_fin = dia_fin
+           
+
