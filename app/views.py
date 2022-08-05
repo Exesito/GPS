@@ -9,7 +9,7 @@ def index():
 
 @app.route('/editor_horario')
 def editor_horario():
-
+    
     return(render_template('editor_horario.html'))
 
 #Mi Restaurante
