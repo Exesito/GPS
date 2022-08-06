@@ -39,12 +39,13 @@ db = SQLAlchemy()
 class domo_horario(db.Model):
     __tablename__ = 'domo_horario'
     hor_id = db.Column('hor_id', db.Integer, primary_key = true)
+    #hor_nombre = db.Column('hor_nombre', db.String(20))
     rtr_id = db.Column('rtr_id', db.Integer ,db.ForeignKey('domo_rtr.rtr_id'))
     hor_diainicio = db.Column('hor_diainicio', db.Integer)
     hor_diatermino = db.Column('hor_diatermino', db.Integer)
     hor_horainicio = db.Column('hor_horainicio', db.Time)
     hor_horatermino = db.Column('hor_horatermino', db.Time)
-    hor_disponibilidad = db.Column('hor_disponibilidad', db.Boolean)
+    
 
 class domo_restaurante(db.Model):
     __tablename__ = 'domo_restaurante'

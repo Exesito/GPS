@@ -77,12 +77,15 @@ body {
 .table1{
     position: relative;
     width: 60%;
-    
-    
   }
 
 .read-only{
     cursor: not-allowed;
+}
+#nuevo{
+    position: relative;
+    left: 52%;
+    top: 30%
 }
 
 

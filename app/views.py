@@ -1,4 +1,5 @@
 #from flask_security import LoginForm
+#from crypt import methods
 from app import app, functions
 from app import models as db
 from app.forms import RegisterForm, LoginForm
@@ -141,23 +142,27 @@ def gestionar_restaurantes():
     print(restaurantes)
     return render_template("assets/gestionar_restaurantes.html", restaurantes=restaurantes)
 
-@app.route('/editor_horarios')
+@app.route('/editor_horarios',methods=['GET','POST'])
 def editor_horarios():
-    session['email'] = 'KHB180LHE012  S1JMGW'
+    session['email'] = 'SD9MHKNB7DN1XEE8I9T2'
     email = session["email"]
+    if request.method =='POST':
+        
+        nombre = request.json["nombre"]
+        id = request.json["id"]
+        apertura = request.json["apertura"]
+        cierre = request.json["cierre"]
+        dia_inicio = request.json["dia_inicio"]
+        dia_fin = request.json["dia_fin"]
+        print( id, nombre, apertura, cierre, dia_inicio, dia_fin)
+
+    
+
     horarios = db.db.session.query(db.domo_horario, db.domo_usuario, db.domo_encargadortr, db.domo_restaurante).filter(
                                     db.domo_usuario.usr_login == email, db.domo_encargadortr.usr_id == db.domo_usuario.usr_id,
                                     db.domo_restaurante.rtr_id == db.domo_encargadortr.rtr_id, db.domo_horario.rtr_id == db.domo_restaurante.rtr_id).all()
     
-    return render_template("editor_horario.html", horarios_count = zip(horarios, range(len(horarios))), isGestionable = True )
+    return render_template("CRUD-Horarios/editor_horario.html", horarios_count = zip(horarios, range(len(horarios))), isGestionable = True )
 
-@app.route('/editor_horarios_post_editar', methods=['POST'])
-def editor_horarios_post_editar(nombre, apertura, cierre, dia_inicio, dia_fin):
-    if(request.method == 'POST'):
-           nombre = nombre
-           apertura = apertura
-           cierre = cierre
-           dia_inicio = dia_inicio
-           dia_fin = dia_fin
-           
+
 
