@@ -17,7 +17,6 @@ body {
     font-family: 'Spartan', sans-serif;
     font-weight: 300;
     color: var(--light);
-    display: flex;
 }
 
 .text-light { color: var(--light) !important; }
@@ -92,17 +91,30 @@ body {
 .paginate_button{
     color: rgb(56, 18, 53);
     font-weight: 600;
-    margin-left :1%;
-    
+    margin-left : 1%;
 }
 
 .dataTables_filter{
-    padding: 2%;
-    max-width: 10%;    
+    padding: 2em;
+    margin-left: 12px;
 }
 
+.dataTables_length{
+    padding: 1em;
+    margin-left: 10px;
+    max-width:15em;
+}
 
+#nuevo{
+    display: flex;
+    width: 8%;
+    margin-left: 10px;
+    bottom: 5em;
+    
+}
 
-
-
-
+#flex-div{
+    display: flex;
+    flex-direction: column;
+    align-items: right;
+}
