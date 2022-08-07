@@ -3,7 +3,7 @@
 from app import app, functions
 from app import models as db
 from app.forms import RegisterForm, LoginForm
-from app.models import User
+from app.models import User, domo_usuario
 from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
 from sqlalchemy import func
@@ -144,7 +144,7 @@ def gestionar_restaurantes():
 
 @app.route('/editor_horarios',methods=['GET','POST'])
 def editor_horarios():
-    session['email'] = 'SD9MHKNB7DN1XEE8I9T2'
+    session['email'] = 'P5W512FM N3REWJ0IEN9'
     email = session["email"]
     if request.method =='POST':
         
@@ -157,10 +157,13 @@ def editor_horarios():
         print( id, nombre, apertura, cierre, dia_inicio, dia_fin)
 
     
-
-    horarios = db.db.session.query(db.domo_horario, db.domo_usuario, db.domo_encargadortr, db.domo_restaurante).filter(
-                                    db.domo_usuario.usr_login == email, db.domo_encargadortr.usr_id == db.domo_usuario.usr_id,
-                                    db.domo_restaurante.rtr_id == db.domo_encargadortr.rtr_id, db.domo_horario.rtr_id == db.domo_restaurante.rtr_id).all()
+    
+    horarios = db.db.session.query(db.domo_horario, db.domo_encargadortr, db.domo_restaurante, db.domo_usuario).filter(
+        db.domo_usuario.usr_login == email,
+        db.domo_encargadortr.usr_id == db.domo_usuario.usr_id,
+        db.domo_restaurante.rtr_id == db.domo_encargadortr.rtr_id,
+        db.domo_horario.rtr_id == db.domo_restaurante.rtr_id
+        ).all()
     
     return render_template("CRUD-Horarios/editor_horario.html", horarios_count = zip(horarios, range(len(horarios))), isGestionable = True )
 

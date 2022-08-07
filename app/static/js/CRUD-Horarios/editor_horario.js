@@ -39,7 +39,6 @@ jQuery(document).ready( function () {
             if(!nombre || !apertura || !cierre || !dia_inicio || !dia_fin){
             empty = true
             }
-
             if(empty){
             alert('por favor, rellene todos los campos.')
             return
@@ -56,7 +55,7 @@ jQuery(document).ready( function () {
             url: url,
             contentType: "application/json",
             data: JSON.stringify(
-            {"nombre":nombre,
+            {   "nombre":nombre,
                 "apertura":apertura,
                 "cierre":cierre,
                 "dia_inicio":dia_inicio,
