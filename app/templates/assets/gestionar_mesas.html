@@ -1,0 +1,23 @@
+{% extends "index.html" %}
+{% block title %}
+Gestionar Mesas
+{% endblock %}
+{% block body %}
+
+<div class="container-fluid py-4">
+    <h1>Lista de Mesas</h1>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover table-fixed tablecustom" table id="mesas">
+
+            <thead class="thead-dark">
+                <tr>
+                    <th>Número</th>
+                    <th>Capacidad</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

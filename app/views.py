@@ -139,3 +139,8 @@ def gestionar_restaurantes():
     
     print(restaurantes)
     return render_template("assets/gestionar_restaurantes.html", restaurantes=restaurantes)
+
+@app.route('/gestionar_mesas')
+def gestionar_mesas():
+    mesas = db.db.session.query()
+    return render_template("assets/gestionar_mesas.html", mesas=mesas)
