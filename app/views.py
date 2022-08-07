@@ -3,7 +3,7 @@
 from app import app, functions
 from app import models as db
 from app.forms import RegisterForm, LoginForm
-from app.models import User, domo_usuario
+from app.models import User, domo_horario, domo_usuario
 from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
 from sqlalchemy import func
@@ -154,7 +154,12 @@ def editor_horarios():
         cierre = request.json["cierre"]
         dia_inicio = request.json["dia_inicio"]
         dia_fin = request.json["dia_fin"]
-        print( id, nombre, apertura, cierre, dia_inicio, dia_fin)
+        rtr_id = request.json["rtr_id"]
+
+        if(not id):
+            id = db.db.session.query(func.max(db.domo_horario.hor_id)).scalar() + 1
+        
+        print( id, rtr_id, nombre, apertura, cierre, dia_inicio, dia_fin)
 
     
     

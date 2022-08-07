@@ -17,16 +17,12 @@ body {
     font-family: 'Spartan', sans-serif;
     font-weight: 300;
     color: var(--light);
+    display: flex;
 }
 
 .text-light { color: var(--light) !important; }
 .bg-dark { background-color: var(--dark) !important; }
 .bg-dark-x { background-color: var(--dark-x); }
-
-.btn {
-    height: 100%;
-    font-weight: 600;
-}
 
 .form-control {
     min-height: 3.125rem;
@@ -82,11 +78,30 @@ body {
 .read-only{
     cursor: not-allowed;
 }
-#nuevo{
-    position: relative;
-    left: 52%;
-    top: 30%
+
+
+.half{
+    width: 40%;
+    padding: 0%
 }
+
+.cancel-button{
+    position: relative;
+    left: 5%;
+}
+.paginate_button{
+    color: rgb(56, 18, 53);
+    font-weight: 600;
+    margin-left :1%;
+    
+}
+
+.dataTables_filter{
+    padding: 2%;
+    max-width: 10%;    
+}
+
+
 
 
 
