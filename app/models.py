@@ -28,7 +28,45 @@ class User(db.Model, UserMixin):
         self.estado = 'ACTIVO'
         
         #db.session.commit()
-
 class Reserva(db.Model):
     
-    pass
+    __tablename__ = 'domo_reserva'
+    rsv_id = db.Column('rsv_id', db.Integer, primary_key = True)
+    msa_id = db.Column('msa_id', db.Integer, db.ForeignKey('domo_mesa.msa_id'))
+    tpg_id = db.Column('tpg_id', db.Integer, db.ForeignKey('domo_tipodepago.tpg_id'))
+    rsv_hora = db.Column('rsv_hora', db.Time)
+    rsv_fecha = db.Column('rsv_fecha', db.Date)
+    rsv_asistencia = db.Column('rsv_asistencia', db.String(30))
+    rsv_fechaderegistro = db.Column('rsv_fechaderegistro', db.Date)
+    #Columna de id cliente
+    #Columna de estatus Fail/Success
+    
+    def add_into_database(self):
+        
+        if(self.can_reserva): return False
+        
+        db.session.add(self)
+        db.session.commit()
+        
+        return True
+    
+    def can_reserva(self):
+        
+        if (self.verify_fecha): return False
+        if (self.verify_horario): return False
+        
+        return True
+    
+    def verify_fecha(self):
+        
+        if self.rsv_fechaderegistro > self.rsv_fecha: return False
+        
+        return True
+    
+    def verify_horario(self):
+        
+        pass
+    
+    @staticmethod
+    def get_by_id(id):
+        return Reserva.query.filter_by(rsv_id = id).first()
