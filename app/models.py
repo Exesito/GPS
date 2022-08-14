@@ -74,7 +74,13 @@ class Reserva(db.Model):
 class domo_mesa(db.Model):
     __tablename__ = 'domo_mesa'
     rtr_id = db.Column('rtr_id', db.Integer, db.ForeignKey('domo_rtr.rtr_id'))
-    msa_id = db.Column('msa_id', db.Integer, primary_key = true)
+    msa_id = db.Column('msa_id', db.Integer, primary_key = True)
     msa_numero = db.Column('msa_numero', db.Integer)
     msa_capacidad = db.Column('msa_capacidad', db.Integer)
     msa_descripcion = db.Column('msa_descripcion', db.Text)
+    
+class domo_tipodepago(db.Model):
+    __tablename__ = 'domo_tipodepago'
+    tpg_id = db.Column('tpg_id', db.Integer, primary_key = True)
+    tpg_etiqueta =  db.Column('tpg_etiqueta', db.String(30))
+    tpg_descripcion = db.Column('tpg_descripcion', db.String(50))
