@@ -70,3 +70,11 @@ class Reserva(db.Model):
     @staticmethod
     def get_by_id(id):
         return Reserva.query.filter_by(rsv_id = id).first()
+
+class domo_mesa(db.Model):
+    __tablename__ = 'domo_mesa'
+    rtr_id = db.Column('rtr_id', db.Integer, db.ForeignKey('domo_rtr.rtr_id'))
+    msa_id = db.Column('msa_id', db.Integer, primary_key = true)
+    msa_numero = db.Column('msa_numero', db.Integer)
+    msa_capacidad = db.Column('msa_capacidad', db.Integer)
+    msa_descripcion = db.Column('msa_descripcion', db.Text)
