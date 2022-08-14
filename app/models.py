@@ -28,3 +28,7 @@ class User(db.Model, UserMixin):
         self.estado = 'ACTIVO'
         
         #db.session.commit()
+
+class Reserva(db.Model):
+    
+    pass
