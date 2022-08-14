@@ -111,7 +111,7 @@ jQuery(document).ready( function () {
     $('#nuevo').on('click', function(){
         var nuevo = $("horarios").load("CRUD-Horarios\nuevo_horario.html")
         
-        $('#horarios > tbody:last-child').append(nuevo);
+        $('#horarios > tbody:last-child').append('<tr><th> *Nuevo*</th><td hidden></td><td> <input type="text" list=<div class="form-group"><label for="sel1">Restaurante:</label><select class="form-control" id="sel1">  {{for data in horarios}}    <option>{{data.domo_restaurante.rtr_nombre}}</option>  {{endfor}} </select></div>"> </td><td hidden></td> <td></td> <td></td> <td></td> <td></td><td></td><th><a value id="btn_submit" class="btn btn-secondary table-row-edit edit-button" >Editar</a></th><th><a href="#" class="btn btn-danger btn-delete" onclick="return confirm(\'¿Estás seguro de eliminar este horario?\');">Eliminar</a></th></tr>');
         $('.edit-button').data('editar', false)
     })
 
