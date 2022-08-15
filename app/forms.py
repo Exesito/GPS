@@ -10,3 +10,9 @@ class RegisterForm(Form):
     ])
     confirm = PasswordField('Repite contraseña')
     submit = SubmitField("Crear Cuenta")
+
+class ReservaForm(Form):
+    
+    submit = SubmitField("Crear Cuenta")
+    
+    

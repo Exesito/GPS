@@ -5,5 +5,51 @@ Consultar Reservas
 {% endblock %}
 
 {% block body %}
-    <p>Hola Mundo! estamos en ver reservas</p>
+<div class="container-fluid py-4">
+    <h1>Reservas</h1>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover table-fixed tablecustom" table id="restaurantes">
+
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Tipo de Restaurante</th>
+                    <th>Calle</th>
+                    <th>Número de Domicilio</th>
+                    <th>Ciudad</th>
+                    <th>Región</th>
+                    <th>Opcion Vegetariana</th>
+                    <th>Opción Vegana</th>
+                    <th>Nombre del Dueño</th>
+                    <th>Apellido Dueño</th>
+                    <th>Opciones</th>
+
+                </tr>
+            </thead>
+
+
+            {% for item in restaurantes %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                
+                <td>Si</td>
+
+                <td></td>
+                <td></td>
+                <td>
+                    Editar
+                    Eliminar
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
 {% endblock %}
