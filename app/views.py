@@ -30,11 +30,12 @@ def register():
 
 #Caso de uso realizar reserva - Ernesto Opazo
 
-@app.route('/register', methods=['GET','POST'])
-def reservar():
+@app.route('/reservar/<id>', methods=['GET','POST'])
+def reservar(id):
     
     data = {
-        "RESTAURANTE_ID": 1,
+        #"RESTAURANTE_ID": models.domo_restaurante.get_by_id(id),
+        "RESTAURANTE_ID": 1
     }
     
     return render_template("reservar.html", data = data)
