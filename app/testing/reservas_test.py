@@ -19,4 +19,9 @@ class TestReserva(unittest.TestCase):
     def can_reseva_bad_notation():
         pass
     
+    def get_by_id_true():
+        pass
+    
+    def get_by_id_false():
+        pass
     

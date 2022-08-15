@@ -27,3 +27,16 @@ def register():
         return new_user.email + " - " +new_user.estado+ " - " + str(new_user.password_hash)
     
     return render_template("assets/register.html", form = form)
+
+#Caso de uso realizar reserva - Ernesto Opazo
+
+@app.route('/register', methods=['GET','POST'])
+def reservar():
+    
+    data = {
+        "RESTAURANTE_ID": 1,
+    }
+    
+    return render_template("reservar.html", data = data)
+
+########- FIN DE CASO DE USO -#################

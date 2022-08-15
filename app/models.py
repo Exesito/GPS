@@ -28,17 +28,17 @@ class User(db.Model, UserMixin):
         self.estado = 'ACTIVO'
         
         #db.session.commit()
-class Reserva(db.Model):
+class domo_reserva(db.Model):
     
     __tablename__ = 'domo_reserva'
     rsv_id = db.Column('rsv_id', db.Integer, primary_key = True)
     msa_id = db.Column('msa_id', db.Integer, db.ForeignKey('domo_mesa.msa_id'))
     tpg_id = db.Column('tpg_id', db.Integer, db.ForeignKey('domo_tipodepago.tpg_id'))
+    cli_id = db.Column('cli_id', db.Integer, db.ForeignKey('domo_cliente.cli_id'))
     rsv_hora = db.Column('rsv_hora', db.Time)
     rsv_fecha = db.Column('rsv_fecha', db.Date)
     rsv_asistencia = db.Column('rsv_asistencia', db.String(30))
     rsv_fechaderegistro = db.Column('rsv_fechaderegistro', db.Date)
-    #Columna de id cliente
     #Columna de estatus Fail/Success
     
     def add_into_database(self):
@@ -65,11 +65,12 @@ class Reserva(db.Model):
     
     def verify_horario(self):
         
-        pass
+        return True
+    
     
     @staticmethod
     def get_by_id(id):
-        return Reserva.query.filter_by(rsv_id = id).first()
+        return domo_reserva.query.filter_by(rsv_id = id).first()
 
 class domo_mesa(db.Model):
     __tablename__ = 'domo_mesa'
@@ -79,8 +80,29 @@ class domo_mesa(db.Model):
     msa_capacidad = db.Column('msa_capacidad', db.Integer)
     msa_descripcion = db.Column('msa_descripcion', db.Text)
     
+    @staticmethod
+    def get_by_id(id):
+        return domo_mesa.query.filter_by(msa_id = id).first()
+    
 class domo_tipodepago(db.Model):
     __tablename__ = 'domo_tipodepago'
     tpg_id = db.Column('tpg_id', db.Integer, primary_key = True)
     tpg_etiqueta =  db.Column('tpg_etiqueta', db.String(30))
     tpg_descripcion = db.Column('tpg_descripcion', db.String(50))
+    
+class domo_restaurante(db.Model):
+    __tablename__ = 'domo_restaurante'
+    rtr_id = db.Column('rtr_id', db.Integer, primary_key = True)
+    dir_id = db.Column('dir_id', db.Integer, db.ForeignKey('domo_direccion.dir_id'))
+    tpr_id = db.Column('tpr_id', db.Integer)
+    rtr_nombre = db.Column('rtr_nombre', db.String(50))
+    rtr_rutacarta = db.Column('rtr_carta', db.Text)
+    rtr_descripcion = db.Column('rtr_descripcion', db.Text)
+    rtr_opvega = db.Column('rtr_opvega', db.Boolean)
+    rtr_opvege = db.Column('rtr_opvege', db.Boolean)
+    rtr_duenonombre = db.Column('rtr_nombredueno', db.String(40))
+    rtr_duenoapellido = db.Column('rtr_apellidodueno', db.String(40))
+
+    @staticmethod
+    def get_by_id(id):
+        return domo_restaurante.query.filter_by(rtr_id = id).first()
