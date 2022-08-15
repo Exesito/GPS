@@ -23,6 +23,26 @@ def register():
         password = request.form.get('password')
         new_user = User(email = email, password = password)
 
+        nombre = request.form.get()
+        apellido= request.form.get()
+        rut= request.form.get()
+        celular= request.form.get()
+        rut= request.form.get()
+        ciudad= request.form.get()
+        calle= request.form.get()
+        numero=request.form.get()
+        #tipo=
+
+        new_dir= db.domo()
+
+        new_cli= db.domo_cliente()
+
+        new_rest = db.domo_restaurante(rtr_id=max_id,dir_id=max_id_dir,tpr_id=tipo_rest,
+                                       rtr_nombre=nombre,rtr_rutacarta="xd",rtr_descripcion=descripcion, rtr_opvege=vegetariana, 
+                                       rtr_opvega=vegana,rtr_duenonombre=nombre_dueno,rtr_duenoapellido=apellido_dueno)
+        
+        db.db.session.add(new_rest)
+
         return new_user.email + " - " +new_user.estado+ " - " + str(new_user.password_hash)
     
     return render_template("assets/register.html", form = form)
