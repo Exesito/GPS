@@ -106,3 +106,38 @@ class domo_restaurante(db.Model):
     @staticmethod
     def get_by_id(id):
         return domo_restaurante.query.filter_by(rtr_id = id).first()
+    
+class domo_usuario(db.Model):
+    __tablename__ = 'domo_usuario'
+    usr_id = db.Column('usr_id', db.Integer, primary_key = True)
+    tip_id = db.Column('tip_id', db.Integer, db.ForeignKey('domo_tipousuario.tip_id'))
+    usr_login = db.Column('usr_login', db.String(20))
+    usr_contrasena = db.Column('usr_contrasena', db.String(80))
+    usr_estado = db.Column('usr_estado', db.String(20))
+    
+    @staticmethod
+    def get_by_id(id):
+        return domo_usuario.query.filter_by(usr_id = id).first()
+
+class domo_encargadortr(db.Model):
+    __tablename__ = 'domo_encargadortr'
+    enc_id = db.Column('enc_id', db.Integer, primary_key = True)
+    usr_id = db.Column('usr_id', db.Integer)
+    rtr_id = db.Column('rtr_id', db.Integer)
+    enc_nombre = db.Column('enc_nombre', db.String(40))
+    enc_apellido = db.Column('enc_apellido', db.String(40))
+
+class domo_cliente(db.Model):
+    __tablename__ = 'domo_cliente'
+    cli_id = db.Column('cli_id', db.Integer, primary_key = True)
+    usr_id = db.Column('usr_id', db.Integer)
+    cli_nombre = db.Column('cli_nombre', db.String(40))
+    cli_apellido = db.Column('cli_apellido', db.String(40))
+    dir_id = db.Column('dir_id', db.Integer)
+    cli_telefono = db.Column('cli_telefono', db.String(20))
+    cli_rut = db.Column('cli_rut', db.String(20))
+    cli_tipo = db.Column('cli_tipo', db.String(1))
+    
+    @staticmethod
+    def get_by_id(id):
+        return domo_cliente.query.filter_by(cli_id = id).first()

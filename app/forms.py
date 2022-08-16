@@ -1,4 +1,4 @@
-from wtforms import Form, SubmitField, StringField, PasswordField, validators
+from wtforms import Form, SubmitField, StringField, PasswordField, validators, SelectField
   
 class RegisterForm(Form):
     
@@ -13,6 +13,21 @@ class RegisterForm(Form):
 
 class ReservaForm(Form):
     
-    submit = SubmitField("Crear Cuenta")
+    dia = SelectField('Día', choices=[])
+    hora = SelectField('Hora', choices=[])
+    submit = SubmitField("Reservar")
     
+class clientForm(Form):
+
+    nombre = StringField('Nombre', [validators.Length(min=1, max=12)])
+    apellido = StringField('Apellido', [validators.Length(min=1, max=12)])
+    telefono = StringField('Telefono', [validators.Length(min=1, max=12)])
+    rut = StringField('Rut', [validators.Length(min=1, max=12)])
+    direccion = StringField('Dirección', [validators.Length(min=1, max=60)])
     
+    submit = SubmitField("Asignar Cliente")
+    
+class mesaForm(Form):
+    
+    mesa = SelectField("Mesa", choices=[])
+    submit = SubmitField("Seleccionar Mesa")

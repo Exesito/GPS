@@ -1,5 +1,5 @@
 from app import app, models
-from app.forms import RegisterForm
+from app.forms import RegisterForm, ReservaForm
 from app.models import User
 from flask import render_template, request
 
@@ -35,12 +35,19 @@ def reservar(id):
     
     registered = 1
     
+    day_choice = [1,2,3]
+    hour_choice = [1,2,3]
+    
+    form = ReservaForm()
+    form.dia.choices = day_choice
+    form.hora.choices = hour_choice
+    
     data = {
         #"RESTAURANTE_ID": models.domo_restaurante.get_by_id(id),
         "RESTAURANTE_ID": 1
     }
     
-    return render_template("reservar.html", data = data, registered = registered)
+    return render_template("cli_reservar.html", data = data, registered = registered, form = form)
 
 @app.route('/cliente/ver_reservas', methods=['GET','POST'])
 def cli_ver_reservas():
