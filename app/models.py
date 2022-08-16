@@ -62,15 +62,23 @@ class domo_reserva(db.Model):
         if self.rsv_fechaderegistro > self.rsv_fecha: return False
         
         return True
-    
+
+        
     def verify_horario(self):
         
         return True
-    
+
+
+    #Retorna todas las reservas del restaurante asociado
+    def get_by_id_restaurante(id):
+
+        query = domo_restaurante.query.join(domo_mesa).join(domo_reserva).filter(domo_restaurante.rtr_id == id).all()
+        return query
     
     @staticmethod
     def get_by_id(id):
         return domo_reserva.query.filter_by(rsv_id = id).first()
+
 
 class domo_mesa(db.Model):
     __tablename__ = 'domo_mesa'
