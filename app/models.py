@@ -52,8 +52,8 @@ class domo_reserva(db.Model):
     
     def can_reserva(self):
         
-        if (self.verify_fecha): return False
-        if (self.verify_horario): return False
+        if not (self.verify_fecha): return False
+        if not (self.verify_horario): return False
         
         return True
     
@@ -63,11 +63,11 @@ class domo_reserva(db.Model):
         
         return True
 
-        
     def verify_horario(self):
-        
-        return True
 
+        if domo_horario.verify_horario_rtr(self.rsv_fecha, self.rsv_hora): return True
+
+        return False
 
     #Retorna todas las reservas del restaurante asociado
     def get_by_id_restaurante(id):
@@ -149,3 +149,24 @@ class domo_cliente(db.Model):
     @staticmethod
     def get_by_id(id):
         return domo_cliente.query.filter_by(cli_id = id).first()
+
+class domo_horario(db.Model):
+    __tablename__ = 'domo_horario'
+    hor_id = db.Column('hor_id', db.Integer, primary_key = True)
+    rtr_id = db.Column('rtr_id', db.Integer ,db.ForeignKey('domo_rtr.rtr_id'))
+    hor_diainicio = db.Column('hor_diainicio', db.Integer)
+    hor_diatermino = db.Column('hor_diatermino', db.Integer)
+    hor_horainicio = db.Column('hor_horainicio', db.Time)
+    hor_horatermino = db.Column('hor_horatermino', db.Time)
+    hor_disponibilidad = db.Column('hor_disponibilidad', db.Boolean)
+
+    def verify_horario_rtr(self, day, hour):
+        
+        if (self.hor_diainicio < hour < self.hor_diatermino):
+            return True
+
+        return False
+
+    @staticmethod
+    def get_by_id_rest(id):
+        return domo_horario.query.filter_by(rtr_id = id).all()

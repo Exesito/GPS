@@ -27,7 +27,7 @@ class clientForm(Form):
     
     submit = SubmitField("Asignar Cliente")
     
-class mesaForm(Form):
+class MesaForm(Form):
     
     mesa = SelectField("Mesa", choices=[])
     submit = SubmitField("Seleccionar Mesa")

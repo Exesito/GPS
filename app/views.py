@@ -1,5 +1,5 @@
 from app import app, models
-from app.forms import RegisterForm, ReservaForm
+from app.forms import RegisterForm, ReservaForm, MesaForm
 from app.models import User
 from flask import render_template, request
 
@@ -39,6 +39,8 @@ def reservar(id):
     hour_choice = [1,2,3]
     
     form = ReservaForm()
+    mesa_form = MesaForm()
+
     form.dia.choices = day_choice
     form.hora.choices = hour_choice
     
@@ -47,7 +49,7 @@ def reservar(id):
         "RESTAURANTE_ID": 1
     }
     
-    return render_template("cli_reservar.html", data = data, registered = registered, form = form)
+    return render_template("cli_reservar.html", data = data, registered = registered, form = form, mesa_form = mesa_form)
 
 @app.route('/cliente/ver_reservas', methods=['GET','POST'])
 def cli_ver_reservas():
