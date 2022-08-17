@@ -1,4 +1,4 @@
-from wtforms import Form, SubmitField, StringField, PasswordField, validators, SelectField
+from wtforms import Form, SubmitField, StringField, PasswordField, validators, SelectField, DateField
   
 class RegisterForm(Form):
     
@@ -13,7 +13,7 @@ class RegisterForm(Form):
 
 class ReservaForm(Form):
     
-    dia = SelectField('Día', choices=[])
+    dia = DateField('Día')
     hora = SelectField('Hora', choices=[])
     submit = SubmitField("Reservar")
     
