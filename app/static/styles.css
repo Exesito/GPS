@@ -63,6 +63,19 @@ body {
     color: #FFFFFF !important;
 }
 
+.form-register{
+    /*color: #FFFFFF !important;*/
+    background: #FFFFFF;
+    padding: 5px;    
+    margin: auto;
+    margin-top: 50px;
+    box-shadow: 7px 13px 37px #000000;
+}
+
+.registro-fondo{
+    background-image: url(../static/media/img3.jpg);
+}
+
 .tablecustom {
     width: 100%;
     border-collapse: separate;
