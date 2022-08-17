@@ -7,7 +7,7 @@ from app.models import User, domo_horario, domo_usuario
 from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
 from sqlalchemy import func
-import bcrypt
+import bcrypt, json
 
 
 @app.route('/')
@@ -169,8 +169,14 @@ def editor_horarios():
         db.domo_restaurante.rtr_id == db.domo_encargadortr.rtr_id,
         db.domo_horario.rtr_id == db.domo_restaurante.rtr_id
         ).all()
-    
-    return render_template("CRUD-Horarios/editor_horario.html", horarios_count = zip(horarios, range(len(horarios))), isGestionable = True )
+    rtr_names = []
+    for rtr in horarios:
+        if not rtr_names.__contains__(rtr.domo_restaurante.rtr_nombre):
+            string = str(rtr.domo_restaurante.rtr_id) + " " +  rtr.domo_restaurante.rtr_nombre
+            
+            rtr_names.append(string)
+    print(rtr_names)
+    return render_template("CRUD-Horarios/editor_horario.html", horarios_count = zip(horarios, range(len(horarios))), isGestionable = True, rtr_names = rtr_names )
 
 
 
