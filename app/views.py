@@ -1,7 +1,11 @@
 #from flask_security import LoginForm
 from app import app
 from app import models as db
+<<<<<<< HEAD
 from app.forms import IngresarRestaurante, RegisterForm, LoginForm
+=======
+from app.forms import RegisterForm, LoginForm
+>>>>>>> a03895a9b99957c168110ccc17b8f8afd6c2fea4
 from app.models import User
 from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
@@ -13,19 +17,81 @@ def index():
 
     return render_template("home.html")
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home.html'))
+
 @app.route('/register', methods=['GET','POST'])
 def register():
 
     form = RegisterForm()
-    
+    notification=Notify()
+      
     if request.method == 'POST':
+        
         email = request.form.get('email')
         password = request.form.get('password')
-        new_user = User(email = email, password = password)
+        #new_user = User(email = email, password = password)
+        nombre = request.form.get('nombre')
+        apellido= request.form.get('apellido')
+        rut= request.form.get('rut')
+        celular= request.form.get('celular')
+        region=request.form.get('region')
 
-        return new_user.email + " - " +new_user.estado+ " - " + str(new_user.password_hash)
-    
-    return render_template("assets/register.html", form = form)
+        
+        ciudad= request.form.get('ciudad')
+
+        calle= request.form.get('calle')
+        numero=request.form.get('numero')
+        tipo= 1
+        max_id_dir=0
+        max_id_cli=0
+        max_id_usr=0
+
+        if db.db.session.query.filter(db.domo_usuario.usr_login==email).first() == None :
+            if (db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() == None):
+              max_id_dir = 1
+            else:
+             max_id_dir = db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() + 1
+            
+            new_dir= db.domo_direccion(dir_id=max_id_dir, ciu_id=ciudad,dir_nombrecalle=calle,dir_numerocalle=numero)
+            db.db.session.add(new_dir)
+            db.db.session.commit()
+
+            if (db.db.session.query(func.max(db.domo_usuario.usr_id)).scalar() == None):
+                max_id_dir = 1
+            else:
+                 max_id_dir = db.db.session.query(func.max(db.domo_usuario.usr_id)).scalar() + 1
+
+            new_user= db.domo_usuario(usr_id=max_id_usr, tip_id=tipo, usr_login=email,usr_contrasena=password
+                                        ,usr_estado='ACTIVA')
+            db.db.session.add(new_user)
+            db.db.session.commit()
+
+            if (db.db.session.query(func.max(db.domo_cliente.cli_id)).scalar() == None):
+                max_id_dir = 1
+            else:
+                max_id_dir = db.db.session.query(func.max(db.domo_cliente.cli_id)).scalar() + 1
+        
+            new_cli= db.domo_cliente(cli_id=max_id_cli,usr_id=max_id_usr,cli_nombre=nombre,cli_apellido=apellido,
+                                      dir_id=max_id_dir,cli_telefono=celular,cli_rut=rut, cli_tipo=tipo)
+            db.db.session.add(new_cli)
+            db.db.session.commit()
+
+            notification.title= "Completado"
+            notification.message="Usuario registrado con éxito"
+            notification.send()
+            return redirect(url_for('assets/register.html'),ciudades=ciudades)
+        else:
+            notification.title= "Error"
+            notification.message="Email ya existe"
+            notification.send()
+            return redirect(url_for('assets/register.html'))
+       # return new_user.email + " - " +new_user.estado+ " - " + str(new_user.password_hash)
+    ciudades=db.db.session.query(db.domo_ciudad).all()
+    regiones=db.db.session.query(db.domo_region).all()  
+    return render_template("assets/register.html", form = form, regiones=regiones, ciudades=ciudades)
 
 @app.route('/login',methods=['GET','POST'])
 def login():
@@ -35,10 +101,9 @@ def login():
     form.remember_me=True   
     if request.method == "POST":
         
-
         user = request.form.get('email')
         pw = request.form.get('password')
-        a="hola mundo"
+        #a="hola mundo"
         #rmb_me=request.form.get('remember_me')
         phashed= db.User.query.filter(db.email== user).first()
 
