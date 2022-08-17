@@ -5,19 +5,93 @@ DOMO - Regístrate
 {% endblock %}
 
 {% block body %}
+<section class="registro-fondo">
+    <div class="row g-0">
+        <div class="col-lg-4 d-none d-lg-block">
+        </div>
+        <div class="form-register col-lg-4 bg-dark d-flex flex-column align-items-end min-vh-100">
+            <div class="px-lg-5 pt-lg-4 pb-lg-3 p-4 mb-auto w-100">
+                <img src= "{{url_for('static',filename='Logo.svg')}}" class="img-fluid" />
+              </div>
+              <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
+                <h1 class="font-weight-bold mb-4">Registrate aquí</h1>
+            <form class="mb-5" action="{{ url_for('register') }}" method=post>
+                <div class="mb-4">
+                    {{ form.email.label }}
+                    {{ form.email(class_="form-control") }}
+                </div>
+                <div class="mb-4">
+                    {{ form.password.label }}
+                    {{ form.password(class_="form-control") }}
+                </div>
+                <div class="mb-4">
+                    {{ form.confirm.label }}
+                    {{ form.confirm(class_="form-control") }}
+                </div>
+                <div class="mb-4">
+                {{ form.nombre.label }}
+                {{ form.nombre(class_="form-control") }}
+            </div>
+                <div class="mb-4">
+                {{ form.apellido.label }}
+                {{ form.apellido(class_="form-control") }}
+            </div>
+                <div class="mb-4">
+                {{ form.rut.label }}
+                {{ form.rut(class_="form-control") }}
+            </div>
+            
+                <div class="mb-4">
+                {{ form.celular.label }}
+                {{ form.celular(class_="form-control") }}
+            </div>
+            
+                <div class="mb-4">
+                {{ form.region.label }}
+                <br>
+                <select name="regiones" id="regioness" >
+                    {% for item in regiones %}
+                    <option value="{{item.domo_region.reg_id}}">{{item.domo_region.reg_nombre}}</option>
+             <!--     {{ form.region(class_="form-control") }}-->
+                    {% endfor %}
+                </select>
+                </div>
 
-<form action="{{ url_for('register') }}" method=post>
- 
-    {{ form.email.label }}
-    {{ form.email(class_="form-control") }}
- 
-    {{ form.password.label }}
-    {{ form.password(class_="form-control") }}
- 
-    {{ form.confirm.label }}
-    {{ form.confirm(class_="form-control") }}
- 
-    {{ form.submit(class_="btn btn-danger") }}
-</form>
+                <div class="mb-4"> 
+                {{ form.ciudad.label }}
+                <br>
+                <select name="ciudades">
+                    {% for item in ciudades %}
+                    <option value="{{item.domo_ciudades.ciu_id}}">{{item.domo_ciudades.ciu_nombre}}</option>
+                <!--{{ form.ciudad(class_="form-control") }}-->
+                    {% endfor %}
+                </select>
+               </div>
+            
+                <div class="mb-4">
+                {{ form.calle.label }}
+                {{ form.calle(class_="form-control") }}
+            </div>
+            
+                <div class="mb-4">
+                {{ form.numero.label }}
+                {{ form.numero(class_="form-control") }}
+            </div>
+            
+                {{ form.submit(class_="btn btn-primary w-100") }}
+            </form>
+            </div>
+        </div>
+
+        <div class="col-lg-4 d-none d-lg-block">
+        </div>
+
+    </div>
+
+</section>
 
 {% endblock %}
+
+
+
+

@@ -13,6 +13,7 @@
 .panel .panel-heading{
     padding: 20px 15px;
     border-radius: 10px 10px 0 0;
+
 }
 
 
@@ -192,7 +193,8 @@
 }
 
 ul.pagination{
-    margin: 0px 650px !important;
+
+    margin: 0px 800px !important;
     justify-content: center !important;
 }
 

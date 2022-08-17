@@ -13,6 +13,7 @@
 }
 
 body {
+
     padding-top: 0 !important;
     font-family: 'Spartan', sans-serif;
     font-weight: 300;
@@ -36,7 +37,7 @@ body {
     line-height: initial;
 }
 .form-control:focus {
-    background-color: var(--dark-x);
+    background-color: #FFFFFF;
     outline: none;
 }
 .form-text {
@@ -47,17 +48,37 @@ body {
 }
 
 .img-1 {
-    background-image: url('../static/media/img0.jpg');
+    background-image: url('../static/media/img00.jpg');
     background-size: cover;
     background-position: center;
 }
 
-.img-2 {
-    background-image: url('../static/media/img2.jpg');
+.img-0 {
+    background-image: url('../static/media/img44.jpg');
     background-size: cover;
     background-position: center;
 }
 
+.text-muted{
+    color: #BDBAD1 !important;
+}
+
+.registro{
+    color: #FFFFFF !important;
+}
+
+.form-register{
+    /*color: #FFFFFF !important;*/
+    background: #FFFFFF;
+    padding: 5px;    
+    margin: auto;
+    margin-top: 50px;
+    box-shadow: 7px 13px 37px #000000;
+}
+
+.registro-fondo{
+    background-image: url(../static/media/img3.jpg);
+}
 
 .tablecustom {
     width: 100%;
