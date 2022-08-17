@@ -4,20 +4,35 @@ Gestionar Mesas
 {% endblock %}
 {% block body %}
 
-<div class="container-fluid py-4">
-    <h1>Lista de Mesas</h1>
-    <div class="table-responsive">
-        <table class="table table-striped table-bordered table-hover table-fixed tablecustom" table id="mesas">
+<head>
+    <style>
+        #draggable{
+            width: 100px; 
+            padding: 0.5em;
+            position: relative; 
+            cursor: grab;
+        }
+    </style>
+</head>
 
-            <thead class="thead-dark">
-                <tr>
-                    <th>Número</th>
-                    <th>Capacidad</th>
-                    <th>Descripción</th>
-                </tr>
-            </thead>
-        </table>
+<body>
+    <div><!--Editor Drag and Drop-->
+        <div class="container-fluid py-4 ">  
+            <h1>Lista de Mesas</h1>
+        
+        <div id="draggable" class="ui-widget-content">
+            <p>Drag me</p>
+        </div>
+        </div>
     </div>
-</div>
+</body>
+
+{% block script %}
+<script>
+    jQuery(document).ready( function (){
+        jQuery( "#draggable" ).draggable();
+    });
+</script>
+{% endblock %}
 
 {% endblock %}
