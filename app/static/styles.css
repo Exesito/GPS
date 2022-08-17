@@ -4,6 +4,7 @@
     --dark: #601b90;
     --dark-x: #310746; 
     --light: #B0B5F8;
+    --white: #FFFFFF;
 }
 
 .navbar{
@@ -75,4 +76,8 @@ body {
     font-size: 15pt;
 }
 
-
+.black-background{
+    background-color: black;
+    border-radius: 1.5rem;
+    opacity: 0.6;
+}
