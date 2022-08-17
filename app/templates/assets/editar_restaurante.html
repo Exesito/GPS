@@ -1,0 +1,68 @@
+{% extends "index.html" %}
+
+{% block title %}
+Ingresar Restaurante
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row header">
+        <h1>Actualice datos del Restaurante</h1>
+        <h3>Por favor, llene el siguiente formulario.</h3>
+    </div>
+    <div class="row body">
+        <form action="#", method="post" , id="actualizar_restaurante">
+            <ul type="square">
+                <li>
+                    <p class="left">
+                        <label for="nombre">Nombre:</label>
+                        <input type="text" name="nombre" placeholder="{{restaurante.domo_restaurante.rtr_nombre}}" required />
+                    </p>
+                </li>
+                <li>
+                    <p class="left">
+                        <label for="calle">Calle:</label>
+                        <input type="text" name="calle" placeholder="{{restaurante.domo_direccion.dir_nombrecalle}}" required />
+                    </p>
+                </li>
+                <li>
+                    <p class="left">
+                        <label for="numero">Número:</label>
+                        <input type="text" name="numero" placeholder="{{restaurante.domo_direccion.dir_numerocalle}}" required />
+                    </p>
+                </li>
+                <li>
+                    <p class="left">
+                        <label for="ciudad">Ciudad:</label>
+                        <input type="text" name="ciudad" placeholder="{{restaurante.domo_ciudad.ciu_nombre}}" required />
+                    </p>
+                </li>
+                <li>
+                    <p class="left">
+                        <label for="region">Región:</label>
+                        <input type="text" name="region" placeholder="{{restaurante.domo_region.reg_nombre}}" required />
+                    </p>
+                </li>
+                <li>
+                    <p class="left">
+                        <label for="nombre dueño">Nombre del dueño: </label>
+                        <input type="text" name="nombre_dueno" placeholder="{{restaurante.domo_restaurante.rtr_duenonombre}}" required />
+                    </p>
+                </li>
+                <li>
+                    <p class="left">
+                        <label for="apellido dueño">Apellido del dueño </label>
+                        <input type="text" name="apellido_dueno" placeholder="{{restaurante.domo_restaurante.rtr_duenoapellido}}" required />
+                    </p>
+                </li>
+                <li>
+                    <input class="btn btn-submit" type="submit" value="[INGRESAR]" />
+                    <small>o presione <strong>enter</strong></small>
+                </li>
+            </ul>
+        </form>
+    </div>
+</div>
+
+{% endblock%}

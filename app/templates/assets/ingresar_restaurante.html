@@ -37,19 +37,40 @@ Ingresar Restaurante
           </p>
         </li>
         <li>
-          <!--Ciudad-->
-          <p class="left">
-            <label for="ciudad">Ciudad:</label>
-            <input type="text" name="ciudad" placeholder="Arauco" />
-          </p>
-        </li>
-        <li>
           <!--Region-->
           <p class="left">
-            <label for="region"> Región:</label>
-            <input type="text" name="region" placeholder="Arica" />
+            <label for="region">Región:</label>
+            <select name="region" id="regionsita" onchange="mostrar()">
+              <option value="0">Seleccione Region</option>
+              {% for item in regiones %}
+              <option value="{{item.reg_id}}">{{item.reg_nombre}}</option>
+              {% endfor %}
+            </select>
           </p>
         </li>
+
+        <div>
+          <li>
+            <!--Ciudad-->
+            <p class="left">
+              <label for="ciudad">Ciudad:</label>
+              <select name="ciudad" id="ciudad">
+                <option value="0">Seleccione Región</option>
+              </select>
+
+              {% for item in regiones %}
+              <select name="{{item.reg_id}}" id="{{item.reg_id}}" hidden>
+                <option value="0">Seleccione Ciudad</option>
+                {% for ciudad in ciudades %}
+                {% if ciudad.reg_id == item.reg_id %}
+                <option value="{{ciudad.ciu_id}}">{{ciudad.ciu_nombre}}</option>
+                {% endif %}
+                {%endfor%}
+              </select>
+              {% endfor %}
+            </p>
+          </li>
+        </div>
         <li>
           <!--Nombre del Dueño-->
           <p class="left">
@@ -76,7 +97,7 @@ Ingresar Restaurante
             <select name="tipo_rest" required>
               <option value="xd">Seleccione tipo</option>
               {% for item in tipo_restaurante %}
-                <option value="{{item.tpr_id}}">{{item.tpr_nombre}}</option>
+              <option value="{{item.tpr_id}}">{{item.tpr_nombre}}</option>
               {% endfor %}
             </select>
           </p>
@@ -85,9 +106,9 @@ Ingresar Restaurante
         <li>
           <p class="left">Opcion Vegetariana:
             <select name="vegetariana" required>
-              <option value="xd">Seleccione opción</option>
+              <option value="-1">Seleccione opción</option>
               <option value=true>Si</option>
-              <option value=false>No no</option>
+              <option value=false>No</option>
             </select>
           </p>
         </li>
@@ -95,9 +116,9 @@ Ingresar Restaurante
         <li>
           <p class="left">Opcion Vegana:
             <select name="vegana" required>
-              <option value="xd">Seleccione opción</option>
+              <option value="-1">Seleccione opción</option>
               <option value=true>Si</option>
-              <option value=false>No no</option>
+              <option value=false>No</option>
             </select>
           </p>
         </li>
@@ -110,4 +131,33 @@ Ingresar Restaurante
     </form>
   </div>
 </div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+  function mostrar() {
+
+    var region = document.getElementById("regionsita").value;
+    var id = region.toString();
+    var largo = document.getElementById("regionsita").length;
+    
+    if(region == 0){
+      for(var i=1;i<largo;i++){
+        document.getElementById(i).hidden = true;
+      }
+      document.getElementById("ciudad").hidden = false;
+    }else{
+      document.getElementById("ciudad").hidden = true;
+      for(var i=1;i<largo;i++){
+        document.getElementById(i).hidden = true;
+      }
+      document.getElementById(id).hidden = false;
+    }
+  
+  }
+</script>
 {% endblock %}

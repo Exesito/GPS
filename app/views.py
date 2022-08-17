@@ -1,13 +1,8 @@
 #from flask_security import LoginForm
 from app import app
 from app import models as db
-<<<<<<< HEAD
-from app.forms import RegisterForm
-from app.models import User, domo_ciudad, domo_region
-=======
-from app.forms import RegisterForm, LoginForm
+from app.forms import IngresarRestaurante, RegisterForm, LoginForm
 from app.models import User
->>>>>>> 44fef7835ffd3d4338ac10055fc4f3e12e07c9e6
 from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
 from sqlalchemy import func
@@ -81,32 +76,38 @@ def login():
 def ingresar_restaurante():
 
     tipo_restaurante=db.domo_tiporestaurante.query.all()
+    ciudades = db.db.session.query(db.domo_ciudad.ciu_id,db.domo_ciudad.ciu_nombre,db.domo_ciudad.reg_id).all()
+    regiones = db.db.session.query(db.domo_region.reg_id,db.domo_region.reg_nombre).all()
 
-    return render_template("assets/ingresar_restaurante.html", tipo_restaurante=tipo_restaurante)
+    return render_template("assets/ingresar_restaurante.html", tipo_restaurante=tipo_restaurante,ciudades=ciudades,regiones=regiones)
 
 @app.route('/ingresar_restaurante', methods=['POST'])
 def ingresar_restaurante_post():
-    if (request.method=='POST'):
-        nombre = request.form['nombre']
-        calle = request.form['calle']
-        numero = request.form['numero']
-        ciudad = request.form['ciudad']
-        region = request.form['region']
-        tipo_rest = request.form['tipo_rest']
-        nombre_dueno = request.form['nombre_dueno']
-        apellido_dueno = request.form['apellido_dueno']
-        descripcion = request.form['descripcion']
-        vegetariana = request.form['vegetariana']
-        vegana = request.form['vegana']
 
-        id_ciu = db.db.session.query(db.domo_ciudad.ciu_id).filter(db.domo_ciudad.ciu_nombre == ciudad).scalar()
-        id_reg = db.db.session.query(db.domo_region.reg_id).filter(db.domo_region.reg_nombre == region).scalar()
+    tipo_restaurante=db.domo_tiporestaurante.query.all()
+    ciudades = db.db.session.query(db.domo_ciudad.ciu_id,db.domo_ciudad.ciu_nombre).all()
+    regiones = db.db.session.query(db.domo_region.reg_id,db.domo_region.reg_nombre).all()
+
+    form = IngresarRestaurante()
+    if (request.method=='POST'):
+        nombre = request.form.get('nombre')
+        calle = request.form.get('calle')
+        numero = request.form.get('numero')
+        region = request.form.get('region')
+        ciudad = request.form.get(region)
+        tipo_rest = request.form.get('tipo_rest')
+        nombre_dueno = request.form.get('nombre_dueno')
+        apellido_dueno = request.form.get('apellido_dueno')
+        descripcion = request.form.get('descripcion')
+        vegetariana = request.form.get('vegetariana')
+        vegana = request.form.get('vegana')
+
 
         if (db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() == None):
             max_id_dir = 1
         else:
             max_id_dir = db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() + 1
-        direccion = db.domo_direccion(dir_id=max_id_dir, ciu_id=id_ciu, dir_numerocalle=numero, dir_nombrecalle=calle) 
+        direccion = db.domo_direccion(dir_id=max_id_dir, ciu_id=ciudad, dir_numerocalle=numero, dir_nombrecalle=calle) 
         
 
         db.db.session.add(direccion)
@@ -133,7 +134,7 @@ def ingresar_restaurante_post():
         
         db.db.session.add(new_rest)
         db.db.session.commit()
-        return render_template("assets/ingresar_restaurante.html")
+        return render_template("assets/ingresar_restaurante.html",tipo_restaurante=tipo_restaurante,ciudades=ciudades,regiones=regiones)
 
 @app.route('/gestionar_restaurantes')
 def gestionar_restaurantes():
@@ -143,5 +144,17 @@ def gestionar_restaurantes():
                                         db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id,
                                         db.domo_ciudad.reg_id==db.domo_region.reg_id).all()
     
-    print(restaurantes)
     return render_template("assets/gestionar_restaurantes.html", restaurantes=restaurantes)
+
+
+@app.route('/gestionar_restaurates/editar/<id>')
+def editar_template(id):
+
+    restaurante = db.db.session.query(db.domo_restaurante, db.domo_direccion, db.domo_ciudad, db.domo_region, 
+                                        db.domo_tiporestaurante).filter(db.domo_restaurante.rtr_id == id, 
+                                        db.domo_restaurante.dir_id == db.domo_direccion.dir_id, 
+                                        db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id, 
+                                        db.domo_ciudad.reg_id == db.domo_region.reg_id).first()
+
+    return render_template("assets/editar_restaurante.html", restaurante=restaurante)
+

@@ -1,4 +1,4 @@
-from wtforms import Form, SubmitField, StringField, PasswordField, BooleanField, validators
+from wtforms import Form, SubmitField, SelectField, StringField, PasswordField, BooleanField, validators, IntegerField
   
 class RegisterForm(Form):
     
@@ -19,3 +19,22 @@ class LoginForm(Form):
     
 
     submit=SubmitField('Iniciar sesión')
+
+
+class IngresarRestaurante(Form):  
+
+    values = [0]  
+    nombre=StringField('Nombre',[validators.Length(min=6, max=35),validators.DataRequired()])
+    calle=StringField('Calle',[validators.Length(min=6, max=35),validators.DataRequired()])
+    numero=IntegerField('Numero',[validators.Length(min=6, max=35),validators.DataRequired()])
+    ciudad=SelectField('Ciudad',[validators.AnyOf(values,message='Seleccione una ciudad',values_formatter=None)])
+    region=SelectField('Region',[validators.AnyOf(values,message='Seleccione una región',values_formatter=None)])
+    dueno=StringField('Nombre del dueño',[validators.Length(min=6, max=35),validators.DataRequired()])
+    apellido_dueno=StringField('Apellido del dueño',[validators.Length(min=6, max=35),validators.DataRequired()])
+    descripcion=StringField('Descripcion',[validators.Length(min=6, max=35),validators.DataRequired()])
+    tipo_restaurante=SelectField('Tipo de restaurante',[validators.Length(min=6, max=35),validators.DataRequired()])
+    vegetariana=SelectField('Vegetariana',choices=[('Si','Si'),('No','No')])
+    vegana=SelectField('Vegana',choices=[('Si','Si'),('No','No')])
+
+    #direccion=StringField('Dirección',[validators.Length(min=6, max=35)])
+    submit=SubmitField('Ingresar')
