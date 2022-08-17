@@ -6,11 +6,51 @@ Gestionar Mesas
 
 <head>
     <style>
-        #draggable{
-            width: 100px; 
-            padding: 0.5em;
-            position: relative; 
-            cursor: grab;
+        .silla{
+            width: 36px;
+            height: 36px;
+            background-color: chartreuse;
+            display: flex;
+        }
+
+        .mesa{
+            width: 72px;
+            height: 72px;
+            background-color: crimson;
+            display: flex;
+        }
+
+        .draggable{
+            left: 364px;
+            top:  -708px;
+        }
+
+        .btn-default{
+            text-shadow: 1px 1px #000000;
+            color: white;
+            background-color: #8d6db8;
+            margin: 0.15em;
+            padding-top: 0.7em;
+            display: flex;
+            box-shadow: 2px 2px #491f4e;
+        }
+
+        .btn-default:active{
+            background-color: #533575;
+            color: gray;
+        }
+
+        #grid {
+            margin-top: -32px;
+            margin-left: 22em;
+            margin-right: 22em;
+            width: 40.55em;
+            height: 40.55em;
+            background-color: #603e86;
+            background-image:
+                repeating-linear-gradient(#ccc 0 1px, transparent 1px 50%),
+                repeating-linear-gradient(90deg, #ccc 0 1px, transparent 1px 50%);
+            background-size: 72px 72px;
         }
     </style>
 </head>
@@ -18,20 +58,41 @@ Gestionar Mesas
 <body>
     <div><!--Editor Drag and Drop-->
         <div class="container-fluid py-4 ">  
-            <h1>Lista de Mesas</h1>
-        
-        <div id="draggable" class="ui-widget-content">
-            <p>Drag me</p>
-        </div>
+            <h1 style="margin-top: 0.6em;">Editor de Mesas</h1>
+            <button onclick="agregarSilla();convertDraggables()" type="button" class="btn btn-default">+ Agregar Silla</button>
+            <button onclick="agregarMesa();convertDraggables()" type="button" class="btn btn-default">+ Agregar Mesa</button>
+            <div id="grid"></div>
         </div>
     </div>
 </body>
 
 {% block script %}
 <script>
-    jQuery(document).ready( function (){
-        jQuery( "#draggable" ).draggable();
-    });
+    function agregarMesa(){
+        var div = document.createElement('div');
+        document.body.appendChild(div);
+        div.classList.add("ui-widget-content");
+        div.classList.add("draggable");
+        div.classList.add("mesa");
+    }
+</script>
+
+<script>
+    function agregarSilla(){
+        var div = document.createElement('div');
+        document.body.appendChild(div);
+        div.classList.add("ui-widget-content");
+        div.classList.add("draggable");
+        div.classList.add("silla");
+    }
+</script>
+
+<script>
+    function convertDraggables(){
+        jQuery(document).ready( function (){
+            jQuery( ".draggable" ).draggable({ grid: [36,36], containment: "#grid"});
+        });
+    }
 </script>
 {% endblock %}
 
