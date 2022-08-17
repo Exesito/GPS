@@ -13,9 +13,13 @@
 }
 
 body {
+    padding-top: 0 !important;
     font-family: 'Spartan', sans-serif;
     font-weight: 300;
     color: var(--light);
+    width: 100%;
+    min-width: auto;
+    height: auto;
 }
 
 .text-light { color: var(--light) !important; }
@@ -57,14 +61,12 @@ body {
 
 .tablecustom {
     width: 100%;
-    border-collapse: separate;
+    border-collapse: collapse;
     border-spacing: 0;
-    border-bottom: #FFFFFF solid 1px;
-    border: 3px solid #FFFFFF;
     border-radius: 10px;
-    background-color: #9117A6;
-    font-family: sans-serif;
+    background-color: #83169C;
+    font-family: century;
     font-size: 15pt;
+    color: #fff;
 }
-
 
