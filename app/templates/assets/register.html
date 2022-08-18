@@ -49,9 +49,9 @@ DOMO - Regístrate
                 <div class="mb-4">
                 {{ form.region.label }}
                 <br>
-                <select name="regiones" id="regioness" >
+                <select name="regiones">
                     {% for item in regiones %}
-                    <option value="{{item.domo_region.reg_id}}">{{item.domo_region.reg_nombre}}</option>
+                    <option value="{{item.reg_id}}">{{item.reg_nombre}}</option>
              <!--     {{ form.region(class_="form-control") }}-->
                     {% endfor %}
                 </select>
@@ -62,7 +62,7 @@ DOMO - Regístrate
                 <br>
                 <select name="ciudades">
                     {% for item in ciudades %}
-                    <option value="{{item.domo_ciudades.ciu_id}}">{{item.domo_ciudades.ciu_nombre}}</option>
+                    <option value="{{item.ciu_id}}">{{item.ciu_nombre}}</option>
                 <!--{{ form.ciudad(class_="form-control") }}-->
                     {% endfor %}
                 </select>

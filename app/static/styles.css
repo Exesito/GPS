@@ -91,3 +91,13 @@ body {
     color: #fff;
 }
 
+.content{
+    padding-top: 2rem; 
+}
+
+.opacity{
+    opacity: 0.5;
+    background-color: #000000;
+    border-radius: 1rem;
+}
+

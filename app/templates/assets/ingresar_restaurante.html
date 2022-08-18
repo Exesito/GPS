@@ -6,7 +6,7 @@ Ingresar Restaurante
 
 {% block body %}
 <!--Imprimir cajas de texto para ingresar los datos de la actividad, y crear un botón de guardado.-->
-<div class="container">
+<div class="container" style="margin-top: 2%;">
   <div class="row header">
     <h1>Ingresar un Restaurante: &nbsp;</h1>
     <h3>Por favor, llene el siguiente formulario.</h3>
@@ -132,17 +132,11 @@ Ingresar Restaurante
   </div>
 </div>
 
-
-
-{% endblock %}
-
-{% block scripts %}
 <script>
 
   function mostrar() {
 
     var region = document.getElementById("regionsita").value;
-    var id = region.toString();
     var largo = document.getElementById("regionsita").length;
     
     if(region == 0){
@@ -155,9 +149,11 @@ Ingresar Restaurante
       for(var i=1;i<largo;i++){
         document.getElementById(i).hidden = true;
       }
-      document.getElementById(id).hidden = false;
+      document.getElementById(region).hidden = false;
     }
   
   }
 </script>
+
 {% endblock %}
+
