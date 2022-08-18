@@ -1,4 +1,8 @@
 .demo{ font-family: 'Noto Sans', sans-serif; }
+
+#tablita{
+    margin-top: 3%;
+}
 .panel{
     background: linear-gradient(to right, #310746, #9117A6);
     padding: 0;
@@ -7,13 +11,12 @@
     box-shadow: 0 0 0 5px rgba(0,0,0,0.05),0 0 0 10px rgba(0,0,0,0.05);
     margin:auto;
     width: 100%;
-    margin-top: 20px;
 }
 
 .panel .panel-heading{
     padding: 20px 15px;
     border-radius: 10px 10px 0 0;
-    margin: 0;
+
 }
 
 
@@ -193,7 +196,8 @@
 }
 
 ul.pagination{
-    margin: 0px 800px !important;
+
+    margin-left: 20rem !important;
     justify-content: center !important;
 }
 

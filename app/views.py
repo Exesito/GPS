@@ -47,7 +47,7 @@ def register():
         max_id_cli=0
         max_id_usr=0
 
-        if db.db.session.query.filter(db.domo_usuario.usr_login==email).first() == None :
+        if db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_login==email).first() == None :
             if (db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() == None):
               max_id_dir = 1
             else:
