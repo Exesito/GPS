@@ -1,11 +1,9 @@
 #from flask_security import LoginForm
 from app import app
 from app import models as db
-<<<<<<< HEAD
+
 from app.forms import IngresarRestaurante, RegisterForm, LoginForm
-=======
-from app.forms import RegisterForm, LoginForm
->>>>>>> a03895a9b99957c168110ccc17b8f8afd6c2fea4
+
 from app.models import User
 from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
@@ -27,6 +25,8 @@ def register():
 
     form = RegisterForm()
     notification=Notify()
+    ciudades = db.db.session.query(db.domo_ciudad.ciu_id,db.domo_ciudad.ciu_nombre).all()
+    regiones = db.db.session.query(db.domo_region.reg_id,db.domo_region.reg_nombre).all()
       
     if request.method == 'POST':
         
@@ -37,10 +37,8 @@ def register():
         apellido= request.form.get('apellido')
         rut= request.form.get('rut')
         celular= request.form.get('celular')
-        region=request.form.get('region')
-
-        
-        ciudad= request.form.get('ciudad')
+        region = request.form.get('region')
+        ciudad = request.form.get(region)
 
         calle= request.form.get('calle')
         numero=request.form.get('numero')
@@ -89,8 +87,7 @@ def register():
             notification.send()
             return redirect(url_for('assets/register.html'))
        # return new_user.email + " - " +new_user.estado+ " - " + str(new_user.password_hash)
-    ciudades=db.db.session.query(db.domo_ciudad).all()
-    regiones=db.db.session.query(db.domo_region).all()  
+    
     return render_template("assets/register.html", form = form, regiones=regiones, ciudades=ciudades)
 
 @app.route('/login',methods=['GET','POST'])
