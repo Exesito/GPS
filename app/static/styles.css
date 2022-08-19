@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Rock+Salt');
-
+@import "styles/reservas.css";
 :root {
     --dark: #601b90;
     --dark-x: #310746; 
@@ -74,65 +74,4 @@ body {
     background-color: #9117A6;
     font-family: sans-serif;
     font-size: 15pt;
-}
-
-.black-background{
-    background-color: black;
-    border-radius: 1.5rem;
-    opacity: 0.6;
-}
-
-.reserva-container{
-    padding-top: 2.25rem;
-}
-
-.reserva-background {
-    background-image: url('../static/media/img3.jpg');
-}
-
-.grid-reserva {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: 1fr;
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-    }
-    
-.grid-reserva .grid1 { grid-area: 1 / 1 / 2 / 3; display: grid;  align-items: center;      /* new */
-    justify-items: center; padding:1rem;   }
-.grid-reserva .grid2 { grid-area: 1 / 3 / 2 / 6; display:grid;      /* new */
-    justify-items: center; padding:1rem; }  
-.grid-reserva .grid3 { grid-area: 1 / 6 / 2 / 7; display:grid;      /* new */
-    justify-items: center; padding:1rem;}
-
-.style-form{
-    background: #FFFFFF;
-    padding: 5px;    
-    margin: auto;
-    width: 100%;
-    margin-bottom: 3rem;
-    box-shadow: 7px 13px 37px #000000;
-    border-radius: 15px;
-}
-
-.style-image{
-    background: #FFFFFF;    
-    box-shadow: 7px 13px 37px #000000;
-    border-radius: 15px;
-    width: 90%;
-    height: 90%;
-}
-
-.btn-color{
-    background-color: #601b90;
-    border-color: var(--dark-x);
-}
-
-.card-img-top {
-    width: 100%;
-    height: 28vw;
-    display:block;
-    margin-left: auto;
-    margin-top: auto;
-    padding: 1rem;
 }
