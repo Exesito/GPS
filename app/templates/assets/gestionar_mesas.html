@@ -32,6 +32,11 @@ Gestionar Mesas
         div.classList.add("silla");
     }
 
+    function deshacer(){
+        const editor = document.getElementById('editor-dd');
+        editor.removeChild(editor.lastChild);
+    }
+
     function convertDraggables(){
         jQuery(document).ready( function (){
             jQuery( ".draggable" ).draggable({ grid: [36,36], containment: "#grid"});
@@ -89,14 +94,14 @@ Gestionar Mesas
                     </span>
                 </h5>
             </div>
-
+            
             <div class="flex">
                 <button onclick="
                 agregarSilla();
                 convertDraggables();
                 limitar_y_desactivar( {{sillas.rtr_cantidadsillas}}, '#btn-silla', '.silla');"
                 id="btn-silla" type="button" class="btn btn-default">+ Agregar Silla</button>
-                
+
                 <button onclick="
                 agregarMesa();
                 convertDraggables();
@@ -104,8 +109,15 @@ Gestionar Mesas
                 id="btn-mesa" type="button" class="btn btn-default">+ Agregar Mesa</button>
             </div>
 
-            <button onclick="capturar()" class="btn btn-default"><i class="fa fa-camera"></i>&nbsp;Capturar</button>
-            
+            <div class="flex">
+            <button onclick="capturar()" class="btn btn-primary">
+                <i class="fa fa-camera"></i>&nbsp;Capturar
+            </button>
+            <button onclick="deshacer()" type="button" class="btn btn-danger">
+                <i class="fa fa-undo"></i>&nbsp;Deshacer
+            </button>
+            </div>
+
             <div id="editor-grid">
                 <div id="grid"></div>
                 <div id="editor-dd"></div>
