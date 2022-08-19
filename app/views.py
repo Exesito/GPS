@@ -75,7 +75,7 @@ def register():
                 max_id_cli = db.db.session.query(func.max(db.domo_cliente.cli_id)).scalar() + 1
         
             new_cli= db.domo_cliente(cli_id=max_id_cli,usr_id=max_id_usr,cli_nombre=nombre,cli_apellido=apellido,
-                                      dir_id=max_id_dir,cli_telefono=celular,cli_rut=rut, cli_tipo=tipo)
+                                      dir_id=max_id_dir,cli_telefono=celular,cli_rut=rut)
             db.db.session.add(new_cli)
             db.db.session.commit()
 
@@ -179,9 +179,9 @@ def eliminar_usuario():
 def editar_usuario():
     c=c    
 
-@app.route('actualizar_usuario')
-def actualizar_usuario():
-    d=d
+#@app.route('actualizar_usuario')
+#def actualizar_usuario():
+#   d=d
 
 
 @app.route('/ingresar_restaurante')
