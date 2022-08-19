@@ -164,7 +164,6 @@ create table DOMO_RESTAURANTE (
    DIR_ID               INT4                 null,
    TPR_ID               INT4                 null,
    RTR_NOMBRE           VARCHAR(50)          null,
-   RTR_RUTACARTA        TEXT                 null,
    RTR_DESCRIPCION      TEXT                 null,
    RTR_OPVEGA           BOOL                 null,
    RTR_OPVEGE           BOOL                 null,
