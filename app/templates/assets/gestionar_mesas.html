@@ -36,25 +36,29 @@ Gestionar Mesas
         div.appendChild(icono);
     }
 
-    function deshacer(){
+    function undo_enable(){
+        let botones = document.getElementsByClassName('btn-default')
+        for(let i = 0; i < botones.length; i++){
+            botones[i].disabled = false;
+        }
         const editor = document.getElementById('editor-dd');
         editor.removeChild(editor.lastChild);
+    }
+
+    //Max es la cantidad maxima (sillas o mesas), btn es el boton a desactivar al llegar al maximo
+    //y ClassToUse es la clase que se usará para la iteración y obtener la cantidad.
+    function clamp_disable(max,btn,classToUse){
+        let cantidad = document.querySelectorAll(classToUse);
+        let total = cantidad.length;
+        if(total >= max){
+            document.querySelector(btn).disabled = true;
+        }
     }
 
     function convertDraggables(){
         jQuery(document).ready( function (){
             jQuery( ".draggable" ).draggable({ grid: [36,36], containment: "#grid"});
         });
-    }
-
-    //Max es la cantidad maxima (sillas o mesas), btn es el boton a desactivar al llegar al maximo
-    //y ClassToUse es la clase que se usará para la iteración y obtener la cantidad.
-    function limitar_y_desactivar(max,btn,classToUse){
-        let cantidad = document.querySelectorAll(classToUse);
-        let total = cantidad.length;
-        if(total >= max){
-            document.querySelector(btn).disabled = true;
-        }
     }
 
     //Capturar obtiene el elemento completo #editor-grid, imprimiendolo a un canvas usando una librería llamada html2canvas.
@@ -103,13 +107,13 @@ Gestionar Mesas
                 <button onclick="
                 agregarSilla();
                 convertDraggables();
-                limitar_y_desactivar( {{sillas.rtr_cantidadsillas}}, '#btn-silla', '.silla');"
+                clamp_disable( {{sillas.rtr_cantidadsillas}}, '#btn-silla', '.silla');"
                 id="btn-silla" type="button" class="btn btn-default">+ Agregar Silla</button>
 
                 <button onclick="
                 agregarMesa();
                 convertDraggables();
-                limitar_y_desactivar( {{mesas.rtr_cantidadmesas}}, '#btn-mesa', '.mesa')" 
+                clamp_disable( {{mesas.rtr_cantidadmesas}}, '#btn-mesa', '.mesa')" 
                 id="btn-mesa" type="button" class="btn btn-default">+ Agregar Mesa</button>
             </div>
 
@@ -117,7 +121,7 @@ Gestionar Mesas
             <button onclick="capturar()" class="btn btn-primary">
                 <i class="fa fa-camera"></i>&nbsp;Capturar
             </button>
-            <button onclick="deshacer()" type="button" class="btn btn-danger">
+            <button onclick="undo_enable()" type="button" class="btn btn-danger">
                 <i class="fa fa-undo"></i>&nbsp;Deshacer
             </button>
             </div>
