@@ -11,10 +11,11 @@ DOMO - Regístrate
         </div>
         <div class="form-register col-lg-4 bg-dark d-flex flex-column align-items-end min-vh-100">
             <div class="px-lg-5 pt-lg-4 pb-lg-3 p-4 mb-auto w-100">
-                <img src= "{{url_for('static',filename='Logo.svg')}}" class="img-fluid" />
-              </div>
-              <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
+                <img src="{{url_for('static',filename='Logo.svg')}}" class="img-fluid" />
+            </div>
+            <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
                 <h1 class="font-weight-bold mb-4">Registrate aquí</h1>
+
             <form class="mb-5" action="{{ url_for('register') }}" method=post>
                 <div class="mb-4">
                     {{ form.email.label }}
@@ -86,6 +87,7 @@ DOMO - Regístrate
             
                 {{ form.submit(class_="btn btn-primary w-100") }}
             </form>
+
             </div>
         </div>
 
@@ -95,6 +97,7 @@ DOMO - Regístrate
     </div>
 
 </section>
+
 
 
 <script>
@@ -121,7 +124,4 @@ DOMO - Regístrate
   </script>
 
 {% endblock %}
-
-
-
 
