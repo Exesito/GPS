@@ -284,3 +284,28 @@ def actualizar_rest(id):
 
         return render_template("assets/gestionar_restaurantes.html", restaurantes=restaurantes)
 
+@app.route('/gestionar_restaurantes/<id>')
+def eliminar_rest(id):
+    restaurante = db.domo_restaurante.query.filter_by(rtr_id=id).first()
+    direccion = db.domo_direccion.query.filter_by(dir_id=restaurante.dir_id).first()
+
+    db.db.session.delete(direccion)
+    restaurante.dir_id = None
+    db.db.session.commit()
+
+    db.db.session.delete(restaurante)
+    db.db.session.commit()
+    restaurantes = db.db.session.query(db.domo_restaurante, db.domo_direccion, db.domo_ciudad, db.domo_region, db.domo_tiporestaurante).filter(
+                                        db.domo_restaurante.dir_id == db.domo_direccion.dir_id,
+                                        db.domo_tiporestaurante.tpr_id == db.domo_restaurante.tpr_id,
+                                        db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id,
+                                        db.domo_ciudad.reg_id==db.domo_region.reg_id).all()
+
+    return render_template("assets/gestionar_restaurantes.html", restaurantes=restaurantes)
+
+
+@app.route('/editar_perfil/<id>')
+def editar_perfil(id):
+
+    return render_template("assets/editar_perfil.html")
+

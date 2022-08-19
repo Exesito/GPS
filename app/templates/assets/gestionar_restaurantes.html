@@ -12,9 +12,10 @@ Gestionar Restaurantes
                         <div class="col" id="xd">
                             <h1>Lista de Restaurantes</h1>
                         </div>
-                        <div class="col" id="columnita" >
+                        <div class="col" id="columnita">
                             <div class="btn-group">
-                                <a href="{{url_for('ingresar_restaurante')}}" class="btn btn-default" title="add" id="btn">
+                                <a href="{{url_for('ingresar_restaurante')}}" class="btn btn-default" title="add"
+                                    id="btn">
                                     <i class="fa fa-plus"></i>
                                 </a>
                             </div>
@@ -40,6 +41,7 @@ Gestionar Restaurantes
 
                             </tr>
                         </thead>
+
                         {% for item in restaurantes %}
                         <tr>
                             <td>{{item.domo_restaurante.rtr_nombre}}</td>
@@ -65,10 +67,13 @@ Gestionar Restaurantes
                                 <ul class="action-list">
                                     <li><a href="{{url_for('editar_template',id=item.domo_restaurante.rtr_id)}}"
                                             data-tip="edit"><i class="fa fa-edit"></i></a></li>
-                                    <li><a href="#" data-tip="delete"><i class="fa fa-trash"></i></a></li>
+                                    <li><a href="{{url_for('eliminar_rest',id=item.domo_restaurante.rtr_id)}}" data-tip="delete" id="{{loop.index}}" onclick="confirmar(this.id)">
+                                        <i class="fa fa-trash" ></i></a></li>
+                                    <input type="hidden" name="{{loop.index}}" value="¿Está seguro que quiere eliminar el restaurante {{item.domo_restaurante.rtr_nombre}} ubicado en {{item.domo_direccion.dir_nombrecalle}} {{item.domo_direccion.dir_numerocalle}}, {{item.domo_ciudad.ciu_nombre}}?">
                                 </ul>
                             </td>
                         </tr>
+
                         {% endfor %}
                     </table>
                 </div>
@@ -77,33 +82,40 @@ Gestionar Restaurantes
     </div>
 </div>
 {% endblock %}
-{% block script  %}
+{% block script %}
 <script>
 
-$(document).ready( function () {
-$('#restaurantes').DataTable({
+    $(document).ready(function () {
+        $('#restaurantes').DataTable({
 
-"bDeferRender": true,
-"oLanguage": {
-"sEmptyTable": "No hay registros disponibles",
-"sInfo": "Hay _TOTAL_ registros. Mostrando de (_START_ a _END_)",
-"sLoadingRecords": "Por favor espera - Cargando...",
-"sSearch": "Filtro:",
-"sLengthMenu": "Mostrar _MENU_",
-"oPaginate": {
-"sLast": "Última página",
-"sFirst": "Primera",
-"sNext": '<i class="fa fa-chevron-right" pagination-right></i>',
-"sPrevious": '<i class="fa fa-chevron-left" ></i>'
-}
-}
-} );
-}
-);
+            "bDeferRender": true,
+            "oLanguage": {
+                "sEmptyTable": "No hay registros disponibles",
+                "sInfo": "Hay _TOTAL_ registros. Mostrando de (_START_ a _END_)",
+                "sLoadingRecords": "Por favor espera - Cargando...",
+                "sSearch": "Filtro:",
+                "sLengthMenu": "Mostrar _MENU_",
+                "oPaginate": {
+                    "sLast": "Última página",
+                    "sFirst": "Primera",
+                    "sNext": '<i class="fa fa-chevron-right" pagination-right></i>',
+                    "sPrevious": '<i class="fa fa-chevron-left" ></i>'
+                }
+            }
+        });
+    }
+    );
 
+    function confirmar(id) {
+        var mensaje = document.getElementsByName(id)[0].value;
+        let text;
+        if (confirm(mensaje) == true) {
+            text = "El restaurante será eliminado";
+        } else {
+            text = "Se cancela la acción";
+        }
+    }
 </script>
 
 
 {% endblock %}
-
-
