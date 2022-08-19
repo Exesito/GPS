@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 
 {% block title %}
-Ingresar Restaurante
+Actualizar Restaurante
 {% endblock %}
 
 {% block body %}
@@ -143,7 +143,12 @@ Ingresar Restaurante
   </section>
 
 
-  <script type="text/javascript">
+
+
+{% endblock%}
+
+{% block script %}
+<script type="text/javascript">
     $(document).ready(function() {
       $('#regionsita').select2({placeholder: 'Seleccione Región', allowClear: true});
     });
@@ -188,5 +193,4 @@ Ingresar Restaurante
     }); 
   
   </script>
-
-{% endblock%}
+{% endblock %}

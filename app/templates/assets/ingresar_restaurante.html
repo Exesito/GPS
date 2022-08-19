@@ -119,7 +119,9 @@ Ingresar Restaurante
 
 </section>
 
+{% endblock %}
 
+{% block script %}
 <script type="text/javascript">
   $(document).ready(function() {
     $('#regionsita').select2({placeholder: 'Seleccione Región', allowClear: true});
@@ -161,6 +163,5 @@ Ingresar Restaurante
   }); 
 
 </script>
-
 
 {% endblock %}

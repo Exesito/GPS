@@ -1,0 +1,21 @@
+{% extends "index.html" %}
+
+{% block title %}
+Perfil de Usuario
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 my-3 pt-3 shadow">
+            <img src="{{url_for('perfil-images',filename='junior.jpg')}}" class="float-left rounder-circle">
+            <h1>Nombre de usuario: </h1>
+            <h1>Email: </h1>
+
+            <p>
+                <strong>Me pica un coco</strong>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

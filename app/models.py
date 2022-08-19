@@ -141,4 +141,3 @@ class domo_cliente(db.Model):
     dir_id = db.Column('dir_id', db.Integer)
     cli_telefono = db.Column('cli_telefono', db.Integer)
     cli_rut = db.Column('cli_rut', db.String(13))
-    #cli_tipo = db.Column('cli_tipo', db.String(1))
