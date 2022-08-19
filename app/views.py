@@ -6,7 +6,7 @@ from os import path
 from app.forms import IngresarRestaurante, RecoveryForm, ChangepasswordForm,RegisterForm, LoginForm
 
 
-from app.models import User, domo_restaurante
+from app.models import domo_restaurante
 
 from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
@@ -129,7 +129,7 @@ def login():
                 notification.send()
                 #icono= 
                 dir_absoluta=path.abspath(path.dirname(__file__))
-                notification.icon = path.join(dir_absoluta,"./app/static/icon.png")
+                notification.icon = path.join(dir_absoluta,".GPS/app/static/icon.png")
                #print("A",path.join(dir_absoluta,icono))
                 return redirect(url_for("login"))
         else:
