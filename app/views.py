@@ -1,9 +1,9 @@
 #from flask_security import LoginForm
 #from crypt import methods
 import re
-from app import app, functions
+from app import app
 from app import models as db
-from app.models import User, domo_horario, domo_usuario
+from app.models import domo_horario, domo_usuario
 from notifypy import Notify
 from flask import render_template, request, session, redirect,url_for
 from sqlalchemy import func
