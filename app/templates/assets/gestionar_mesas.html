@@ -5,86 +5,106 @@ Gestionar Mesas
 {% block body %}
 
 <head>
-    <style>
-        .silla{
-            width: 36px;
-            height: 36px;
-            background-color: rgb(95, 190, 0);
-            display: flex;
-        }
+    <script>
+    function agregarMesa(){
+        //Crear una nueva Mesa
+        let div = document.createElement('div');
+        const editor = document.querySelector('#editor-dd');
+        editor.appendChild(div);
+        div.classList.add("ui-widget-content");
+        div.classList.add("draggable");
+        div.classList.add("mesa");
+        div.style = "color: white; font-size: 2em; text-shadow: 1px 1px black;";
 
-        .mesa{
-            width: 72px;
-            height: 72px;
-            background-color: crimson;
-            display: flex;
-        }
+        //Enumerar por orden de creación
+        var total_mesas = document.getElementsByClassName("mesa");
+        var enumerar = document.createTextNode(String(total_mesas.length));
+        div.appendChild(enumerar);
+    }
 
-        .draggable{
-            left: 12px;
-            top: 352px;
-            position: absolute;
-        }
+    function agregarSilla(){
+        //Crear una nueva Silla
+        let div = document.createElement('div');
+        const editor = document.querySelector('#editor-dd');
+        editor.appendChild(div);
+        div.classList.add("ui-widget-content");
+        div.classList.add("draggable");
+        div.classList.add("silla");
+    }
 
-        .btn-default{
-            text-shadow: 1px 1px #000000;
-            color: white;
-            background-color: #8d6db8;
-            margin: 0.15em;
-            padding-top: 0.7em;
-            display: flex;
-            box-shadow: 2px 2px #491f4e;
-        }
+    function convertDraggables(){
+        jQuery(document).ready( function (){
+            jQuery( ".draggable" ).draggable({ grid: [36,36], containment: "#grid"});
+        });
+    }
 
-        .btn-default:active{
-            background-color: #533575;
-            color: gray;
+    //Max es la cantidad maxima (sillas o mesas), btn es el boton a desactivar al llegar al maximo
+    //y ClassToUse es la clase que se usará para la iteración y obtener la cantidad.
+    function limitar_y_desactivar(max,btn,classToUse){
+        let cantidad = document.querySelectorAll(classToUse);
+        let total = cantidad.length;
+        if(total >= max){
+            document.querySelector(btn).disabled = true;
         }
+    }
 
-        #grid{
-            margin-top: 40px;
-            width: 40.55em;
-            height: 40.56em;
-            background-color: #603e86;
-            background-image:
-                repeating-linear-gradient(#ccc 0 1px, transparent 1px 50%),
-                repeating-linear-gradient(90deg, #ccc 0 1px, transparent 1px 50%);
-            background-size: 72px 72px;
-        }
+    //Capturar obtiene el elemento completo #editor-grid, imprimiendolo a un canvas usando una librería llamada html2canvas.
+    function capturar() {
+        let total_capturas = document.querySelectorAll('canvas').length;
+        let banco_de_capturas = document.getElementById("screenshot");
 
-        #editor-grid{
-            width: 650px;
-        }
+        //Si ya hay más de 2 capturas en total, removemos.
+        if(total_capturas > 1){
+            banco_de_capturas.innerHTML = '';
+        } 
 
-        .flecs{
-            display: flex;
-        }
-    </style>
+        let grid = document.getElementById("editor-grid");
+
+        html2canvas(grid).then(
+            function(canvas){ //Aqui printeo la imagen
+                canvas.style = "border: 1px solid; margin-left: 6px;"
+                banco_de_capturas.appendChild(canvas);
+                }
+            )
+    }
+    </script>
 </head>
 <body>
-    <div><!--Editor Drag and Drop-->
+    <div><!--Editor de Local-->
         <div class="container-fluid py-4">
-            <h1 style="margin-top: 0.6em;">Editor de Mesas</h1> 
+            <h1 style="margin-top: 0.6em;">Editor de Local</h1> 
 
-            <div class="flecs">
-                <p>Cantidad máxima de mesas: <h5>{{mesas.rtr_cantidadmesas}}</h5></p>
-                <input id="cantidad_mesas" name="cantidad_mesas" type="hidden" value="{{mesas.rtr_cantidadmesas}}">
+            <div class="flex">
+                <h5>Mesas Disponibles: 
+                    <span>
+                        {{mesas.rtr_cantidadmesas}}
+                    </span>
+                </h5>
             </div>
 
-            <div class="flecs">
-                <p>Cantidad máxima de sillas: <h5>{{sillas.rtr_cantidadsillas}}</h5></p>
-                <input id="cantidad_sillas" name="cantidad_sillas" type="hidden" value="{{sillas.rtr_cantidadsillas}}">
+            <div class="flex">
+                <h5>Sillas Disponibles: 
+                    <span>
+                        {{sillas.rtr_cantidadsillas}}
+                    </span>
+                </h5>
             </div>
 
-            <div class="flecs">
-                <button onclick="agregarSilla();convertDraggables();contar( {{sillas.rtr_cantidadsillas}}, '#btn-silla', '.silla')" 
+            <div class="flex">
+                <button onclick="
+                agregarSilla();
+                convertDraggables();
+                limitar_y_desactivar( {{sillas.rtr_cantidadsillas}}, '#btn-silla', '.silla');"
                 id="btn-silla" type="button" class="btn btn-default">+ Agregar Silla</button>
                 
-                <button onclick="agregarMesa();convertDraggables();contar( {{mesas.rtr_cantidadmesas}}, '#btn-mesa', '.mesa')" 
+                <button onclick="
+                agregarMesa();
+                convertDraggables();
+                limitar_y_desactivar( {{mesas.rtr_cantidadmesas}}, '#btn-mesa', '.mesa')" 
                 id="btn-mesa" type="button" class="btn btn-default">+ Agregar Mesa</button>
             </div>
 
-            <button onclick="capturar()" class="btn btn-default">Guardar Captura</button>
+            <button onclick="capturar()" class="btn btn-default"><i class="fa fa-camera"></i>&nbsp;Capturar</button>
             
             <div id="editor-grid">
                 <div id="grid"></div>
@@ -95,80 +115,5 @@ Gestionar Mesas
         </div>
     </div>
 </body>
-
-{% block script %}
-<script>
-    function agregarMesa(){
-        //Crear una nueva Mesa
-        let div = document.createElement('div');
-        const editor = document.querySelector('#editor-dd');
-        editor.appendChild(div);
-        div.classList.add("ui-widget-content");
-        div.classList.add("draggable");
-        div.classList.add("mesa");
-        div.style = "color: white; font-size: 1em; text-shadow: 1px 1px black;";
-
-        //Enumerar por orden de creación
-        var total_mesas = document.getElementsByClassName("mesa");
-        var enumerar = document.createTextNode(String(total_mesas.length));
-        div.appendChild(enumerar);
-    }
-</script>
-
-<script>
-    function agregarSilla(){
-        //Crear una nueva Silla
-        let div = document.createElement('div');
-        const editor = document.querySelector('#editor-dd');
-        editor.appendChild(div);
-        div.classList.add("ui-widget-content");
-        div.classList.add("draggable");
-        div.classList.add("silla");
-    }
-</script>
-
-<script>
-    function convertDraggables(){
-        jQuery(document).ready( function (){
-            jQuery( ".draggable" ).draggable({ grid: [36,36], containment: "#grid"});
-        });
-    }
-</script>
-
-<script>
-    //Max es la cantidad maxima (sillas o mesas), btn es el boton a desactivar al llegar al maximo
-    //y ClassToUse es la clase que se usará para la iteración y obtener la cantidad.
-    function contar(max,btn,classToUse){
-        let cantidad = document.querySelectorAll(classToUse);
-        let total = cantidad.length;
-        if(total >= max){
-            document.querySelector(btn).disabled = true;
-        }
-    }
-</script>
-
-<script>
-//Capturar obtiene el elemento completo #editor-grid, imprimiendolo a un canvas usando una librería llamada html2canvas.
-function capturar() {
-    let capturas = document.querySelectorAll('canvas');
-    let total_capturas = capturas.length;
-    let banco_de_capturas = document.getElementById("screenshot");
-
-    //Si ya hay más de 2 capturas en total, removemos.
-    if(total_capturas > 1){
-        banco_de_capturas.innerHTML = '';
-        //banco_de_capturas.removeChild('canvas');
-    } 
-
-    var grid = document.getElementById("editor-grid");
-    html2canvas(grid).then(
-        function(canvas){ //Aqui printeo la imagen
-            canvas.style = "border: 1px solid; margin-left: 6px;"
-            banco_de_capturas.appendChild(canvas);
-            }
-        )
-}
-</script>
-{% endblock %}
 
 {% endblock %}

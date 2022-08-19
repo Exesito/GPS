@@ -75,4 +75,63 @@ body {
     font-size: 15pt;
 }
 
+/*Caso de Uso Mulchi*/
+.silla{
+    width: 36px;
+    height: 36px;
+    background-color: rgb(115, 230, 0) !important;
+    display: flex;
+}
 
+.mesa{
+    width: 72px;
+    height: 72px;
+    background-color: crimson !important;
+    display: flex;
+}
+
+.draggable{
+    left: 12px;
+    top: 336px;
+    position: absolute;
+    cursor: move;
+}
+
+.btn-default{
+    text-shadow: 1px 1px #000000;
+    color: white;
+    background-color: #8d6db8;
+    margin: 0.15em;
+    padding-top: 0.7em;
+    display: flex;
+    box-shadow: 2px 2px #491f4e;
+}
+
+.btn-default:active{
+    background-color: #533575;
+    color: gray;
+}
+
+#grid{
+    margin-top: 40px;
+    width: 40.55em;
+    height: 40.56em;
+    background-color: #603e86;
+    background-image:
+        repeating-linear-gradient(#ccc 0 1px, transparent 1px 50%),
+        repeating-linear-gradient(90deg, #ccc 0 1px, transparent 1px 50%);
+    background-size: 72px 72px;
+}
+
+#editor-grid{
+    width: 650px;
+}
+
+.flex{
+    display: flex;
+}
+
+.boton_basura{
+    width:  16px;
+    height: 16px;
+}
