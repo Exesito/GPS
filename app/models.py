@@ -39,12 +39,14 @@ db = SQLAlchemy()
 class domo_horario(db.Model):
     __tablename__ = 'domo_horario'
     hor_id = db.Column('hor_id', db.Integer, primary_key = true)
-    rtr_id = db.Column('rtr_id', db.Integer ,db.ForeignKey('domo_rtr.rtr_id'))
+    hor_nombre = db.Column('hor_nombre', db.String(20))
+    rtr_id = db.Column('rtr_id', db.Integer ,db.ForeignKey('domo_restaurante.rtr_id'))
     hor_diainicio = db.Column('hor_diainicio', db.Integer)
     hor_diatermino = db.Column('hor_diatermino', db.Integer)
     hor_horainicio = db.Column('hor_horainicio', db.Time)
     hor_horatermino = db.Column('hor_horatermino', db.Time)
-    hor_disponibilidad = db.Column('hor_disponibilidad', db.Boolean)
+    hor_activo = db.Column('hor_activo', db.Boolean)
+    
 
 class domo_restaurante(db.Model):
     __tablename__ = 'domo_restaurante'
@@ -52,12 +54,14 @@ class domo_restaurante(db.Model):
     dir_id = db.Column('dir_id', db.Integer, db.ForeignKey('domo_direccion.dir_id'))
     tpr_id = db.Column('tpr_id', db.Integer)
     rtr_nombre = db.Column('rtr_nombre', db.String(50))
-    rtr_rutacarta = db.Column('rtr_carta', db.Text)
+    rtr_rutacarta = db.Column('rtr_rutacarta', db.Text)
     rtr_descripcion = db.Column('rtr_descripcion', db.Text)
     rtr_opvega = db.Column('rtr_opvega', db.Boolean)
     rtr_opvege = db.Column('rtr_opvege', db.Boolean)
-    rtr_duenonombre = db.Column('rtr_nombredueno', db.String(40))
-    rtr_duenoapellido = db.Column('rtr_apellidodueno', db.String(40))
+    rtr_duenonombre = db.Column('rtr_duenonombre', db.String(40))
+    rtr_duenoapellido = db.Column('rtr_duenoapellido', db.String(40))
+    rtr_cantidadmesas = db.Column('rtr_cantidadmesas', db.Integer)
+    rtr_cantidadsillas = db.Column('rtr_cantidadsillas', db.Integer)
 
 class domo_direccion(db.Model):
     __tablename__ = 'domo_direccion'
@@ -146,3 +150,11 @@ class domo_cliente(db.Model):
     cli_telefono = db.Column('cli_telefono', db.String(20))
     cli_rut = db.Column('cli_rut', db.String(20))
     cli_tipo = db.Column('cli_tipo', db.String(1))
+
+class domo_tabla(db.Model):
+    __tablename__ = 'domo_carta'
+    car_id = db.Column('car_id', db.Integer, primary_key = true)
+    rtr_id = db.Column('rtr_id', db.Integer)
+    car_nombre = db.Column('car_nombre', db.String(20))
+    car_url = db.Column('car_url', db.String(255))
+    car_activa = db.Column('car_activa', db.Boolean)

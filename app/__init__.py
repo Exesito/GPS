@@ -4,7 +4,7 @@ from notifypy import Notify
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'Secret'
-app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:admin@localhost:5432/DOMO-LOCAL'
+app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:noviembre09@localhost:5432/domo-local'
 app.config['SECURITY_PASSWORD_HASH'] = 'scrtcript'
 app.config['SECURITY_PASSWORD_SALT'] = 'fhasdgihwntlgy8f'
 
