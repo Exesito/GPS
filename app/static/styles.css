@@ -74,22 +74,14 @@ body {
     margin: auto;
     margin-top: 50px;
     box-shadow: 7px 13px 37px #000000;
+    border-radius: 15px;
+    margin-bottom: 5%;
 }
 
 .registro-fondo{
     background-image: url(../static/media/img3.jpg);
 }
 
-.tablecustom {
-    width: 100%;
-    border-collapse: collapse;
-    border-spacing: 0;
-    border-radius: 10px;
-    background-color: #83169C;
-    font-family: century;
-    font-size: 15pt;
-    color: #fff;
-}
 
 .content{
     padding-top: 2rem; 
@@ -101,3 +93,15 @@ body {
     border-radius: 1rem;
 }
 
+#botonsito{
+    text-align: center;
+    margin-bottom: 5%;
+}
+
+.btn-submit{
+    background-color: aqua;
+}
+
+.btn-submit:hover{
+    background-color: rgb(0, 234, 234);
+}
