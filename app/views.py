@@ -1,6 +1,7 @@
 
+from multiprocessing.connection import Client
 from app import app, models
-from app.forms import RegisterForm, ReservaForm, MesaForm
+from app.forms import RegisterForm, ReservaForm, MesaForm, ClientForm
 from app.models import User
 from flask import render_template, request
 
@@ -45,17 +46,38 @@ def reservar(id):
     form.dia.choices = day_choice
     form.hora.choices = hour_choice
     
-    restaurante = models.domo_restaurante.get_by_id(1).first()
+    restaurante = models.domo_restaurante.get_by_id(id)
+    mesas = restaurante.get_mesas()
+    
+    for item in mesas:
+        mesa_form.mesa.choices.append((item.msa_id, item.msa_numero))
     
     data = {
         #"RESTAURANTE_ID": models.domo_restaurante.get_by_id(id),
-        "RESTAURANTE_ID": restaurante.id,
-        "nombre": restaurante.nombre,
-        "descripcion": restaurante.descripcion
+        "RESTAURANTE_ID": restaurante.rtr_id,
+        "nombre": restaurante.rtr_nombre,
+        "descripcion": restaurante.rtr_descripcion
     }
     
     
     return render_template("cli_reservar.html", data = data, registered = registered, form = form, mesa_form = mesa_form)
+
+@app.route('/reservar/<id_restaurante>/<id_reserva>/datos_cliente', methods=['GET','POST'])
+def reserva_not_registered(id_restaurante, id_reserva):
+    
+    client_form = ClientForm()
+    
+    restaurante = models.domo_restaurante.get_by_id(id_restaurante)
+    
+    data = {
+        #"RESTAURANTE_ID": models.domo_restaurante.get_by_id(id),
+        "RESTAURANTE_ID": restaurante.rtr_id,
+        "nombre": restaurante.rtr_nombre,
+        "descripcion": restaurante.rtr_descripcion,
+        "id_reserva": id_reserva
+    }
+    
+    return render_template("cli_reservar_not_registered.html", data = data, client_form = client_form)
 
 @app.route('/cliente/ver_reservas', methods=['GET','POST'])
 def cli_ver_reservas():

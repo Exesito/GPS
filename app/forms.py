@@ -1,4 +1,5 @@
-from wtforms import Form, SubmitField, StringField, PasswordField, validators, SelectField, DateField
+from wtforms import Form, SubmitField, StringField, PasswordField, validators, SelectField, DateField, RadioField
+from datetime import date
   
 class RegisterForm(Form):
     
@@ -13,19 +14,20 @@ class RegisterForm(Form):
 
 class ReservaForm(Form):
     
-    dia = DateField('Día')
+    dia = DateField('Día', default= date.today())
     hora = SelectField('Hora', choices=[])
     submit = SubmitField("Reservar")
     
-class clientForm(Form):
+class ClientForm(Form):
 
     nombre = StringField('Nombre', [validators.Length(min=1, max=12)])
     apellido = StringField('Apellido', [validators.Length(min=1, max=12)])
     telefono = StringField('Telefono', [validators.Length(min=1, max=12)])
     rut = StringField('Rut', [validators.Length(min=1, max=12)])
     direccion = StringField('Dirección', [validators.Length(min=1, max=60)])
+    medio_de_pago = RadioField("Medio de Pago", choices=[("DEBITO",'Débito (Presencial)'), ("EFECTIVO","Efectivo"), ("WEBPAY","")])
     
-    submit = SubmitField("Asignar Cliente")
+    submit = SubmitField("Completar Reserva y pagar")
     
 class MesaForm(Form):
     

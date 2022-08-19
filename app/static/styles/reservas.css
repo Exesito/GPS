@@ -1,9 +1,11 @@
 
 
 .black-background{
-    background-color: black;
+    margin-top: 0.4rem;
+    background-color: rgba(0,0,0,0.7);
     border-radius: 1.5rem;
-    opacity: 0.6;
+    padding: 2rem;
+    max-width: 96%;
 }
 
 .reserva-container{
@@ -12,6 +14,7 @@
 
 .reserva-background {
     background-image: url('../static/media/img3.jpg');
+    background-size: cover;
 }
 
 .grid-reserva {
@@ -58,5 +61,52 @@
     display:block;
     margin-left: auto;
     margin-top: auto;
+    padding: 1rem;
+}
+
+.reserva-container .card-header{
+    font-weight: bold;
+    color: var(--dark-x);
+}
+
+.reserva-container label{
+    color: var(--dark-x)
+}
+
+.grid-top-reserva {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) 1.7fr;
+    grid-template-rows: 0.7fr 0 0.1fr; 
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+}
+    
+.grid-top-reserva .gtitle { grid-area: 1 / 1 / 3 / 4;  word-wrap: break-word;overflow: hidden;}
+.grid-top-reserva .gdown { grid-area: 3 / 1 / 4 / 4;  word-wrap: break-word;}
+.grid-top-reserva .gdescription { grid-area: 1 / 4 / 4 / 5;  word-wrap: break-word; padding:0.2rem;  overflow: hidden;  /* NEW */
+    min-width: 0;  } 
+
+/* Sección de CSS donde el usuario no está registrado */
+ 
+.grid-reserva-client {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: 1fr;
+        grid-column-gap: 0px;
+        grid-row-gap: 0px;
+        padding-top: 2rem;
+        margin:0.5rem;
+        margin-bottom: 0.1rem;
+}
+        
+.grid-reserva-client .item-form { grid-area: 1 / 1 / 2 / 6; }
+.grid-reserva-client .item-menu { grid-area: 1 / 6 / 2 / 7; }
+
+.wp-img{
+    max-width: 35%;
+    right: 150px;
+}
+
+.style-form .row{
     padding: 1rem;
 }
