@@ -149,7 +149,7 @@ class domo_cliente(db.Model):
     cli_rut = db.Column('cli_rut', db.String(20))
     cli_tipo = db.Column('cli_tipo', db.String(1))
 
-class domo_tabla(db.Model):
+class domo_carta(db.Model):
     __tablename__ = 'domo_carta'
     car_id = db.Column('car_id', db.Integer, primary_key = true)
     rtr_id = db.Column('rtr_id', db.Integer)

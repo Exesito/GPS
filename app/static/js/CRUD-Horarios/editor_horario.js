@@ -1,5 +1,4 @@
 jQuery(document).ready( function () {
-   
     $('.edit-button').data('editar', false)
 
     jQuery('#horarios').DataTable({ //paginación de tabla
@@ -112,11 +111,21 @@ jQuery(document).ready( function () {
         var nuevo = $("horarios").load("CRUD-Horarios\nuevo_horario.html")
         var names = []
         names.push($('#rtr_names').html().split(','))
-        
-        console.log(names)
-        console.log(names.length)
-        
-        $('#horarios > tbody:last-child').append('<tr><th> *Nuevo*</th><td hidden></td><td> <select class="nuevo-combo" onChange="combo(this, \'demo\')">   </td> <td hidden></td> <td></td> <td></td> <td></td> <td></td><td></td><th><a value id="btn_submit" class="btn btn-secondary table-row-edit edit-button" >Editar</a></th><th><a href="#" class="btn btn-danger btn-delete" onclick="return confirm(\'¿Estás seguro de eliminar este horario?\');">Eliminar</a></th></tr>');
+        new_row = '<tr> \n\
+                    <th> *Nuevo*</th> \n\
+                    <td hidden></td> \n\
+                    <td> <select class="nuevo-combo" onChange="combo(this, "demo")"></td> \n\
+                    <td hidden></td> \n\
+                    <td></td> \n\
+                    <td></td> \n\
+                    <td></td> \n\
+                    <td></td> \n\
+                    <td></td> \n\
+                    <th><a value id="btn_submit" class="btn btn-secondary table-row-edit edit-button" >Editar</a></th> \n\
+                    <th><a href="#" class="btn btn-danger btn-delete" onclick="return confirm("¿Estás seguro de eliminar este horario?");">Eliminar</a></th> \n\
+                   </tr>'             
+    
+        $('#horarios > tbody:last-child').append(new_row);
          for(i = 0; i<= names.length; i++){
             $('.nuevo-combo').append("<option>" + names[0][i] + "</option>")
          }

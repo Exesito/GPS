@@ -15,7 +15,7 @@ Horarios Restaurante
           <tr>
             <th scope="col">#</th>
             <th scope="col" hidden>id <a id="rtr_names">{{rtr_names}}</a></th>
-            <th scope="col">Nombre Restaurante</th>
+            <th scope="col">Restaurante</th>
             <th scope="col" hidden>id_rtr</th>
             <th scope="col">Nombre Horario</th>
             <th scope="col">Apertura</th>
@@ -34,7 +34,7 @@ Horarios Restaurante
             <form action="{{url_for('editor_horarios')}}", method = "post">
             <th scope="row">{{i+1}}</th>
             <td hidden>{{data.domo_horario.hor_id}}</td>
-            <td>{{data.domo_restaurante.rtr_nombre}}</td>
+            <th>{{data.domo_restaurante.rtr_nombre}}</th>
             <td hidden>{{data.domo_restaurante.rtr_id}}</td>
             <td>
               {{data.domo_horario.hor_nombre}}

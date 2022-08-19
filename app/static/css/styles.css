@@ -107,9 +107,9 @@ body {
 
 #nuevo{
     display: flex;
-    width: 8%;
+    width: 7em;
     margin-left: 10px;
-    bottom: 5em;
+    margin-bottom: 1em;
     
 }
 
@@ -117,4 +117,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: right;
+}
+
+.btn-delete{
+    margin-left: 10px;
 }
