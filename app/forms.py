@@ -7,12 +7,12 @@ class RegisterForm(Form):
     #username = StringField('', [validators.Length(min=4, max=25)])
     email = StringField('Correo Eléctronico', [validators.DataRequired(message='Ingrese email'), validators.Email(), validators.Length(min=6, max=35)])
     password = PasswordField('Nueva Contraseña', [validators.DataRequired(),validators.EqualTo('confirm', message='Las contraseñas deben coincidir')])
-    confirm = PasswordField('Repite contraseña', [validators.DataRequired()])
+    confirm = PasswordField('Repite Contraseña', [validators.DataRequired()])
     nombre= StringField('Nombre', [validators.DataRequired(),  validators.Length(min=3, max=35)])
     apellido= StringField('Apellido', [validators.DataRequired(), validators.Length(min=2, max=35)])
     rut= StringField('Rut', [validators.DataRequired(), validators.Length(min=6, max=13)])
     celular=IntegerField('Celular',[validators.Length(min=5,max=15)])#,[validators.DataRequired()]
-    region=SelectField('Region',[validators.AnyOf(values,message='Seleccione una región',values_formatter=None)])
+    region=SelectField('Región',[validators.AnyOf(values,message='Seleccione una región',values_formatter=None)])
     ciudad=SelectField('Ciudad',[validators.AnyOf(values,message='Seleccione una ciudad',values_formatter=None)])
     calle=StringField('Calle', [validators.DataRequired()])
     numero=IntegerField('Número', [validators.DataRequired()])
@@ -23,7 +23,7 @@ class RegisterForm(Form):
 
 class LoginForm(Form):
     email=EmailField('Correo electrónico',[validators.DataRequired(), validators.Email(), validators.Length(min=6, max=35)])
-    password= PasswordField('Contraseña')
+    password= PasswordField('Contraseña', [validators.DataRequired()])
 
     submit=SubmitField('Iniciar sesión')
 
@@ -35,6 +35,27 @@ class ChangepasswordForm(Form):
     password= PasswordField('Nueva contraseña',[validators.DataRequired(),validators.EqualTo('confirm', message='Las contraseñas deben coincidir')])
     confirm= PasswordField('Repite contraseña', [validators.DataRequired()])
     submit= SubmitField("Cambiar contraseña")
+
+class RegistroEncargado(Form):
+    values=[0]
+    #username = StringField('', [validators.Length(min=4, max=25)])
+    email = StringField('Correo Eléctronico', [validators.DataRequired(message='Ingrese email'), validators.Email(), validators.Length(min=6, max=35)])
+    password = PasswordField('Nueva Contraseña', [validators.DataRequired(),validators.EqualTo('confirm', message='Las contraseñas deben coincidir')])
+    confirm = PasswordField('Repite contraseña', [validators.DataRequired()])
+    nombre= StringField('Nombre', [validators.DataRequired(),  validators.Length(min=3, max=35)])
+    apellido= StringField('Apellido', [validators.DataRequired(), validators.Length(min=2, max=35)])
+    rut= StringField('Rut', [validators.DataRequired(), validators.Length(min=6, max=13)])
+
+    submit = SubmitField("Crear Cuenta")
+
+
+class RegistroAdmin(Form):
+    email = StringField('Correo Eléctronico', [validators.DataRequired(message='Ingrese email'), validators.Email(), validators.Length(min=6, max=35)])
+    password = PasswordField('Nueva Contraseña', [validators.DataRequired(),validators.EqualTo('confirm', message='Las contraseñas deben coincidir')])
+    confirm = PasswordField('Repite contraseña', [validators.DataRequired()])
+
+    submit = SubmitField("Crear Cuenta")
+
 
 
 class IngresarRestaurante(Form):  

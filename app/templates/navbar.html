@@ -9,10 +9,34 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarID">
             <div class="navbar-nav">
+
+                {% if session['tipo'] ==1 %}
+                <a class="nav-link active" aria-current="page" href="{{url_for('dashboard')}}">Inicio</a>
+                <a class="nav-link" href="{{url_for('logout')}}">Cerrar Sesión</a>
+
+                
+
+                {% elif session['tipo']==2 %}
+                <a class="nav-link active" aria-current="page" href="{{url_for('dashboard')}}">Inicio</a>
+                <a class="nav-link" href="{{url_for('logout')}}">Cerrar Sesión</a>
+
+
+
+                {% elif session['tipo']== 3 %}
+                <a class="nav-link active" aria-current="page" href="{{url_for('dashboard')}}">Inicio</a>
+                <a class="nav-link" href="{{url_for('gestionar_restaurantes')}}">Gestionar Restaurante</a>
+                <a class="nav-link" href="{{url_for('gestionar_usuarios_admin')}}">Gestionar Usuarios</a>
+                <a class="nav-link" href="{{url_for('logout')}}">Cerrar Sesión</a>
+
+
+                {% else %}
                 <a class="nav-link active" aria-current="page" href="{{url_for('index')}}">Inicio</a>
                 <a class="nav-link" href="{{url_for('login')}}">Iniciar Sesion</a>
                 <a class="nav-link" href="{{url_for('gestionar_restaurantes')}}">Gestionar Restaurante</a>
-                
+
+
+                {% endif %}
+
             </div>
         </div>
      </div>

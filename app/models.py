@@ -1,5 +1,4 @@
 from flask_sqlalchemy import SQLAlchemy
-import json
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin
 import bcrypt
 
@@ -99,7 +98,7 @@ class domo_usuario(db.Model, UserMixin):
     __tablename__ = 'domo_usuario'
     usr_id = db.Column('usr_id', db.Integer, primary_key = true)
     tip_id = db.Column('tip_id', db.Integer, db.ForeignKey('domo_tipousuario.tip_id'))
-    usr_login = db.Column('usr_login', db.String(20))
+    usr_login = db.Column('usr_login', db.String(40))
     usr_contrasena = db.Column('usr_contrasena', db.String(80))
     usr_estado = db.Column('usr_estado', db.String(20))
 
@@ -108,17 +107,20 @@ class domo_usuario(db.Model, UserMixin):
         raise AttributeError('password not readable')
     @password.setter
     def password(self, password):
-        self.usr_contrasena = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+        pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        self.usr_contrasena=pw.decode('utf-8')
         print(self.usr_contrasena)
         
     def verify_password(self, password):
-        return bcrypt.checkpw(password, self.usr_contrasena)
+        return bcrypt.checkpw(password.encode('utf-8'), self.usr_contrasena)
     
-    def __init__(self, email, password):
-        self.email = email
+    def __init__(self, id, tipo,email,password,estado):
+        self.usr_id=id
+        self.tip_id = tipo #Tipo de Usuario Cliente
+        self.usr_login = email
         self.password = password
-        self.tip_id = 1 #Tipo de Usuario Cliente
-        self.estado = 'ACTIVO'
+        self.usr_estado = estado
 
 
 class domo_encargadortr(db.Model):
@@ -136,6 +138,6 @@ class domo_cliente(db.Model):
     cli_nombre = db.Column('cli_nombre', db.String(40))
     cli_apellido = db.Column('cli_apellido', db.String(40))
     dir_id = db.Column('dir_id', db.Integer)
-    cli_telefono = db.Column('cli_telefono', db.String(20))
-    cli_rut = db.Column('cli_rut', db.String(20))
+    cli_telefono = db.Column('cli_telefono', db.Integer)
+    cli_rut = db.Column('cli_rut', db.String(13))
     cli_tipo = db.Column('cli_tipo', db.String(1))
