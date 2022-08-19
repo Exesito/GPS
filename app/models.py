@@ -5,30 +5,6 @@ import bcrypt
 
 db = SQLAlchemy()
 
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255), unique=True)
-    password_hash = db.Column(db.String(128))
-
-    @property
-    def password(self):
-        raise AttributeError('password not readable')
-    @password.setter
-    def password(self, password):
-        self.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-        print(self.password_hash)
-        
-    def verify_password(self, password):
-        return bcrypt.checkpw(password, self.password_hash)
-    
-    def __init__(self, email, password):
-        self.email = email
-        self.password = password
-        self.tip_id = 1 #Tipo de Usuario Cliente
-        self.estado = 'ACTIVO'
-        
-        #db.session.commit()
-
 from flask_sqlalchemy import SQLAlchemy
 import json
 
@@ -119,13 +95,30 @@ class domo_tipousuario(db.Model):
     tip_nombre = db.Column('tip_nombre', db.String(20))
     tip_descripcion = db.Column('tip_descripcion', db.Text)
 
-class domo_usuario(db.Model):
+class domo_usuario(db.Model, UserMixin):
     __tablename__ = 'domo_usuario'
     usr_id = db.Column('usr_id', db.Integer, primary_key = true)
     tip_id = db.Column('tip_id', db.Integer, db.ForeignKey('domo_tipousuario.tip_id'))
     usr_login = db.Column('usr_login', db.String(20))
     usr_contrasena = db.Column('usr_contrasena', db.String(80))
     usr_estado = db.Column('usr_estado', db.String(20))
+
+    @property
+    def password(self):
+        raise AttributeError('password not readable')
+    @password.setter
+    def password(self, password):
+        self.usr_contrasena = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        print(self.usr_contrasena)
+        
+    def verify_password(self, password):
+        return bcrypt.checkpw(password, self.usr_contrasena)
+    
+    def __init__(self, email, password):
+        self.email = email
+        self.password = password
+        self.tip_id = 1 #Tipo de Usuario Cliente
+        self.estado = 'ACTIVO'
 
 
 class domo_encargadortr(db.Model):

@@ -1,10 +1,11 @@
 #from flask_security import LoginForm
 from app import app
 from app import models as db
+from os import path
 
-from app.forms import IngresarRestaurante, RegisterForm, LoginForm
+from app.forms import IngresarRestaurante, RecoveryForm, ChangepasswordForm,RegisterForm, LoginForm
 
-from app.models import User
+#from app.models import User
 from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
 from sqlalchemy import func
@@ -80,7 +81,7 @@ def register():
             notification.title= "Completado"
             notification.message="Usuario registrado con éxito"
             notification.send()
-            return redirect(url_for('assets/register.html'),ciudades=ciudades)
+            return redirect(url_for('assets/login.html'),ciudades=ciudades)
         else:
             notification.title= "Error"
             notification.message="Email ya existe"
@@ -100,22 +101,23 @@ def login():
         
         user = request.form.get('email')
         pw = request.form.get('password')
-        #a="hola mundo"
-        #rmb_me=request.form.get('remember_me')
-        phashed= db.User.query.filter(db.email== user).first()
+        
+        #phashed= db.User.query.filter(db.email== user).first()
+        usuario=db.domo_usuario.query.filter(db.domo_usuario.usr_login == user).first()
 
-        if len(phashed.email)>0:
-            if bcrypt.checkpw(pw, phashed.password_hash):
+        if usuario != None:
+            if bcrypt.checkpw(pw, usuario.usr_contrasena):
                 print("Coinciden")
-                session['nombre']= phashed['nombre']
-                session['email']= phashed['email']
-                session['tipo']=phashed['tipo']
+                
+                #session['nombre']= phashed['nombre']
+                session['email']= usuario.usr_login
+                session['tipo']=usuario.tip_id
 
                 if session['tipo']==1:
                     return render_template("HOME/cl_home", tipo=session['tipo'])
                 elif session['tipo']==2:
                     return render_template("HOME/res_home",tipo=session['tipo'])
-                elif session['tipo'] ==3:
+                elif session['tipo'] ==0:
                     return render_template("HOME/adm_home",tipo=session['tipo'])
 
             else:
@@ -123,16 +125,29 @@ def login():
                 notification.title= "Error de Acceso"
                 notification.message="Correo o contraseña incorrecta"
                 notification.send()
-                return redirect(url_for('index.html'))
+                #icono= 
+                dir_absoluta=path.abspath(path.dirname(__file__))
+                notification.icon = path.join(dir_absoluta,"./app/static/icon.png")
+               #print("A",path.join(dir_absoluta,icono))
+                return redirect(url_for("login"))
         else:
             notification.title= "Error de Acceso"
             notification.message="Usuario incorrecto"
             notification.send()
-            return redirect(url_for('index.html'))
+            return redirect(url_for("login"))
 
     return render_template("assets/login.html", form = form)
 
-    
+
+@app.route('/recuperar_contrasena')
+def recuperar_contrasena():
+    form = RecoveryForm()
+    notification=Notify()
+
+@app.route('/cambio_contrasena')
+def cambio_contrasena():
+    form= ChangepasswordForm()
+    notification=Notify()
 
 @app.route('/ingresar_restaurante')
 def ingresar_restaurante():

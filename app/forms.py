@@ -31,6 +31,11 @@ class RecoveryForm(Form):
     email=EmailField('Correo electrónico',[validators.DataRequired(),validators.Email(),validators.Length(min=6,max=35)])
     submit=SubmitField('Recuperar acceso')
 
+class ChangepasswordForm(Form):
+    password= PasswordField('Nueva contraseña',[validators.DataRequired(),validators.EqualTo('confirm', message='Las contraseñas deben coincidir')])
+    confirm= PasswordField('Repite contraseña', [validators.DataRequired()])
+    submit= SubmitField("Cambiar contraseña")
+
 
 class IngresarRestaurante(Form):  
 

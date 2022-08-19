@@ -49,9 +49,10 @@ DOMO - Regístrate
                 <div class="mb-4">
                 {{ form.region.label }}
                 <br>
-                <select name="regiones" id="regioness" >
+                <select name="regiones" id="regioness" onchange="mostrar()" >
+                    <option value="0">Seleccione Region</option>
                     {% for item in regiones %}
-                    <option value="{{item.domo_region.reg_id}}">{{item.domo_region.reg_nombre}}</option>
+                    <option value="{{item.reg_id}}">{{item.reg_nombre}}</option>
              <!--     {{ form.region(class_="form-control") }}-->
                     {% endfor %}
                 </select>
@@ -60,12 +61,17 @@ DOMO - Regístrate
                 <div class="mb-4"> 
                 {{ form.ciudad.label }}
                 <br>
-                <select name="ciudades">
+                {% for item in regiones %}
+              <!-- <select name="ciudades" id="ciudadess">--> 
+                <select name="{{item.reg_id}}" id="{{item.reg_id}}" hidden>
                     {% for item in ciudades %}
+                    {%  if ciudad.reg_id == item.reg_id %}
+                    <select name="{{item.reg_id}}" id="{{item.reg_id}}" hidden>
                     <option value="{{item.domo_ciudades.ciu_id}}">{{item.domo_ciudades.ciu_nombre}}</option>
-                <!--{{ form.ciudad(class_="form-control") }}-->
+                    {% endif %}
                     {% endfor %}
                 </select>
+                {% endfor %}
                </div>
             
                 <div class="mb-4">
@@ -89,6 +95,30 @@ DOMO - Regístrate
     </div>
 
 </section>
+
+
+<script>
+
+    function mostrar() {
+  
+      var region = document.getElementById("regionsita").value;
+      var largo = document.getElementById("regionsita").length;
+      
+      if(region == 0){
+        for(var i=1;i<largo;i++){
+          document.getElementById(i).hidden = true;
+        }
+        document.getElementById("ciudad").hidden = false;
+      }else{
+        document.getElementById("ciudad").hidden = true;
+        for(var i=1;i<largo;i++){
+          document.getElementById(i).hidden = true;
+        }
+        document.getElementById(region).hidden = false;
+      }
+    
+    }
+  </script>
 
 {% endblock %}
 
