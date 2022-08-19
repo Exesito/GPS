@@ -130,6 +130,7 @@ class domo_encargadortr(db.Model):
     rtr_id = db.Column('rtr_id', db.Integer)
     enc_nombre = db.Column('enc_nombre', db.String(40))
     enc_apellido = db.Column('enc_apellido', db.String(40))
+    enc_rut= db.Column('enc_rut',db.String(13))
 
 class domo_cliente(db.Model):
     __tablename__ = 'domo_cliente'
@@ -140,4 +141,4 @@ class domo_cliente(db.Model):
     dir_id = db.Column('dir_id', db.Integer)
     cli_telefono = db.Column('cli_telefono', db.Integer)
     cli_rut = db.Column('cli_rut', db.String(13))
-    cli_tipo = db.Column('cli_tipo', db.String(1))
+    #cli_tipo = db.Column('cli_tipo', db.String(1))
