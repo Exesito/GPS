@@ -1,9 +1,14 @@
 #from flask_security import LoginForm
+from re import A
 from app import app
 from app import models as db
-from app.forms import IngresarRestaurante, RegisterForm, LoginForm
+from os import path
 
-from app.models import User, domo_restaurante
+from app.forms import IngresarRestaurante, RecoveryForm, ChangepasswordForm,RegisterForm, LoginForm
+
+
+from app.models import domo_restaurante
+
 from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
 from sqlalchemy import func
@@ -17,28 +22,27 @@ def index():
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('home.html'))
+    return redirect(url_for('login'))
 
 @app.route('/register', methods=['GET','POST'])
 def register():
 
     form = RegisterForm()
     notification=Notify()
+    ciudades = db.db.session.query(db.domo_ciudad.ciu_id, db.domo_ciudad.reg_id,db.domo_ciudad.ciu_nombre).all()
+    regiones = db.db.session.query(db.domo_region.reg_id,db.domo_region.reg_nombre).all()
       
     if request.method == 'POST':
         
         email = request.form.get('email')
         password = request.form.get('password')
-        #new_user = User(email = email, password = password)
+        confirm= request.form.get('confirm')
         nombre = request.form.get('nombre')
         apellido= request.form.get('apellido')
         rut= request.form.get('rut')
         celular= request.form.get('celular')
-        region=request.form.get('region')
-
-        
-        ciudad= request.form.get('ciudad')
-
+        region = request.form.get('region')
+        ciudad = request.form.get(region)
         calle= request.form.get('calle')
         numero=request.form.get('numero')
         tipo= 1
@@ -57,19 +61,18 @@ def register():
             db.db.session.commit()
 
             if (db.db.session.query(func.max(db.domo_usuario.usr_id)).scalar() == None):
-                max_id_dir = 1
+                max_id_usr = 1
             else:
-                 max_id_dir = db.db.session.query(func.max(db.domo_usuario.usr_id)).scalar() + 1
+                 max_id_usr = db.db.session.query(func.max(db.domo_usuario.usr_id)).scalar() + 1
 
-            new_user= db.domo_usuario(usr_id=max_id_usr, tip_id=tipo, usr_login=email,usr_contrasena=password
-                                        ,usr_estado='ACTIVA')
+            new_user= db.domo_usuario(max_id_usr, tipo, email,password,"ACTIVA")
             db.db.session.add(new_user)
             db.db.session.commit()
 
             if (db.db.session.query(func.max(db.domo_cliente.cli_id)).scalar() == None):
-                max_id_dir = 1
+                max_id_cli = 1
             else:
-                max_id_dir = db.db.session.query(func.max(db.domo_cliente.cli_id)).scalar() + 1
+                max_id_cli = db.db.session.query(func.max(db.domo_cliente.cli_id)).scalar() + 1
         
             new_cli= db.domo_cliente(cli_id=max_id_cli,usr_id=max_id_usr,cli_nombre=nombre,cli_apellido=apellido,
                                       dir_id=max_id_dir,cli_telefono=celular,cli_rut=rut, cli_tipo=tipo)
@@ -79,15 +82,14 @@ def register():
             notification.title= "Completado"
             notification.message="Usuario registrado con éxito"
             notification.send()
-            return redirect(url_for('assets/register.html'),ciudades=ciudades)
+            return redirect(url_for('login'))
         else:
             notification.title= "Error"
             notification.message="Email ya existe"
             notification.send()
-            return redirect(url_for('assets/register.html'))
+            return redirect(url_for("register"))
        # return new_user.email + " - " +new_user.estado+ " - " + str(new_user.password_hash)
-    ciudades=db.db.session.query(db.domo_ciudad).all()
-    regiones=db.db.session.query(db.domo_region).all()  
+    
     return render_template("assets/register.html", form = form, regiones=regiones, ciudades=ciudades)
 
 @app.route('/login',methods=['GET','POST'])
@@ -95,44 +97,92 @@ def login():
     #session.clear
     notification=Notify()
     form = LoginForm()
-    form.remember_me=True   
+    #form.remember_me=True   
     if request.method == "POST":
         
         user = request.form.get('email')
         pw = request.form.get('password')
-        #a="hola mundo"
-        #rmb_me=request.form.get('remember_me')
-        phashed= db.User.query.filter(db.email== user).first()
+        #pw_hashed=bcrypt.hashpw(pw.encode('utf-8'),bcrypt.gensalt())
+        
+        #phashed= db.User.query.filter(db.email== user).first()
+        usuario=db.domo_usuario.query.filter(db.domo_usuario.usr_login == user).first()
 
-        if len(phashed.email)>0:
-            if bcrypt.checkpw(pw, phashed.password_hash):
+        if usuario != None:
+            if bcrypt.checkpw(pw.encode('utf-8'), usuario.usr_contrasena.encode('utf-8')):
                 print("Coinciden")
-                session['nombre']= phashed['nombre']
-                session['email']= phashed['email']
-                session['tipo']=phashed['tipo']
+                
+                #session['nombre']= phashed['nombre']
+                session['user']= usuario.usr_login
+                session['tipo']=usuario.tip_id
 
                 if session['tipo']==1:
-                    return render_template("HOME/cl_home", tipo=session['tipo'])
+                    return redirect(url_for('dashboard'))
                 elif session['tipo']==2:
-                    return render_template("HOME/res_home",tipo=session['tipo'])
+                    return redirect(url_for('dashboard'))
                 elif session['tipo'] ==3:
-                    return render_template("HOME/adm_home",tipo=session['tipo'])
+                    return redirect(url_for('dashboard'))
 
             else:
                 print("No coinciden")
                 notification.title= "Error de Acceso"
                 notification.message="Correo o contraseña incorrecta"
                 notification.send()
-                return redirect(url_for('index.html'))
+                #icono= 
+                dir_absoluta=path.abspath(path.dirname(__file__))
+                notification.icon = path.join(dir_absoluta,".GPS/app/static/icon.png")
+               #print("A",path.join(dir_absoluta,icono))
+                return redirect(url_for("login"))
         else:
             notification.title= "Error de Acceso"
             notification.message="Usuario incorrecto"
             notification.send()
-            return redirect(url_for('index.html'))
+            return redirect(url_for("login"))
 
     return render_template("assets/login.html", form = form)
 
+
+@app.route('/dashboard')
+def dashboard():
+    user= session['user']
+    usuario=session['tipo']
+    return render_template("HOME/user_home.html",usuario=usuario)
+
+@app.route('/recuperar_contrasena')
+def recuperar_contrasena():
+    form = RecoveryForm()
+    notification=Notify()
+
+@app.route('/cambio_contrasena')
+def cambio_contrasena():
+    form= ChangepasswordForm()
+    notification=Notify()
+
+@app.route('/gestionar_usuarios_admin')
+def gestionar_usuarios_admin():
+    usuarios = db.db.session.query(db.domo_restaurante, db.domo_direccion, db.domo_ciudad, db.domo_region, db.domo_tiporestaurante).filter(
+                                        db.domo_restaurante.dir_id == db.domo_direccion.dir_id,
+                                        db.domo_tiporestaurante.tpr_id == db.domo_restaurante.tpr_id,
+                                        db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id,
+                                        db.domo_ciudad.reg_id==db.domo_region.reg_id).all()
     
+    return render_template("assets/gestionar_restaurantes.html", usuarios=usuarios)
+
+@app.route('/ingresar_usuario')
+def ingresar_usuario():
+    a=A
+
+@app.route('/eliminar_usuario')
+def eliminar_usuario():
+    b=b
+
+@app.route('/editar_usuario')
+def editar_usuario():
+    c=c    
+
+@app.route('actualizar_usuario')
+def actualizar_usuario():
+    d=d
+
 
 @app.route('/ingresar_restaurante')
 def ingresar_restaurante():

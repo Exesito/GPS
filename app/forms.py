@@ -1,18 +1,19 @@
+
 from wtforms import Form, SubmitField, StringField, PasswordField, IntegerField, SelectField,validators
 from wtforms import EmailField  
 
 class RegisterForm(Form):
-    
+    values=[0]
     #username = StringField('', [validators.Length(min=4, max=25)])
     email = StringField('Correo Eléctronico', [validators.DataRequired(message='Ingrese email'), validators.Email(), validators.Length(min=6, max=35)])
     password = PasswordField('Nueva Contraseña', [validators.DataRequired(),validators.EqualTo('confirm', message='Las contraseñas deben coincidir')])
-    confirm = PasswordField('Repite contraseña', [validators.DataRequired()])
+    confirm = PasswordField('Repite Contraseña', [validators.DataRequired()])
     nombre= StringField('Nombre', [validators.DataRequired(),  validators.Length(min=3, max=35)])
     apellido= StringField('Apellido', [validators.DataRequired(), validators.Length(min=2, max=35)])
     rut= StringField('Rut', [validators.DataRequired(), validators.Length(min=6, max=13)])
-    celular=IntegerField('Celular')#,[validators.DataRequired()]
-    region=SelectField('Region')
-    ciudad=SelectField('Ciudad')
+    celular=IntegerField('Celular',[validators.Length(min=5,max=15)])#,[validators.DataRequired()]
+    region=SelectField('Región',[validators.AnyOf(values,message='Seleccione una región',values_formatter=None)])
+    ciudad=SelectField('Ciudad',[validators.AnyOf(values,message='Seleccione una ciudad',values_formatter=None)])
     calle=StringField('Calle', [validators.DataRequired()])
     numero=IntegerField('Número', [validators.DataRequired()])
     #tipo=SelectField('Tipo')
@@ -22,10 +23,40 @@ class RegisterForm(Form):
 
 class LoginForm(Form):
     email=EmailField('Correo electrónico',[validators.DataRequired(), validators.Email(), validators.Length(min=6, max=35)])
-    password= PasswordField('Contraseña')
-    #remember_me = BooleanField('Mantener conectado')
+    password= PasswordField('Contraseña', [validators.DataRequired()])
 
     submit=SubmitField('Iniciar sesión')
+
+class RecoveryForm(Form):
+    email=EmailField('Correo electrónico',[validators.DataRequired(),validators.Email(),validators.Length(min=6,max=35)])
+    submit=SubmitField('Recuperar acceso')
+
+class ChangepasswordForm(Form):
+    password= PasswordField('Nueva contraseña',[validators.DataRequired(),validators.EqualTo('confirm', message='Las contraseñas deben coincidir')])
+    confirm= PasswordField('Repite contraseña', [validators.DataRequired()])
+    submit= SubmitField("Cambiar contraseña")
+
+class RegistroEncargado(Form):
+    values=[0]
+    #username = StringField('', [validators.Length(min=4, max=25)])
+    email = StringField('Correo Eléctronico', [validators.DataRequired(message='Ingrese email'), validators.Email(), validators.Length(min=6, max=35)])
+    password = PasswordField('Nueva Contraseña', [validators.DataRequired(),validators.EqualTo('confirm', message='Las contraseñas deben coincidir')])
+    confirm = PasswordField('Repite contraseña', [validators.DataRequired()])
+    nombre= StringField('Nombre', [validators.DataRequired(),  validators.Length(min=3, max=35)])
+    apellido= StringField('Apellido', [validators.DataRequired(), validators.Length(min=2, max=35)])
+    rut= StringField('Rut', [validators.DataRequired(), validators.Length(min=6, max=13)])
+
+    submit = SubmitField("Crear Cuenta")
+
+
+class RegistroAdmin(Form):
+    email = StringField('Correo Eléctronico', [validators.DataRequired(message='Ingrese email'), validators.Email(), validators.Length(min=6, max=35)])
+    password = PasswordField('Nueva Contraseña', [validators.DataRequired(),validators.EqualTo('confirm', message='Las contraseñas deben coincidir')])
+    confirm = PasswordField('Repite contraseña', [validators.DataRequired()])
+
+    submit = SubmitField("Crear Cuenta")
+
+
 
 class IngresarRestaurante(Form):  
 
@@ -45,7 +76,4 @@ class IngresarRestaurante(Form):
     #direccion=StringField('Dirección',[validators.Length(min=6, max=35)])
     submit=SubmitField('Ingresar')
 
-#class RecoveryForm(Form):
-#    email=EmailField()
-#    submit=SubmitField('Recuperar acceso')
 

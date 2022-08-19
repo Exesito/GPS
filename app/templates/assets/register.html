@@ -15,71 +15,82 @@ DOMO - Regístrate
             </div>
             <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
                 <h1 class="font-weight-bold mb-4">Registrate aquí</h1>
-                <form class="mb-5" action="{{ url_for('register') }}" method=post>
-                    <div class="mb-4">
-                        {{ form.email.label }}
-                        {{ form.email(class_="form-control") }}
-                    </div>
-                    <div class="mb-4">
-                        {{ form.password.label }}
-                        {{ form.password(class_="form-control") }}
-                    </div>
-                    <div class="mb-4">
-                        {{ form.confirm.label }}
-                        {{ form.confirm(class_="form-control") }}
-                    </div>
-                    <div class="mb-4">
-                        {{ form.nombre.label }}
-                        {{ form.nombre(class_="form-control") }}
-                    </div>
-                    <div class="mb-4">
-                        {{ form.apellido.label }}
-                        {{ form.apellido(class_="form-control") }}
-                    </div>
-                    <div class="mb-4">
-                        {{ form.rut.label }}
-                        {{ form.rut(class_="form-control") }}
-                    </div>
 
-                    <div class="mb-4">
-                        {{ form.celular.label }}
-                        {{ form.celular(class_="form-control") }}
-                    </div>
+            <form class="mb-5" action="{{ url_for('register') }}" method=post>
+                <div class="mb-4">
+                    {{ form.email.label }}
+                    {{ form.email(class_="form-control") }}
+                </div>
+                <div class="mb-4">
+                    {{ form.password.label }}
+                    {{ form.password(class_="form-control") }}
+                </div>
+                <div class="mb-4">
+                    {{ form.confirm.label }}
+                    {{ form.confirm(class_="form-control") }}
+                </div>
+                <div class="mb-4">
+                {{ form.nombre.label }}
+                {{ form.nombre(class_="form-control") }}
+                </div>
+                <div class="mb-4">
+                {{ form.apellido.label }}
+                {{ form.apellido(class_="form-control") }}
+                </div>
+                <div class="mb-4">
+                {{ form.rut.label }}
+                {{ form.rut(class_="form-control") }}
+                </div>
+            
+                <div class="mb-4">
+                {{ form.celular.label }}
+                {{ form.celular(class_="form-control") }}
+                </div>
+            
+                <div class="mb-4">
+                {{ form.region.label }}
+                <br>
+                <select name="regiones" id="regioness" class="js-example-basic-single" style="width: 100%;">
+                    <option value="0">Seleccione Region</option>
+                    {% for item in regiones %}
+                    <option value="{{item.reg_id}}">{{item.reg_nombre}}</option>
+             <!--     {{ form.region(class_="form-control") }}-->
+                    {% endfor %}
+                </select>
+                </div>
 
-                    <div class="mb-4">
-                        {{ form.region.label }}
-                        <br>
-                        <select name="regiones">
-                            {% for item in regiones %}
-                            <option value="{{item.reg_id}}">{{item.reg_nombre}}</option>
-                            <!--     {{ form.region(class_="form-control") }}-->
-                            {% endfor %}
-                        </select>
-                    </div>
+                <div class="mb-4"> 
+                {{ form.ciudad.label }}
+                <br>
+              <!-- <select name="ciudades" id="ciudadess">--> 
+                <select name="ciudad" class="form-select js-example-basic-single" id="ciudad" style="width: 100%;">
+                  <option value="0">Seleccione Región</option>
+                </select>
+                {% for item in regiones %}
+                <select name="{{item.reg_id}}" id="{{item.reg_id}}" class="form-select js-example-basic-single form-select" style="width: 100%;" >
+                  <option value="0">Seleccione Ciudad</option>  
+                  {% for ciudad in ciudades %}
+                    {%  if ciudad.reg_id == item.reg_id %}
+                    <option value="{{ciudad.ciu_id}}">{{ciudad.ciu_nombre}}</option>
+                    {% endif %}
+                  {% endfor %}
+                </select>
+                {% endfor %}
+               </div>
+            
+                <div class="mb-4">
+                {{ form.calle.label }}
+                {{ form.calle(class_="form-control") }}
+            </div>
+            
+                <div class="mb-4">
+                {{ form.numero.label }}
+                {{ form.numero(class_="form-control") }}
+            </div>
+            
+                {{ form.submit(class_="btn btn-primary w-100") }}
+            </form>
 
-                    <div class="mb-4">
-                        {{ form.ciudad.label }}
-                        <br>
-                        <select name="ciudades">
-                            {% for item in ciudades %}
-                            <option value="{{item.ciu_id}}">{{item.ciu_nombre}}</option>
-                            <!--{{ form.ciudad(class_="form-control") }}-->
-                            {% endfor %}
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form.calle.label }}
-                        {{ form.calle(class_="form-control") }}
-                    </div>
-
-                    <div class="mb-4">
-                        {{ form.numero.label }}
-                        {{ form.numero(class_="form-control") }}
-                    </div>
-
-                    {{ form.submit(class_="btn btn-primary w-100") }}
-                </form>
             </div>
         </div>
 
@@ -90,4 +101,55 @@ DOMO - Regístrate
 
 </section>
 
+
 {% endblock %}
+
+
+{% block script %}
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#regioness').select2({placeholder: 'Seleccione Región', allowClear: true});
+  });
+
+  $(document).ready(function() {
+    $('#ciudad').select2();
+  });
+
+  $(document).ready(function(){
+    let i=1;
+    $($('#regioness').children('option')).each(function(){
+      $('#'+i).select2().next().hide();
+      i++;
+    });
+  });
+
+  $('#regioness').change(function(){
+      
+      if($('#regioness').val()==0){
+      $('#ciudad').select2().next().show();
+      let i=1;
+      $($('#regioness').children('option')).each(function(){
+        $('#'+i).select2().next().hide();
+        i++;
+      });
+    }else{
+      $('#ciudad').select2().next().hide();
+      let i=1;
+      $($('#regioness').children('option')).each(function(){
+        if(i==$('#regioness').val()){
+          $('#'+i).select2().next().show();
+        }else{
+          $('#'+i).select2().next().hide();
+        }
+        i++;
+      });
+    }
+  }); 
+
+</script>
+
+
+
+
+{% endblock %}
+
