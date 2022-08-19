@@ -81,3 +81,20 @@ body {
     border-radius: 1.5rem;
     opacity: 0.6;
 }
+
+.reserva-container{
+    padding-top: 2.3rem;
+}
+
+.grid-reserva {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    }
+    
+.grid-reserva .grid1 { grid-area: 1 / 1 / 2 / 3; display: grid;  align-items: center;      /* new */
+    justify-items: center; padding:1rem;   }
+.grid-reserva .grid2 { grid-area: 1 / 3 / 2 / 6; display:grid; align-items: center;      /* new */
+    justify-items: center; padding:1rem; }  

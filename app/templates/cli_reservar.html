@@ -5,8 +5,7 @@
 {% endblock %}
 
 {% block body %}
-    <p>Hola Mundo! estamos en Reservas</p>
-
+    <div class="reserva-container">
     <div class="jumbotron jumbotron-fluid img-1">
         <div class="container black-background">
           <h1 class="display-4">Restaurante</h1>
@@ -14,8 +13,22 @@
         </div>
     </div>
 
-    {% include "assets/form_reservar.html"%}
-    <br>
-    {% include "assets/form_mesa.html"%}
+    <div class="grid-reserva img-0">
 
+
+    <div class="grid1">
+      {% include "assets/form_reservar.html"%}
+
+      {% include "assets/form_mesa.html"%}
+
+    </div>
+
+    <div class="grid2">
+
+      <p>Aquí va la imagen</p>
+ 
+    </div>
+
+    </div>
+  </div>
 {% endblock %}
