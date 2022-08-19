@@ -192,26 +192,6 @@ create table DOMO_USUARIO (
    USR_CONTRASENA       VARCHAR(18)          null,
    constraint PK_DOMO_USUARIO primary key (USR_ID)
 );
-drop table DOMO_HORARIO;
-
-/*==============================================================*/
-/* Table: DOMO_HORARIO                                          */
-/*==============================================================*/
-create table DOMO_HORARIO (
-   HOR_ID               SERIAL               not null,
-   RTR_ID               INT4                 null,
-   HOR_DIAINICIO        INT4                 null,
-   HOR_DIATERMINO       INT4                 null,
-   HOR_HORAINICIO       TIME                 null,
-   HOR_HORATERMINO      TIME                 null,
-   HOR_DISPONIBILIDAD   BOOL                 null,
-   constraint PK_DOMO_HORARIO primary key (HOR_ID)
-);
-
-alter table DOMO_HORARIO
-   add constraint FK_DOMO_HOR_REFERENCE_DOMO_RES foreign key (RTR_ID)
-      references DOMO_RESTAURANTE (RTR_ID)
-      on delete restrict on update restrict;
 
 /*==============================================================*/
 /* Table: DOMO_TIPORESTAURANTE                                  */
