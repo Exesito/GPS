@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block body %}
-    <div class="reserva-container">
+    <div class="reserva-container img-0">
+
     <div class="jumbotron jumbotron-fluid img-1">
         <div class="container black-background">
           <h1 class="display-4">Restaurante</h1>
@@ -13,7 +14,7 @@
         </div>
     </div>
 
-    <div class="grid-reserva img-0">
+    <div class="grid-reserva">
 
 
     <div class="grid1">
@@ -24,9 +25,24 @@
     </div>
 
     <div class="grid2">
+      <div class="card style-image">    
+        <div class="card-header">
+          Distribución de Mesas
+        </div>
+      <div class="">
+        <img class="card-img-top" src="../static/media/mesas-default.jpg">
+      </div>
+      </div>
+    </div>
 
-      <p>Aquí va la imagen</p>
- 
+    <div class="grid3">
+      <div class="card style-image">
+        <div class="card-header">
+          Carta
+        </div>
+        <a href="../static/menu/menu_test.pdf" download><img style="max-width: 100%; padding:1rem;"src="../static/media/menu-default.png"></a>
+        <p>Descargué su carta <a href="../static/menu/menu_test.pdf" download>aquí</a>.</p>
+      </div>
     </div>
 
     </div>
