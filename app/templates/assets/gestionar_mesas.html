@@ -11,14 +11,16 @@ Gestionar Mesas
         let div = document.createElement('div');
         const editor = document.querySelector('#editor-dd');
         editor.appendChild(div);
-        div.classList.add("ui-widget-content");
-        div.classList.add("draggable");
-        div.classList.add("mesa");
-        div.style = "color: white; font-size: 2em; text-shadow: 1px 1px black;";
+        div.classList.add("ui-widget-content","draggable","mesa");
+        div.style = "color: white; font-size: 1em; text-shadow: 1px 1px black;";
+
+        const icono = document.createElement('i');
+        icono.classList.add("fa","fa-cutlery");
+        div.appendChild(icono);
 
         //Enumerar por orden de creación
         var total_mesas = document.getElementsByClassName("mesa");
-        var enumerar = document.createTextNode(String(total_mesas.length));
+        var enumerar = document.createTextNode(" "+String(total_mesas.length));
         div.appendChild(enumerar);
     }
 
@@ -27,9 +29,11 @@ Gestionar Mesas
         let div = document.createElement('div');
         const editor = document.querySelector('#editor-dd');
         editor.appendChild(div);
-        div.classList.add("ui-widget-content");
-        div.classList.add("draggable");
-        div.classList.add("silla");
+        div.classList.add("ui-widget-content","draggable","silla");
+
+        const icono = document.createElement('i');
+        icono.classList.add("fas","fa-chair");
+        div.appendChild(icono);
     }
 
     function deshacer(){

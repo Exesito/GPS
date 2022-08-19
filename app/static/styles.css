@@ -79,15 +79,28 @@ body {
 .silla{
     width: 36px;
     height: 36px;
-    background-color: rgb(115, 230, 0) !important;
-    display: flex;
+    font-size: 36px;
+    text-shadow: 1px 1px black;
+    background-color: hsla(0, 0%, 0% ,0) !important;
+    border: 1px solid hsla(0, 0%, 0% ,0) !important;
+    margin-top: -8px;
+    margin-left: 2px;
 }
 
 .mesa{
     width: 72px;
     height: 72px;
     background-color: crimson !important;
-    display: flex;
+}
+
+.fa-chair{
+    color: chartreuse;
+}
+
+.fa-cutlery{
+    margin-left: 18px;
+    margin-top: 16px;
+    font-size: 1.6em;
 }
 
 .draggable{
@@ -104,6 +117,7 @@ body {
 }
 
 .btn-default{
+    font-size: 13px;
     background-color: #8d6db8;
     box-shadow: 2px 2px #491f4e;
 }
@@ -130,9 +144,4 @@ body {
 
 .flex{
     display: flex;
-}
-
-.boton_basura{
-    width:  16px;
-    height: 16px;
 }
