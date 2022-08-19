@@ -1,3 +1,4 @@
+
 from app import app, models
 from app.forms import RegisterForm, ReservaForm, MesaForm
 from app.models import User
@@ -44,10 +45,15 @@ def reservar(id):
     form.dia.choices = day_choice
     form.hora.choices = hour_choice
     
+    restaurante = models.domo_restaurante.get_by_id(1).first()
+    
     data = {
         #"RESTAURANTE_ID": models.domo_restaurante.get_by_id(id),
-        "RESTAURANTE_ID": 1
+        "RESTAURANTE_ID": restaurante.id,
+        "nombre": restaurante.nombre,
+        "descripcion": restaurante.descripcion
     }
+    
     
     return render_template("cli_reservar.html", data = data, registered = registered, form = form, mesa_form = mesa_form)
 
