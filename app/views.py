@@ -56,6 +56,15 @@ def editor_horarios():
     
     return render_template("CRUD-Horarios/editor_horario.html", horarios_count = zip(horarios, range(len(horarios))), isGestionable = True, rtr_names = result )
 
+@app.route('/editor_horarios/del',methods=['POST'])
+def editor_horarios_del():
+    if request.method =='POST':
+        id = request.json['id']
+        print("request para borrar", id)
+        db.db.session.query(db.domo_horario).filter(db.domo_horario.hor_id == id).delete()
+        db.db.session.commit()
+    return redirect(url_for('editor_horarios'))
+
 @app.route('/editor_cartas',methods=['GET','POST'])
 def editor_cartas():
     session['email'] = 'P5W512FM N3REWJ0IEN9'  #Linea para establecer un usuario mientras no hayan sesiones
