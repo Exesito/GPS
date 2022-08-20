@@ -54,33 +54,31 @@ $(document).ready( function () {
             nombre = String(currentTD.get(1).textContent)
             id = currentTH.get(0)
             rtr_id = $('#id').textContent;
+            
             if(!nombre)
                 empty = true
-            
             if(empty){
                 alert('por favor, rellene todos los campos.')
                 return
             }
             
             var url= window.location.pathname;
-            $.ajax({    //se manda info a la bdd
-                type: "POST",
-                url: url,
-                contentType: "application/json",
-                data: JSON.stringify(
-                {   "nombre":nombre,
-                    "id":id,
-                    "rtr_id": rtr_id,
-                },
-                ),
-                dataType: "json",
-                success: function(response) {
-                    console.log(response);
-                },
-                error: function(err) {
-                    console.log(err);
-                }
-            })
+            $("form#data").submit(function(e) {
+                e.preventDefault();    
+                var formData = new FormData(this);
+            
+                $.ajax({
+                    url: window.location.pathname,
+                    type: 'POST',
+                    data: formData,
+                    success: function (data) {
+                        alert(data)
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            });
             $(this).parents('#btn-submit').toggleClass('half')
             $.each(currentTD, function () {
                 $(this).prop('contenteditable', false)
@@ -91,6 +89,7 @@ $(document).ready( function () {
             $(this).toggleClass('btn-secundary');
             $(this).toggleClass('btn-success');
             $(this).parents('th').find('.cancel-button').remove()
+            styleTableButtons()
         }
     });
 

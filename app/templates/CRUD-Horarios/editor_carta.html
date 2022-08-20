@@ -31,11 +31,11 @@ Carta Restaurante
       <tbody>
         {%for dato in lista_cartas%}
           <tr> 
-          <form action="{{url_for('editor_cartas')}}", method = "post">
-          <th scope="row">{{dato.domo_carta.car_id}}</th>
+          <form id="data" action="{{url_for('editor_cartas')}}", method = "post">
+          <th scope="row">{{dato.domo_carta.car_id}} </th>
           <td id="id" hidden>{{dato.domo_restaurante.rtr_id}}</td>
           <th scope="row">{{dato.domo_restaurante.rtr_nombre}}</th>
-          <td>{{dato.domo_carta.car_nombre}}</td>
+          <td id="nombre_car"> {{dato.domo_carta.car_nombre}} <input id="car_nombre" type="text" hidden/></td>
           <th id="link"> <a  href="{{dato.domo_carta.car_url}}">Link a carta !!</a> </th>
           
           <th><a value id="btn_submit" class="btn btn-secondary table-row-edit edit-button" >Editar</a><a class="btn btn-danger btn-delete">Eliminar</a></th>

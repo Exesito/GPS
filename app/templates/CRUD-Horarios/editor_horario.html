@@ -33,17 +33,14 @@ Horarios Restaurante
           <tr> 
             <form action="{{url_for('editor_horarios')}}", method = "post">
             <th scope="row">{{i+1}}</th>
-            <td hidden>{{data.domo_horario.hor_id}}</td>
+            <td hidden name="hor_id">{{data.domo_horario.hor_id}}</td>
             <th>{{data.domo_restaurante.rtr_nombre}}</th>
-            <td hidden>{{data.domo_restaurante.rtr_id}}</td>
-            <td>
-              {{data.domo_horario.hor_nombre}}
-              
-            </td>
-            <td>{{data.domo_horario.hor_horainicio}}</td>
-            <td>{{data.domo_horario.hor_horatermino}}</td>
-            <td>{{data.domo_horario.hor_diainicio}}</td>
-            <td>{{data.domo_horario.hor_diatermino}}</td>
+            <td name="rtr_id" hidden>{{data.domo_restaurante.rtr_id}}</td>
+            <td name="hor_nombre">{{data.domo_horario.hor_nombre}}</td>
+            <td name="hor_inicio">{{data.domo_horario.hor_horainicio}}</td>
+            <td name="hora_cierre">{{data.domo_horario.hor_horatermino}}</td>
+            <td name="dia_inicio">{{data.domo_horario.hor_diainicio}}</td>
+            <td name="dia_fin">{{data.domo_horario.hor_diatermino}}</td>
               {% if isGestionable %}
                 <th><a value id="btn_submit" class="btn btn-secondary table-row-edit edit-button" >Editar</a></th>
                 <th><a class="btn btn-danger btn-delete">Eliminar</a></th>

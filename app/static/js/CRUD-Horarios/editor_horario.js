@@ -23,14 +23,15 @@ jQuery(document).ready( function () {
             $(this).toggleClass('btn-secundary');
             $(this).toggleClass('btn-success');
             $(this).data('editar', true);
-
-            var id = currentTD.get(0).textContent
-            var nombre = currentTD.get(3).textContent
-            var apertura = currentTD.get(4).textContent
-            var cierre = currentTD.get(5).textContent
-            var dia_inicio = currentTD.get(6).textContent
-            var dia_fin = currentTD.get(7).textContent
-            var rtr_id = currentTD.get(2).textContent
+            
+            
+            var id = currentTD.get(1).textContent
+            var nombre = currentTD.get(2).textContent
+            var apertura = currentTD.get(3).textContent
+            var cierre = currentTD.get(4).textContent
+            var dia_inicio = currentTD.get(5).textContent
+            var dia_fin = currentTD.get(6).textContent
+            
             
             currentTD.data("id", id)
             currentTD.data("nombre", nombre)
@@ -40,14 +41,26 @@ jQuery(document).ready( function () {
             currentTD.data("dia_fin", dia_fin)
 
         } else {        //si dice guardar, debe revisar el contenido y enviarlo a la base de datos
+           var names = getrtrnames($('#rtr_names').html().split(','));
+
             
             var id = currentTD.get(0).textContent
-            var nombre = currentTD.get(3).textContent
-            var apertura = currentTD.get(4).textContent
-            var cierre = currentTD.get(5).textContent
-            var dia_inicio = currentTD.get(6).textContent
-            var dia_fin = currentTD.get(7).textContent
-            var rtr_id = currentTD.get(2).textContent
+            var nombre = currentTD.get(2).textContent
+            var apertura = currentTD.get(3).textContent
+            var cierre = currentTD.get(4).textContent
+            var dia_inicio = currentTD.get(5).textContent
+            var dia_fin = currentTD.get(6).textContent
+            var rtr_id = currentTD.get(1).textContent
+            if(/[a-zA-Z]/.test(id))
+                id = null
+            if(!rtr_id)
+                for(j=0;j-names[0].length;j++){
+                    if( String(names[0][j][1]).trim(' ') === String($(this).parents('tr').find('#combo :selected').val()).trim(' '))
+                        rtr_id = names[0][j][0]
+                }
+                
+                
+            
             
             empty = false
             error = false
@@ -65,7 +78,7 @@ jQuery(document).ready( function () {
                 alert(errortxt)
                 return
             }
-
+            
             var url= window.location.pathname;
             $.ajax({
                 type: "POST",
@@ -109,12 +122,11 @@ jQuery(document).ready( function () {
 
     $('body').on('click','#nuevo', function(){
         var nuevo = $("horarios").load("CRUD-Horarios\nuevo_horario.html")
-        var names = []
-        names.push($('#rtr_names').html().split(','))
+        var names = getrtrnames($('#rtr_names').html().split(','));
+        
         new_row = '<tr> \n\
-                    <th> *Nuevo*</th> \n\
-                    <td hidden></td> \n\
-                    <td> <select class="nuevo-combo" onChange="combo(this, "demo")"></td> \n\
+                    <th>*Nuevo*</th> \n\
+                    <td> <select id="combo" class="nuevo-combo" onChange="combo(this, "demo")"></td> \n\
                     <td hidden></td> \n\
                     <td></td> \n\
                     <td></td> \n\
@@ -124,11 +136,13 @@ jQuery(document).ready( function () {
                     <th><a value id="btn_submit" class="btn btn-secondary table-row-edit edit-button" >Editar</a></th> \n\
                     <th><a href="#" class="btn btn-danger btn-delete" onclick="return confirm("¿Estás seguro de eliminar este horario?");">Eliminar</a></th> \n\
                    </tr>'             
-    
+        
         $('#horarios > tbody:last-child').append(new_row);
-         for(i = 0; i<= names.length; i++){
-            $('.nuevo-combo').append("<option>" + names[0][i] + "</option>")
-         }
+        
+            for(j=0;j-names[0].length;j++){
+                $('.nuevo-combo').append("<option>" + names[0][j][1] + "</option>")
+            }
+        
          $('.nuevo-combo').toggleClass('nuevo-combo')
         
         $('.edit-button').data('editar', false)
@@ -144,13 +158,13 @@ jQuery(document).ready( function () {
 
     $('body').on('click', '.cancel-button', function(){
         var currentTD = $(this).parents('tr').find('td');
-        currentTD.get(0).textContent = currentTD.data("id")
-        currentTD.get(3).textContent = currentTD.data('nombre')
-        currentTD.get(4).textContent = currentTD.data('apertura')
-        currentTD.get(5).textContent = currentTD.data('cierre')
-        currentTD.get(6).textContent = currentTD.data('dia_inicio')
-        currentTD.get(7).textContent = currentTD.data('dia_fin')
-        currentTD.get(2).textContent = currentTD.data('rtr_id')
+        currentTD.get(1).textContent = currentTD.data("id")
+        currentTD.get(2).textContent = currentTD.data('nombre')
+        currentTD.get(3).textContent = currentTD.data('apertura')
+        currentTD.get(4).textContent = currentTD.data('cierre')
+        currentTD.get(5).textContent = currentTD.data('dia_inicio')
+        currentTD.get(6).textContent = currentTD.data('dia_fin')
+        
 
         $.each(currentTD, function () {
             $(this).prop('contenteditable', false)
@@ -232,3 +246,28 @@ function styleTableButtons(){
     $('.dataTables_filter').css("display","inline-flex")
 }
 
+function replaceAll(str, find, replace) {
+    var escapedFind=find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+    return str.replace(new RegExp(escapedFind, 'g'), replace);
+}
+
+function getrtrnames(jq){
+    var names = []
+    names.push(jq)
+    names.forEach((name, i = 0) => {
+    name[0] = replaceAll(name[0], "[", "");
+    name[0] = replaceAll(name[0], "]", "");
+    name[0] = replaceAll(name[0], "'", "");
+
+    name[1] = replaceAll(name[1], "[", "");
+    name[1] = replaceAll(name[1], "]", "");
+    name[1] = replaceAll(name[1], "'", "");
+    
+    })
+    for(i = 0; i< names.length;i++){
+        for(j=0;j-names[i].length;j++){
+            names[i][j] = names[i][j].split('-')
+        }
+    }
+    return names;
+}
