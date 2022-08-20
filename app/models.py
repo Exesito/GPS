@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 import json
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin
 import bcrypt
+from datetime import date
 
 db = SQLAlchemy()
 
@@ -31,13 +32,13 @@ class User(db.Model, UserMixin):
 class domo_reserva(db.Model):
     
     __tablename__ = 'domo_reserva'
-    rsv_id = db.Column('rsv_id', db.Integer, primary_key = True)
+    rsv_id = db.Column('rsv_id', db.Integer, primary_key = True, autoincrement=True)
     msa_id = db.Column('msa_id', db.Integer, db.ForeignKey('domo_mesa.msa_id'))
     tpg_id = db.Column('tpg_id', db.Integer, db.ForeignKey('domo_tipodepago.tpg_id'))
     cli_id = db.Column('cli_id', db.Integer, db.ForeignKey('domo_cliente.cli_id'))
     rsv_hora = db.Column('rsv_hora', db.Time)
     rsv_fecha = db.Column('rsv_fecha', db.Date)
-    rsv_asistencia = db.Column('rsv_asistencia', db.String(30))
+    rsv_estado = db.Column('rsv_estado', db.String(30))
     rsv_fechaderegistro = db.Column('rsv_fechaderegistro', db.Date)
     #Columna de estatus Fail/Success
     
@@ -112,7 +113,17 @@ class domo_restaurante(db.Model):
 
     def get_mesas(self):
         return domo_mesa.query.filter_by(rtr_id = self.rtr_id).all()
-
+    
+    def generate_reserva(self, hora, fecha, mesa_id, estado):    
+        
+        hora = "%d:00:00" % (int(hora))
+        
+        new_reserva = domo_reserva(rsv_hora = hora, rsv_fecha = fecha, rsv_estado = estado, msa_id = mesa_id, rsv_fechaderegistro = date.today())     
+        db.session.add(new_reserva)
+        db.session.commit()
+        
+        return new_reserva.rsv_id
+        
     @staticmethod
     def get_by_id(id):
         return domo_restaurante.query.filter_by(rtr_id = id).first()

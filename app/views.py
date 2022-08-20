@@ -2,8 +2,8 @@
 from multiprocessing.connection import Client
 from app import app, models
 from app.forms import RegisterForm, ReservaForm, MesaForm, ClientForm
-from app.models import User
-from flask import render_template, request
+from app.models import User, domo_restaurante
+from flask import render_template, request, url_for, redirect
 
 db = models.db
 
@@ -78,6 +78,31 @@ def reserva_not_registered(id_restaurante, id_reserva):
     }
     
     return render_template("cli_reservar_not_registered.html", data = data, client_form = client_form)
+
+@app.route('/reservar/<id_restaurante>/generar_reserva', methods=['GET','POST'])
+def reserva_create(id_restaurante):
+    
+    if request.method == 'POST':
+        
+        hora = request.form['hora']
+        fecha = request.form["dia"]
+        mesa_id = request.form['mesa']
+        estado = "CREADA"
+        
+        restaurante = domo_restaurante.get_by_id(id_restaurante)
+        id_reserva = restaurante.generate_reserva(hora, fecha, mesa_id, estado)
+        
+        
+        return redirect(url_for('reserva_exitosa', id_restaurante = id_restaurante, id_reserva = id_reserva))
+
+
+@app.route('/reservar/<id_restaurante>/<id_reserva>/reserva_exitosa', methods=['GET','POST'])
+def reserva_exitosa(id_restaurante, id_reserva):
+    
+    restaurante = models.domo_restaurante.get_by_id(id_restaurante)
+    reserva = models.domo_reserva.get_by_id(id_reserva)
+    
+    return render_template("cli_ver_reservas.html")
 
 @app.route('/cliente/ver_reservas', methods=['GET','POST'])
 def cli_ver_reservas():
