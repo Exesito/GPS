@@ -120,8 +120,8 @@ def reserva_create(id_restaurante):
 def reserva_update_new_client(id_restaurante, id_reserva):
     
     if request.method == 'POST':
-        
-        
+        return     
+    return    
 
 @app.route('/reservar/<id_restaurante>/<id_reserva>/reserva_exitosa', methods=['GET','POST'])
 def reserva_exitosa(id_restaurante, id_reserva):
