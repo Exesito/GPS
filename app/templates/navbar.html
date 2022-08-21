@@ -22,23 +22,9 @@
                         </ul>
                     </li>
                 
-            
-                <a class="nav-link active" aria-current="page" href="{{url_for('dashboard')}}">Inicio</a>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">AAA</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="#">Perfil</a></li>
-                        <li><a class="dropdown-item" href="{{url_for('logout')}}">Cerrar Sesión</a></li>
-                    </ul>
-                </li>
-
-
->>>>>>> 2990cc93e9ca3c1930204caf33172014cdc75903
-                
                 {% elif session['tipo']==2 %}
                 <a class="nav-link active" aria-current="page" href="{{url_for('dashboard')}}">Inicio</a>
                 <a class="nav-link" href="{{url_for('logout')}}">Cerrar Sesión</a>
-
 
 
                 {% elif session['tipo']== 3 %}
@@ -46,12 +32,6 @@
                 <a class="nav-link" href="{{url_for('gestionar_restaurantes')}}">Gestionar Restaurante</a>
                 <a class="nav-link" href="{{url_for('gestionar_usuarios_admin')}}">Gestionar Usuarios</a>
                 <a class="nav-link" href="{{url_for('logout')}}">Cerrar Sesión</a>
-
-
-                {% else %}
-                <a class="nav-link active" aria-current="page" href="{{url_for('index')}}">Inicio</a>
-                <a class="nav-link" href="{{url_for('login')}}">Iniciar Sesion</a>
-                <a class="nav-link" href="{{url_for('gestionar_restaurantes')}}">Gestionar Restaurante</a>
 
 
                 {% endif %}

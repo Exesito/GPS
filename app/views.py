@@ -1,12 +1,7 @@
-#from flask_security import LoginForm
-from re import A
 from app import app
 from app import models as db
-from os import path
-
+#from os import path
 from app.forms import EditForm1, EditForm2, EditForm3, IngresarRestaurante, RecoveryForm, ChangepasswordForm,RegisterForm, LoginForm, RegistroAdmin, RegistroEncargado
-
-
 from app.models import domo_cliente, domo_restaurante
 
 from notifypy import Notify
@@ -147,7 +142,6 @@ def dashboard():
     usr = db.domo_usuario.query.filter(db.domo_usuario.usr_login == user).first()
     return render_template("HOME/user_home.html",usuario=usuario)
 
-
 @app.route('/recuperar_contrasena')
 def recuperar_contrasena():
     form = RecoveryForm()
@@ -160,19 +154,20 @@ def cambio_contrasena():
 
 @app.route('/gestionar_usuarios_admin')
 def gestionar_usuarios_admin():
-    usuarios = db.db.session.query(db.domo_usuario, db.domo_cliente, db.domo_encargadortr, db.domo_ciudad, db.domo_region, db.domo_direccion).filter(
-                                        db.domo_usuario.usr_id == db.domo_cliente.usr_id,
-                                        db.domo_cliente.dir_id == db.domo_direccion.dir_id,
-                                        #db.domo_encargadortr.usr_id==db.domo_usuario.usr_id,
-                                        db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id,
-                                        db.domo_ciudad.reg_id==db.domo_region.reg_id).all()
+    usuarios = db.db.session.query(db.domo_usuario.usr_id,db.domo_usuario.usr_login,db.domo_usuario.tip_id,db.domo_usuario.usr_estado).all()
     
-    return render_template("assets/adm_gestionar_usuarios.html", usuarios=usuarios)
+    clientes=db.db.session.query(db.domo_usuario,db.domo_cliente,db.domo_ciudad,db.domo_region,db.domo_direccion).filter(db.domo_usuario.usr_id==db.domo_cliente.usr_id
+                                    ,db.domo_direccion.dir_id==db.domo_cliente.dir_id, db.domo_direccion.ciu_id==db.domo_ciudad.ciu_id, db.domo_ciudad.reg_id==db.domo_region.reg_id).all()
 
-@app.route('/ingresar_usuario_encargado')
+    encargados=db.db.session.query(db.domo_usuario,db.domo_encargadortr).filter(db.domo_usuario.usr_id==db.domo_encargadortr.usr_id).all()
+    
+    return render_template("assets/adm_gestionar_usuarios.html", usuarios=usuarios, clientes=clientes, encargados=encargados)
+
+@app.route('/ingresar_usuario_encargado',methods=['GET','POST'])
 def ingresar_usuario_encargado():
     form=RegistroEncargado()
     notification=Notify()
+    restaurantes=db.db.session.query(db.domo_restaurante.rtr_id,db.domo_restaurante.rtr_nombre).all()
 
     if request.method=='POST':
         email= request.form.get('email')
@@ -181,6 +176,7 @@ def ingresar_usuario_encargado():
         nombre=request.form.get('nombre')
         apellido=request.form.get('apellido')
         rut=request.form.get('rut')
+        restaurant=request.form.get('restaurante')
         tipo=2
         max_id_enc=0
         max_id_usr=0
@@ -201,7 +197,7 @@ def ingresar_usuario_encargado():
             else:
                 max_id_enc = db.db.session.query(func.max(db.domo_encargadortr.enc_id)).scalar() + 1
         
-            new_cli= db.domo_encargadortr(enc_id=max_id_enc,usr_id=max_id_usr,enc_nombre=nombre,enc_apellido=apellido,
+            new_cli= db.domo_encargadortr(enc_id=max_id_enc,usr_id=max_id_usr,rtr_id=restaurant,enc_nombre=nombre,enc_apellido=apellido,
                                       enc_rut=rut)
             db.db.session.add(new_cli)
             db.db.session.commit()
@@ -216,7 +212,7 @@ def ingresar_usuario_encargado():
             notification.send()
             return redirect(url_for("ingresar_usuario_encargado"))
         
-    return render_template("assets/adm_ingresar_usuario_encargado.html", form = form)
+    return render_template("assets/adm_ingresar_usuario_encargado.html", form = form, restaurantes=restaurantes)
 
 @app.route('/ingresar_usuario_admin',methods=['GET','POST'])
 def ingresar_usuario_admin():
@@ -255,14 +251,22 @@ def ingresar_usuario_admin():
 
 @app.route('/gestionar_usuarios_admin/<id>')
 def eliminar_usuario(id):
-    usuario = db.domo_usuario.query.filter_by(usr_id=id).first()
+    usuario = db.domo_usuario.query.filter_by(db.domo_usuario.usr_id==id).first()
     if usuario.tip_id==1:
         cliente=db.domo_cliente.query.filter_by(db.domo_cliente.usr_id==id).first()
+
+        direccion = db.domo_direccion.query.filter_by(dir_id=cliente.dir_id).first()
+        db.db.session.delete(direccion)
+        cliente.dir_id = None
+        db.db.session.commit()
+
         db.db.session.delete(cliente)
         db.db.session.commit()
 
     elif usuario.tip_id==2:
         encargado=db.domo_encargadortr.query.filter_by(db.domo_encargadortr.usr_id==id).first()
+        encargado.rtr_id = None
+        db.db.session.commit()
         db.db.session.delete(encargado)
         db.db.session.commit()
 
@@ -270,13 +274,7 @@ def eliminar_usuario(id):
         db.db.session.delete(usuario)
         db.db.session.commit()
         
-    usuarios = db.db.session.query(db.domo_usuario, db.domo_cliente, db.domo_encargadortr, db.domo_ciudad, db.domo_region, db.domo_direccion).filter(
-                                        db.domo_usuario.usr_id == db.domo_cliente.usr_id,
-                                        db.domo_cliente.dir_id == db.domo_direccion.dir_id,
-                                        db.domo_encargadortr.usr_id==db.domo_usuario.usr_id,
-                                        db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id,
-                                        db.domo_ciudad.reg_id==db.domo_region.reg_id).all()
-    return render_template("assets/adm_gestionar_usuarios.html", usuarios=usuarios)
+    return redirect(url_for('gestionar_usuarios_admin'))
 
 @app.route('/gestionar_usuarios_admin/<id>')
 def editar_usuario(id):
@@ -293,7 +291,7 @@ def editar_usuario(id):
 
     return render_template("assets/adm_editar_usuario.html", usuarios=usuarios,ciudades=ciudades,regiones=regiones,tipo_usuario=tipo_usuario)    
 
-@app.route('/gestionar_usuarios_admin/<id>', methods=['POST'])
+@app.route('/gestionar_usuarios_admin/<id>', methods=['GET','POST'])
 def actualizar_usuario(id):
 
     form
@@ -360,7 +358,6 @@ def actualizar_usuario(id):
 
             db.db.session.commit()
 
-
         if usuario.tip_id==2:
 
             form=EditForm2(obj=usuario)
@@ -397,11 +394,6 @@ def actualizar_usuario(id):
             encargado.enc_rut=rut
             db.db.session.commit()
 
-
-
-
-
-
         if usuario.tip_id==3:
             form=EditForm3(obj=usuario)
 
@@ -423,17 +415,16 @@ def actualizar_usuario(id):
             usuario.usr_estado=estado
             db.db.session.commit()
 
-
         db.db.session.commit()
 
-        usuarios = db.db.session.query(db.domo_usuario, db.domo_cliente, db.domo_encargadortr, db.domo_ciudad, db.domo_region, db.domo_direccion).filter(
-                                        db.domo_usuario.usr_id == db.domo_cliente.usr_id,
-                                        db.domo_cliente.dir_id == db.domo_direccion.dir_id,
-                                        db.domo_encargadortr.usr_id==db.domo_usuario.usr_id,
-                                        db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id,
-                                        db.domo_ciudad.reg_id==db.domo_region.reg_id).all()
+        usuarios = db.db.session.query(db.domo_usuario.usr_id,db.domo_usuario.usr_login,db.domo_usuario.tip_id,db.domo_usuario.usr_estado).all()
+    
+        clientes=db.db.session.query(db.domo_usuario,db.domo_cliente,db.domo_ciudad,db.domo_region,db.domo_direccion).filter(db.domo_usuario.usr_id==db.domo_cliente.usr_id
+                                    ,db.domo_direccion.dir_id==db.domo_cliente.dir_id, db.domo_direccion.ciu_id==db.domo_ciudad.ciu_id, db.domo_ciudad.reg_id==db.domo_region.reg_id).all()
 
-        return render_template("assets/adm_gestionar_usuarios.html", form=form,usuarios=usuarios)
+        encargados=db.db.session.query(db.domo_usuario,db.domo_encargadortr).filter(db.domo_usuario.usr_id==db.domo_encargadortr.usr_id).all()
+
+        return render_template("assets/adm_gestionar_usuarios.html", usuarios=usuarios, clientes=clientes, encargados=encargados)
 
 
 @app.route('/ingresar_restaurante')
