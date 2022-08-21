@@ -1,12 +1,10 @@
 #from flask_security import LoginForm
-from crypt import methods
-import email
 from re import A
 from app import app
 from app import models as db
 from os import path
 
-from app.forms import IngresarRestaurante, RecoveryForm, ChangepasswordForm,RegisterForm, LoginForm, RegistroAdmin, RegistroEncargado
+from app.forms import EditForm1, EditForm2, EditForm3, IngresarRestaurante, RecoveryForm, ChangepasswordForm,RegisterForm, LoginForm, RegistroAdmin, RegistroEncargado
 
 
 from app.models import domo_restaurante
@@ -129,9 +127,8 @@ def login():
                 notification.title= "Error de Acceso"
                 notification.message="Correo o contraseña incorrecta"
                 notification.send()
-                #icono= 
-                dir_absoluta=path.abspath(path.dirname(__file__))
-                notification.icon = path.join(dir_absoluta,".GPS/app/static/icon.png")
+               # dir_absoluta=path.abspath(path.dirname(__file__))
+               # notification.icon = path.join(dir_absoluta,".GPS/app/static/icon.png")
                #print("A",path.join(dir_absoluta,icono))
                 return redirect(url_for("login"))
         else:
@@ -142,12 +139,11 @@ def login():
 
     return render_template("assets/login.html", form = form)
 
-
 @app.route('/dashboard')
 def dashboard():
     user= session['user']
     usuario=session['tipo']
-    return render_template("HOME/user_home.html",usuario=usuario)
+    return render_template("HOME/user_home.html",usuario=usuario, user=user)
 
 @app.route('/recuperar_contrasena')
 def recuperar_contrasena():
@@ -164,7 +160,7 @@ def gestionar_usuarios_admin():
     usuarios = db.db.session.query(db.domo_usuario, db.domo_cliente, db.domo_encargadortr, db.domo_ciudad, db.domo_region, db.domo_direccion).filter(
                                         db.domo_usuario.usr_id == db.domo_cliente.usr_id,
                                         db.domo_cliente.dir_id == db.domo_direccion.dir_id,
-                                        db.domo_encargadortr.usr_id==db.domo_usuario.usr_id,
+                                        #db.domo_encargadortr.usr_id==db.domo_usuario.usr_id,
                                         db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id,
                                         db.domo_ciudad.reg_id==db.domo_region.reg_id).all()
     
@@ -251,92 +247,190 @@ def ingresar_usuario_admin():
             notification.message="Email ya en uso"
             notification.send()
             return redirect(url_for("ingresar_usuario_admin"))
-       # return new_user.email + " - " +new_user.estado+ " - " + str(new_user.password_hash)
-    
+            
     return render_template("assets/adm_ingresar_usuario.html", form = form)
 
-
-
-
-
-@app.route('/eliminar_usuario')
-def eliminar_usuario():
-    b=b
-
-@app.route('/editar_usuario/<id>')
-def editar_usuario(id):
-    restaurante = db.db.session.query(db.domo_restaurante, db.domo_direccion, db.domo_ciudad, db.domo_region, 
-                                        db.domo_tiporestaurante).filter(db.domo_restaurante.rtr_id == id, 
-                                        db.domo_restaurante.dir_id == db.domo_direccion.dir_id, 
-                                        db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id, 
-                                        db.domo_ciudad.reg_id == db.domo_region.reg_id).first()
-
-    ciudades = db.db.session.query(db.domo_ciudad.ciu_id,db.domo_ciudad.ciu_nombre,db.domo_ciudad.reg_id).all()
-    regiones = db.db.session.query(db.domo_region.reg_id,db.domo_region.reg_nombre).all()
-    tipo_restaurante = db.domo_tiporestaurante.query.all()
-
-    return render_template("assets/editar_restaurante.html", restaurante=restaurante,ciudades=ciudades,regiones=regiones,tipo_restaurante=tipo_restaurante)    
-
-@app.route('actualizar_usuario/<id>', methods=['POST'])
-def actualizar_usuario(id):
-    if (request.method=='POST'):
-        nombre = request.form.get('nombre')
-        calle = request.form.get('calle')
-        numero = request.form.get('numero')
-        region = request.form.get('region')
-        ciudad = request.form.get(region)
-        tipo_rest = request.form.get('tipo_rest')
-        nombre_dueno = request.form.get('nombre_dueno')
-        apellido_dueno = request.form.get('apellido_dueno')
-        descripcion = request.form.get('descripcion')
-        vegetariana = request.form.get('vegetariana')
-        vegana = request.form.get('vegana')
-
-
-    
-        restaurante = db.domo_restaurante.query.filter_by(rtr_id=id).first()
-        
-        direccion = db.domo_direccion.query.filter_by(dir_id=restaurante.dir_id).first()
-
-        if(direccion.dir_numerocalle != numero and direccion.dir_nombrecalle != calle and direccion.ciu_id != ciudad):
-            max_id = db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() + 1
-            new_direccion = db.domo_direccion(dir_id=max_id, ciu_id=ciudad, dir_numerocalle=numero, dir_nombrecalle=calle)
-            db.db.session.add(new_direccion)
-            db.db.session.commit()
-            restaurante.dir_id = max_id
-
-
-        restaurante.tpr_id = tipo_rest
-        restaurante.rtr_nombre = nombre
-        restaurante.rtr_rutacarta = "xd"
-        restaurante.rtr_descripcion = descripcion
-
-        if(vegetariana == "true"):
-            vege = True
-        else:
-            vege = False
-        
-        restaurante.rtr_opvege = vege
-        if(vegana == "true"):
-            vega = True
-        else:
-            vega = False
-
-        restaurante.rtr_opvega = vega
-        restaurante.rtr_duenonombre = nombre_dueno
-        restaurante.rtr_duenoapellido = apellido_dueno
+@app.route('/gestionar_usuarios_admin/<id>')
+def eliminar_usuario(id):
+    usuario = db.domo_usuario.query.filter_by(usr_id=id).first()
+    if usuario.tip_id==1:
+        cliente=db.domo_cliente.query.filter_by(db.domo_cliente.usr_id==id).first()
+        db.db.session.delete(cliente)
         db.db.session.commit()
 
-        restaurantes = db.db.session.query(db.domo_restaurante, db.domo_direccion, db.domo_ciudad, db.domo_region, db.domo_tiporestaurante).filter(
-                                        db.domo_restaurante.dir_id == db.domo_direccion.dir_id,
-                                        db.domo_tiporestaurante.tpr_id == db.domo_restaurante.tpr_id,
+    elif usuario.tip_id==2:
+        encargado=db.domo_encargadortr.query.filter_by(db.domo_encargadortr.usr_id==id).first()
+        db.db.session.delete(encargado)
+        db.db.session.commit()
+
+    elif usuario.tip_id==3:
+        db.db.session.delete(usuario)
+        db.db.session.commit()
+        
+    usuarios = db.db.session.query(db.domo_usuario, db.domo_cliente, db.domo_encargadortr, db.domo_ciudad, db.domo_region, db.domo_direccion).filter(
+                                        db.domo_usuario.usr_id == db.domo_cliente.usr_id,
+                                        db.domo_cliente.dir_id == db.domo_direccion.dir_id,
+                                        db.domo_encargadortr.usr_id==db.domo_usuario.usr_id,
+                                        db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id,
+                                        db.domo_ciudad.reg_id==db.domo_region.reg_id).all()
+    return render_template("assets/adm_gestionar_usuarios.html", usuarios=usuarios)
+
+@app.route('/gestionar_usuarios_admin/<id>')
+def editar_usuario(id):
+    usuarios = db.db.session.query(db.domo_usuario, db.domo_cliente, db.domo_encargadortr, db.domo_ciudad, db.domo_region, db.domo_direccion).filter(
+                                        db.domo_usuario.usr_id == db.domo_cliente.usr_id,
+                                        db.domo_cliente.dir_id == db.domo_direccion.dir_id,
+                                        db.domo_encargadortr.usr_id==db.domo_usuario.usr_id,
                                         db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id,
                                         db.domo_ciudad.reg_id==db.domo_region.reg_id).all()
 
-        return render_template("assets/gestionar_restaurantes.html", restaurantes=restaurantes)
+    ciudades = db.db.session.query(db.domo_ciudad.ciu_id,db.domo_ciudad.ciu_nombre,db.domo_ciudad.reg_id).all()
+    regiones = db.db.session.query(db.domo_region.reg_id,db.domo_region.reg_nombre).all()
+    tipo_usuario = db.domo_tipousuario.query.all()
+
+    return render_template("assets/adm_editar_usuario.html", usuarios=usuarios,ciudades=ciudades,regiones=regiones,tipo_usuario=tipo_usuario)    
+
+@app.route('/gestionar_usuarios_admin/<id>', methods=['POST'])
+def actualizar_usuario(id):
+
+    form
+    if (request.method=='POST'):
+
+        usuario=db.domo_usuario.query.filter_by(usr_id=id).first()
+        if usuario.tip_id==1:
+            form= EditForm1(obj=usuario)
+            cliente=db.domo_cliente.query.filter_by(usr_id=usuario.usr_id).first
+            direccion1=db.domo_direccion.query.filter_by(dir_id=cliente.dir_id).first
+            ciudad1=db.domo_ciudad.query.filter_by(ciu_id=direccion1.ciu_id)
+
+            form.email.data=usuario.usr_login
+            email=request.form.get('email')
+
+            contrasena=request.form.get('contrasena')
+
+            form.estado.data=usuario.usr_estado
+            estado=request.form.get('estado')
+
+            form.nombre.data=cliente.cli_nombre
+            nombre = request.form.get('nombre')
+
+            form.apellido.data=cliente.cli_apellido
+            apellido=request.form.get('nombre')
+
+            form.rut.data=cliente.cli_rut
+            rut=request.form.get('rut')
+
+            form.celular.data=cliente.cli_telefono
+            celular=request.form.get('celular')
+
+            form.calle.data=direccion1.dir_nombrecalle
+            calle = request.form.get('calle')
+
+            form.numero.data=direccion1.dir_numerocalle
+            numero = request.form.get('numero')
+
+            form.region.data=ciudad1.reg_id
+            region = request.form.get('region')
+
+            form.ciudad.data=ciudad1.ciu_id
+            ciudad = request.form.get(region)
+
+            if(direccion1.dir_numerocalle != numero and direccion1.dir_nombrecalle != calle and direccion1.ciu_id != ciudad):
+                max_id = db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() + 1
+                new_direccion = db.domo_direccion(dir_id=max_id, ciu_id=ciudad, dir_numerocalle=numero, dir_nombrecalle=calle)
+                db.db.session.add(new_direccion)
+                db.db.session.commit()
+                cliente.dir_id = max_id
+            
+            usuario.usr_login = email
+
+            if len(contrasena)>0:
+                hash=bcrypt.hashpw(contrasena.encode('utf-8'),bcrypt.gensalt())
+                usuario.usr_contrasena=hash.decode('utf-8')
+
+            usuario.usr_estado=estado
+
+            cliente.cli_nombre = nombre
+            cliente.cli_apellido = apellido
+            cliente.cli_rut = rut
+            cliente.cli_telefono=celular
+
+            db.db.session.commit()
+
+
+        if usuario.tip_id==2:
+
+            form=EditForm2(obj=usuario)
+            encargado=db.domo_encargadortr.query.filter_by(usr_id=usuario.usr_id).first()
+
+            form.estado.data=usuario.usr_estado
+            email=request.form.get('email')
+
+            form.estado.data=usuario.usr_estado
+            contrasena=request.form.get('contrasena')
+
+            form.estado.data=usuario.usr_estado
+            estado=request.form.get('estado')
+
+            form.estado.data=usuario.usr_estado
+            nombre=request.form.get('nombre')
+
+            form.estado.data=usuario.usr_estado
+            apellido=request.form.get('apellido')
+
+            form.estado.data=usuario.usr_estado
+            rut=request.form.get('rut')
+
+            usuario.usr_login = email
+
+            if len(contrasena)>0:
+                hash=bcrypt.hashpw(contrasena.encode('utf-8'),bcrypt.gensalt())
+                usuario.usr_contrasena=hash.decode('utf-8')
+
+            usuario.usr_estado=estado
+
+            encargado.enc_nombre=nombre
+            encargado.enc_apellido=apellido
+            encargado.enc_rut=rut
+            db.db.session.commit()
 
 
 
+
+
+
+        if usuario.tip_id==3:
+            form=EditForm3(obj=usuario)
+
+            form.estado.data=usuario.usr_estado
+            email=request.form.get('email')
+
+            form.estado.data=usuario.usr_estado
+            contrasena=request.form.get('contrasena')
+
+            form.estado.data=usuario.usr_estado
+            estado=request.form.get('estado')
+
+            usuario.usr_login = email
+
+            if len(contrasena)>0:
+                hash=bcrypt.hashpw(contrasena.encode('utf-8'),bcrypt.gensalt())
+                usuario.usr_contrasena=hash.decode('utf-8')
+
+            usuario.usr_estado=estado
+            db.db.session.commit()
+
+
+        db.db.session.commit()
+
+        usuarios = db.db.session.query(db.domo_usuario, db.domo_cliente, db.domo_encargadortr, db.domo_ciudad, db.domo_region, db.domo_direccion).filter(
+                                        db.domo_usuario.usr_id == db.domo_cliente.usr_id,
+                                        db.domo_cliente.dir_id == db.domo_direccion.dir_id,
+                                        db.domo_encargadortr.usr_id==db.domo_usuario.usr_id,
+                                        db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id,
+                                        db.domo_ciudad.reg_id==db.domo_region.reg_id).all()
+
+        return render_template("assets/adm_gestionar_usuarios.html", form=form,usuarios=usuarios)
 
 
 @app.route('/ingresar_restaurante')
