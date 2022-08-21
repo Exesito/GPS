@@ -1,0 +1,87 @@
+{% extends "index.html" %}
+
+{% block title %}
+Ingresar Restaurante
+{% endblock %}
+
+{% block body %}
+<!--Imprimir cajas de texto para ingresar los datos de la actividad, y crear un botón de guardado.-->
+<section class="registro-fondo">
+
+  <div class="row g-0">
+    <div class="col-lg-4 d-none d-lg-block">
+
+    </div>
+    <div class="form-register col-lg-4 bg-dark d-flex flex-column align-items-end min-vh-100" id="formulariosito">
+
+      <div class="px-lg-5 pt-lg-4 pb-lg-3 p-4 mb-auto w-100">
+        <img src="{{url_for('static',filename='Logo.svg')}}" class="img-fluid" />
+      </div>
+      <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
+        <h1 class="font-weight-bold mb-4">Ingrese datos del nuevo Usuario:</h1>
+        <!--Acción de la forma-->
+        <form action="{{url_for('ingresar_restaurante_post')}}" , method="post" id="ingresar_restaurante" class="mb-5">
+        
+
+
+          <!--Boton-->
+          <div class="mb-4" id="botonsito">
+            <input class="btn btn-submit" type="submit" value="[INGRESAR]" style="justify-content:center" />
+ 
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-4 d-none d-lg-block">
+    </div>
+  </div>
+
+
+</section>
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#regionsita').select2({placeholder: 'Seleccione Región', allowClear: true});
+  });
+
+  $(document).ready(function() {
+    $('#ciudad').select2();
+  });
+
+  $(document).ready(function(){
+    let i=1;
+    $($('#regionsita').children('option')).each(function(){
+      $('#'+i).select2().next().hide();
+      i++;
+    });
+  });
+
+  $('#regionsita').change(function(){
+      console.log("xD");
+      if($('#regionsita').val()==0){
+      $('#ciudad').select2().next().show();
+      let i=1;
+      $($('#regionsita').children('option')).each(function(){
+        $('#'+i).select2().next().hide();
+        i++;
+      });
+    }else{
+      $('#ciudad').select2().next().hide();
+      let i=1;
+      $($('#regionsita').children('option')).each(function(){
+        if(i==$('#regionsita').val()){
+          $('#'+i).select2().next().show();
+        }else{
+          $('#'+i).select2().next().hide();
+        }
+        i++;
+      });
+    }
+  }); 
+
+</script>
+
+{% endblock %}

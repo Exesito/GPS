@@ -1,0 +1,143 @@
+
+{% extends "index.html" %}
+
+{% block title %}
+Gestionar Usuarios
+{% endblock %}
+
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="container fluid" id="tablita">
+            <div class="panel">
+                <div class="panel-heading container-fluid">
+                    <div class="row">
+                        <div class="col" id="xd">
+                            <h1>Lista de Usuarios</h1>
+                        </div>
+                        <div class="col" id="columnita">
+                            <div class="btn-group">
+                                <a href="{{url_for('ingresar_usuario_admin')}}" class="btn btn-default" title="add"
+                                    id="btn">
+                                    <i class="fa fa-plus"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-responsive table-sm" id="usuarios">
+                        <thead>
+                            <tr>
+                                <th>Tipo de <br> Usuario</th>
+                                <th>Email</th>
+                                <th>Estado</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>Rut</th>
+                                <th>Celular</th>
+                                <th>Calle</th>                                
+                                <th>Número <br> de Domicilio</th>
+                                <th>Ciudad</th>
+                                <th>Región</th>
+                                <th>Opciones</th>
+
+                            </tr>
+                        </thead>
+
+                        {% for item in usuarios %}
+                        <tr>
+                            <td>{{item.domo_usuario.tip_id}}</td>
+                            <td>{{item.domo_usuario.usr_login}}</td>
+                            <td>{{item.domo_usuario.usr_estado}}</td>
+
+                            {% if item.tip_id==1 %}
+                            <td>{{item.domo_cliente.cli_nombre}}</td>
+                            <td>{{item.domo_cliente.cli_apellido}}</td>
+                            <td>{{item.domo_cliente.cli_rut}}</td>
+
+                            {% elif item.tip_id==2 %}
+                            <td>{{item.domo_encargadortr.enc_nombre}}</td>
+                            <td>{{item.domo_cliente.enc_apellido}}</td>
+                            <td>{{item.domo_cliente.enc_rut}}</td>
+
+                            {% else %}
+                            <td>NO</td>
+                            <td>NO</td>
+                            <td>NO</td>
+                            {% endif %}
+
+                            {% if item.tip_id==1 %}
+                            <td>{{item.domo_direccion.dir_nombrecalle}}</td>
+                            <td>{{item.domo_direccion.dir_numerocalle}}</td>
+                            <td>{{item.domo_ciudad.ciu_nombre}}</td>
+                            <td>{{item.domo_region.reg_nombre}}</td>
+
+                            {% else %}
+                            <td>NO</td>
+                            <td>NO</td>
+                            <td>NO</td>
+                            <td>NO</td>
+                            {% endif %}
+
+                            <td>
+                                <ul class="action-list">
+                                    <li><a href="{{url_for('editar_usuario',id=item.domo_usuario.usr_id)}}"
+                                            data-tip="edit"><i class="fa fa-edit"></i></a></li>
+                                    <li><a href="{{url_for('eliminar_usuario',id=item.domo_usuario.usr_id)}}" data-tip="delete" id="{{loop.index}}" onclick="confirmar(this.id)">
+                                        <i class="fa fa-trash" ></i></a></li>
+                                    <input type="hidden" name="{{loop.index}}" value="¿Está seguro que quiere eliminar el usuario con correo {{item.domo_usuario.usr_login}}?">
+                                </ul>
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block script %}
+<script>
+
+    $(document).ready(function () {
+        $('#restaurantes').DataTable({
+
+            "bDeferRender": true,
+            "oLanguage": {
+                "sEmptyTable": "No hay registros disponibles",
+                "sInfo": "Hay _TOTAL_ registros. Mostrando de (_START_ a _END_)",
+                "sLoadingRecords": "Por favor espera - Cargando...",
+                "sSearch": "Filtro:",
+                "sLengthMenu": "Mostrar _MENU_",
+                "oPaginate": {
+                    "sLast": "Última página",
+                    "sFirst": "Primera",
+                    "sNext": '<i class="fa fa-chevron-right" pagination-right></i>',
+                    "sPrevious": '<i class="fa fa-chevron-left" ></i>'
+                }
+            }
+        });
+    }
+    );
+
+    function confirmar(id) {
+        var mensaje = document.getElementsByName(id)[0].value;
+        let text;
+        if (confirm(mensaje) == true) {
+            text = "El usuario será eliminado";
+        } else {
+            text = "Cancelar la acción";
+        }
+    }
+</script>
+
+{% endblock %}
+
+
