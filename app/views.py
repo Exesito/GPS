@@ -72,7 +72,8 @@ def editor_cartas():
     email = session["email"]    
     if request.method =='POST':
         
-        file = request.files['file']
+        file = request.files.get('file')
+        nombre = request.form['nombre']
         print(file)
 
     cartas = db.db.session.query(db.domo_carta, db.domo_restaurante, db.domo_encargadortr, db.domo_usuario).filter(
