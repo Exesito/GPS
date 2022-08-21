@@ -150,7 +150,7 @@ class domo_encargadortr(db.Model):
 
 class domo_cliente(db.Model):
     __tablename__ = 'domo_cliente'
-    cli_id = db.Column('cli_id', db.Integer, primary_key = True)
+    cli_id = db.Column('cli_id', db.Integer, primary_key = True, autoincrement=True)
     usr_id = db.Column('usr_id', db.Integer)
     cli_nombre = db.Column('cli_nombre', db.String(40))
     cli_apellido = db.Column('cli_apellido', db.String(40))
@@ -158,6 +158,10 @@ class domo_cliente(db.Model):
     cli_telefono = db.Column('cli_telefono', db.String(20))
     cli_rut = db.Column('cli_rut', db.String(20))
     cli_tipo = db.Column('cli_tipo', db.String(1))
+    
+    @staticmethod
+    def get_by_rut(rut): #rut sin puntos ni guion
+        return domo_cliente.query.filter_by(cli_rut = rut).first()
     
     @staticmethod
     def get_by_id(id):

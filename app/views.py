@@ -65,8 +65,7 @@ def reservar(id):
 @app.route('/reservar/<id_restaurante>/<id_reserva>/datos_cliente', methods=['GET','POST'])
 def reserva_not_registered(id_restaurante, id_reserva):
     
-    client_form = ClientForm()
-    
+    client_form = ClientForm()  
     restaurante = models.domo_restaurante.get_by_id(id_restaurante)
     
     data = {
@@ -77,6 +76,43 @@ def reserva_not_registered(id_restaurante, id_reserva):
     }
     
     return render_template("cli_reservar_not_registered.html", data = data, client_form = client_form)
+
+@app.route('/reservar/<id_reserva>/create_new_client/', methods=['GET','POST'])
+def reserva_new_client(id_reserva):
+    
+    if request.method == 'POST':
+    
+        nombre = request.form["nombre"]
+        apellido = request.form["apellido"]
+        telefono = request.form["telefono"]
+        rut = request.form["rut"]
+        medio_de_pago = request.form["medio_de_pago"]
+        
+        reserva = domo_reserva.get_by_id(id_reserva)
+        
+        cliente = domo_cliente.get_by_rut(rut)
+        print(cliente)
+        if cliente is not None:
+            cliente.cli_telefono = telefono
+        else:
+            cliente = domo_cliente(cli_nombre=nombre, cli_apellido=apellido, cli_telefono=telefono)
+            db.session.add(cliente)
+        
+        dict_mdp = {
+            "DEBITO": 1,
+            "EFECTIVO": 2,
+            "WEBPAY": 3
+        }        
+      
+        reserva.cli_id = cliente.cli_id
+        reserva.tpr_id = dict_mdp[medio_de_pago]
+        
+        db.session.commit()
+        
+        if medio_de_pago is "WEBPAY":
+            pass
+        
+        return #retorna reserva exitosa
 
 @app.route('/reservar/<id_restaurante>/generar_reserva', methods=['GET','POST'])
 def reserva_create(id_restaurante):

@@ -2,7 +2,7 @@
     <div class="card-header">
       Rellene sus datos
     </div>
-  <form action="" method=post>
+  <form action="{{url_for('reserva_new_client', id_reserva = data.get('RESTAURANTE_ID'))}}" method=post>
     <ul class="list-group list-group-flush">
       <div class="row">
       <div class="col">
@@ -18,9 +18,6 @@
       <div class="col">
       {{ client_form.rut.label }}
       {{ client_form.rut(class_="form-control") }}
-
-      {{ client_form.direccion.label }}
-      {{ client_form.direccion(class_="form-control") }}
 
       {{ client_form.medio_de_pago.label }}
 
