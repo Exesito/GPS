@@ -42,11 +42,7 @@ Actualizar Restaurante
               <select name="region" id="regionsita" class="js-example-basic-single" style="width: 100%;">
                 <option value="0">Seleccione una región</option>
                 {% for item in regiones %}
-                {% if item.reg_id == restaurante.domo_region.reg_id %}
-                <option value="{{item.reg_id}}" selected>{{item.reg_nombre}}</option>
-                {% else %}
                 <option value="{{item.reg_id}}">{{item.reg_nombre}}</option>
-                {% endif %}
                 {% endfor %}
               </select>
             </div>
@@ -61,11 +57,7 @@ Actualizar Restaurante
                 <option value="0">Seleccione Ciudad</option>
                 {% for ciudad in ciudades %}
                 {% if ciudad.reg_id == item.reg_id %}
-                    {% if ciudad.ciu_id == restaurante.domo_ciudad.ciu_id %}
-                    <option value="{{ciudad.ciu_id}}" selected>{{ciudad.ciu_nombre}}</option>
-                     {% else %}
                     <option value="{{ciudad.ciu_id}}">{{ciudad.ciu_nombre}}</option>
-                    {% endif %}
                 {% endif %}
                 {%endfor%}
               </select>
@@ -154,7 +146,7 @@ Actualizar Restaurante
     });
   
     $(document).ready(function() {
-      $('#ciudad').select2().next().hide();
+      $('#ciudad').select2();
     });
   
     $(document).ready(function(){

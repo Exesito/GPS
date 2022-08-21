@@ -7,7 +7,7 @@ from os import path
 from app.forms import IngresarRestaurante, RecoveryForm, ChangepasswordForm,RegisterForm, LoginForm
 
 
-from app.models import domo_restaurante
+from app.models import domo_cliente, domo_restaurante
 
 from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
@@ -41,7 +41,8 @@ def register():
         apellido= request.form.get('apellido')
         rut= request.form.get('rut')
         celular= request.form.get('celular')
-        region = request.form.get('region')
+        region = request.form.get('regiones')
+        print(region)
         ciudad = request.form.get(region)
         calle= request.form.get('calle')
         numero=request.form.get('numero')
@@ -145,6 +146,7 @@ def login():
 def dashboard():
     user= session['user']
     usuario=session['tipo']
+    usr = db.domo_usuario.query.filter(db.domo_usuario.usr_login == user).first()
     return render_template("HOME/user_home.html",usuario=usuario)
 
 @app.route('/recuperar_contrasena')
@@ -334,8 +336,9 @@ def actualizar_rest(id):
 
         return render_template("assets/gestionar_restaurantes.html", restaurantes=restaurantes)
 
-@app.route('/gestionar_restaurantes/<id>')
+@app.route('/gestionar_restaurantes<id>')
 def eliminar_rest(id):
+    print(id)
     restaurante = db.domo_restaurante.query.filter_by(rtr_id=id).first()
     direccion = db.domo_direccion.query.filter_by(dir_id=restaurante.dir_id).first()
 
@@ -345,17 +348,59 @@ def eliminar_rest(id):
 
     db.db.session.delete(restaurante)
     db.db.session.commit()
-    restaurantes = db.db.session.query(db.domo_restaurante, db.domo_direccion, db.domo_ciudad, db.domo_region, db.domo_tiporestaurante).filter(
-                                        db.domo_restaurante.dir_id == db.domo_direccion.dir_id,
-                                        db.domo_tiporestaurante.tpr_id == db.domo_restaurante.tpr_id,
-                                        db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id,
-                                        db.domo_ciudad.reg_id==db.domo_region.reg_id).all()
 
-    return render_template("assets/gestionar_restaurantes.html", restaurantes=restaurantes)
+    return redirect(url_for('gestionar_restaurantes'))
 
 
-@app.route('/editar_perfil/<id>')
-def editar_perfil(id):
+@app.route('/perfil<login>')
+def perfil(login):
 
-    return render_template("assets/editar_perfil.html")
 
+    usr = db.domo_usuario.query.filter_by(usr_login=login).first()
+    cliente = db.db.session.query(db.domo_cliente,db.domo_usuario,db.domo_direccion,db.domo_ciudad,db.domo_region).filter(db.domo_usuario.usr_id==usr.usr_id,
+                                db.domo_cliente.usr_id==usr.usr_id,
+                            db.domo_usuario.usr_id==db.domo_cliente.usr_id,db.domo_cliente.dir_id==db.domo_direccion.dir_id,
+                            db.domo_direccion.ciu_id==db.domo_ciudad.ciu_id,db.domo_ciudad.ciu_id==db.domo_region.reg_id).first()
+    
+    return render_template("assets/editar_perfil.html",cliente=cliente)
+
+@app.route('/perfil/actualizar_perfil/<id>')
+def actualizar_perfil(id):
+
+    cliente = db.db.session.query(db.domo_cliente,db.domo_usuario,db.domo_direccion,db.domo_ciudad,db.domo_region).filter(db.domo_usuario.usr_id==id,
+                                db.domo_cliente.usr_id==db.domo_usuario.usr_id,db.domo_direccion.dir_id==db.domo_cliente.dir_id,
+                                db.domo_direccion.ciu_id==db.domo_ciudad.ciu_id,
+                                db.domo_ciudad.ciu_id==db.domo_region.reg_id).first()
+
+    ciudades = db.db.session.query(db.domo_ciudad).all()
+    regiones = db.db.session.query(db.domo_region).all()
+    return render_template("assets/actualizar_perfil.html",cliente=cliente,ciudades=ciudades,regiones=regiones)
+
+
+@app.route('/actualizar_perfil/<id>', methods=['POST'])
+def subir_nuevo_perfil(id):
+    
+    if request.method == 'POST':
+        usr = db.db.session.query(db.domo_usuario).filter(db.domo_cliente.cli_id==id,db.domo_usuario.usr_id==domo_cliente.usr_id).first()
+        cliente=db.domo_cliente.query.filter_by(cli_id=id).first()
+
+        numero = request.form.get('numero')
+        calle = request.form.get('calle')
+        region = request.form.get('region')
+        ciudad = request.form.get(region)
+
+        cliente.cli_nombre = request.form.get('nombre')
+        cliente.cli_apellido = request.form.get('apellido')
+        cliente.cli_telefono = request.form.get('telefono')
+        
+        direccion = db.domo_direccion.query.filter_by(dir_id=cliente.dir_id).first()
+
+        if(direccion.dir_numerocalle != numero and direccion.dir_nombrecalle != calle and direccion.ciu_id != ciudad):
+            max_id = db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() + 1
+            new_direccion = db.domo_direccion(dir_id=max_id, ciu_id=ciudad, dir_numerocalle=numero, dir_nombrecalle=calle)
+            db.db.session.add(new_direccion)
+            db.db.session.commit()
+            cliente.dir_id = max_id
+
+        db.db.session.commit()
+        return redirect(url_for('perfil',login=usr.usr_login))

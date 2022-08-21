@@ -5,17 +5,92 @@ Perfil de Usuario
 {% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-12 my-3 pt-3 shadow">
-            <img src="{{url_for('perfil-images',filename='junior.jpg')}}" class="float-left rounder-circle">
-            <h1>Nombre de usuario: </h1>
-            <h1>Email: </h1>
+<section class="registro-fondo">
+    <div class="container-fluid" >
+        <div class="row" style="justify-content: center;">
+            <div class="card">
+                <div class="container-fluid" style="margin-top: 2%;">
+                    <div class="row">
+                        <div class="col-md-2" style="text-align: center;">
+                            <div class="row">
+                                <img alt="Bootstrap Image Preview" src="https://www.layoutit.com/img/sports-q-c-140-140-3.jpg" />
+                            </div>
+                            <div class="row">
+                                <a href="#">Cambiar foto de perfil</a>
+                            </div>
+                
+                        </div>
+                        <div class="col-md-8" style="margin-top: 4%;">
+                            <div class="row">
+                                <h3>
+                                    Nombre : {{cliente.domo_cliente.cli_nombre}} {{cliente.domo_cliente.cli_apellido}}
+                                </h3> 
+                                <h4>
+                                    Correo : {{cliente.domo_usuario.usr_login}}
+                                </h4>
+                            </div>
+                            <div class="row" style="margin-top: 4%;">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item">
+                                      <a class="nav-link active disabled" aria-current="page" href="#">Vista</a>
+                                    </li>
+                                  </ul>
 
-            <p>
-                <strong>Me pica un coco</strong>
-            </p>
+                                <div class="row">
+                                    <div class="col-md-6" style="margin-top: 2%;">
+                                        <h5>Informacion Básica</h5>
+                                    </div>
+                                </div>
+                                <div class="row" style="background-color: #310736; border: white solid 1px; ">
+                                    <div class="col-md-6" style="margin-top: 2%;text-align: center;">
+                                        <h5>Nombre : </h5>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%;text-align: center;">
+                                        <h5>{{cliente.domo_cliente.cli_nombre}} {{cliente.domo_cliente.cli_apellido}}</h5>
+                                    </div>
+                                </div>
+                                {{cliente.domo_direccion.dir_nombrecalle}}{{cliente.domo_direccion.dir_numerocalle}}
+                                {{cliente.domo_ciudad.ciu_nombre}}{{cliente.domo_region.reg_nombre}}
+                                <div>
+                                    <a class="btn btn-primary" href="{{url_for('actualizar_perfil',id=cliente.domo_cliente.cli_id)}}">Editar perfil</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <ol>
+                                <li class="list-item">
+                                    Lorem ipsum dolor sit amet
+                                </li>
+                                <li class="list-item">
+                                    Consectetur adipiscing elit
+                                </li>
+                                <li class="list-item">
+                                    Integer molestie lorem at massa
+                                </li>
+                                <li class="list-item">
+                                    Facilisis in pretium nisl aliquet
+                                </li>
+                                <li class="list-item">
+                                    Nulla volutpat aliquam velit
+                                </li>
+                                <li class="list-item">
+                                    Faucibus porta lacus fringilla vel
+                                </li>
+                                <li class="list-item">
+                                    Aenean sit amet erat nunc
+                                </li>
+                                <li class="list-item">
+                                    Eget porttitor lorem
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        
     </div>
-</div>
+</section>
+
 {% endblock %}

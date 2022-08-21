@@ -1,0 +1,146 @@
+{% extends "index.html" %}
+
+{% block title %}
+Actualizar perfil
+{% endblock %}
+
+{% block body %}
+
+<section class="registro-fondo">
+
+  <div class="row g-0">
+    <div class="col-lg-4 d-none d-lg-block">
+
+    </div>
+    
+    <div class="form-register col-lg-4 bg-dark d-flex flex-column align-items-end min-vh-100" id="formulariosito">
+
+      <div class="px-lg-5 pt-lg-4 pb-lg-3 p-4 mb-auto w-100">
+        <img src="{{url_for('static',filename='Logo.svg')}}" class="img-fluid" />
+      </div>
+      <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
+        <h1 class="font-weight-bold mb-4">Actualice sus datos:</h1>
+        <!--Acción de la forma-->
+        <form action="{{url_for('subir_nuevo_perfil',id=cliente.domo_cliente.cli_id)}}" , method="post" id="actualizar_perfil" class="mb-5">
+          <!--Nombre-->
+          <div class="mb-4">
+            <label for="nombre">Nombre:</label>
+            <input type="text" class="form-control" name="nombre" placeholder="{{cliente.domo_cliente.cli_nombre}}"
+              required />
+          </div>
+          <!--Apellido-->
+          <div class="mb-4">
+            <label for="apellido">Apellido:</label>
+            <input type="text" class="form-control" name="apellido" placeholder="{{cliente.domo_cliente.cli_apellido}}"
+              required />
+            <!--Calle-->
+            <div class="mb-4">
+              <label for="calle">Calle:</label>
+              <input type="text" name="calle" placeholder="{{cliente.domo_direccion.dir_nombrecalle}}"
+                class="form-control" />
+            </div>
+            <!--Numero de domicilio-->
+            <div class="mb-4">
+              <label for="numero">Número de domicilio:</label>
+              <input type="text" name="numero" placeholder="{{cliente.domo_direccion.dir_numerocalle}}"
+                class="form-control" />
+            </div>
+            <!--Region-->
+            <div class="mb-4">
+              <label for="region">Región:</label>
+              <select name="region" id="regionsita" class="js-example-basic-single" style="width: 100%;">
+                <option value="0">Seleccione una región</option>
+                {% for item in regiones %}
+                <option value="{{item.reg_id}}">{{item.reg_nombre}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <!--Ciudad-->
+            <div class="mb-4">
+              <label for="ciudad">Ciudad:</label>
+              <select name="ciudad" class="form-select js-example-basic-single" id="ciudad" style="width: 100%;">
+                <option value="0">Seleccione Región</option>
+              </select>
+              {% for item in regiones %}
+              <select name="{{item.reg_id}}" id="{{item.reg_id}}"
+                class="form-select js-example-basic-single form-select" style="width: 100%;">
+                <option value="0">Seleccione Ciudad</option>
+                {% for ciudad in ciudades %}
+                {% if ciudad.reg_id == item.reg_id %}
+                    <option value="{{ciudad.ciu_id}}">{{ciudad.ciu_nombre}}</option>
+                {% endif %}
+                {%endfor%}
+              </select>
+              {% endfor %}
+            </div>
+            <!--Telefono-->
+            <div class="mb-4">
+              <label for="telefono">Teléfono:</label>
+              <input type="text" name="telefono" placeholder="{{cliente.domo_cliente.cli_telefono}}"
+                class="form-control" />
+            </div>
+            <!--Boton-->
+            <div class="mb-4" id="botonsito">
+              <input class="btn btn-submit" type="submit" value="[ACTUALIZAR]" style="justify-content:center" />
+            </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-4 d-none d-lg-block">
+
+    </div>
+  </div>
+</section>
+
+
+
+
+{% endblock%}
+
+{% block script %}
+<script type="text/javascript">
+  $(document).ready(function () {
+    $('#regionsita').select2({ placeholder: 'Seleccione Región', allowClear: true });
+  });
+
+  $(document).ready(function () {
+    $('#ciudad').select2();
+  });
+
+  $(document).ready(function () {
+    let i = 1;
+    $($('#regionsita').children('option')).each(function () {
+      if (i == $('#regionsita').val()) {
+        $('#' + i).select2().next().show();
+      } else {
+        $('#' + i).select2().next().hide();
+      }
+      i++;
+    });
+  });
+
+  $('#regionsita').change(function () {
+    console.log("xD");
+    if ($('#regionsita').val() == 0) {
+      $('#ciudad').select2().next().show();
+      let i = 1;
+      $($('#regionsita').children('option')).each(function () {
+        $('#' + i).select2().next().hide();
+        i++;
+      });
+    } else {
+      $('#ciudad').select2().next().hide();
+      let i = 1;
+      $($('#regionsita').children('option')).each(function () {
+        if (i == $('#regionsita').val()) {
+          $('#' + i).select2().next().show();
+        } else {
+          $('#' + i).select2().next().hide();
+        }
+        i++;
+      });
+    }
+  });
+
+</script>
+{% endblock %}
