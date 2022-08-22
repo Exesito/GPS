@@ -1,0 +1,45 @@
+/*Implementa Clase .button*/
+.button {
+    background-color: #008CBA; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    transition-duration: 0.4s;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+  /*Editor de Mesas*/
+  .button1 {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #008CBA;
+  }
+  .button1:hover {
+    background-color: #008CBA;
+    color: white;
+  }
+  /*Editor de Carta*/
+  .button2 {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #008CBA;
+  }
+  .button2:hover {
+    background-color: #008CBA;
+    color: white;
+  }
+  /*Editor de Horario*/
+  .button3 {
+    background-color: white; 
+    color: black; 
+    border: 2px solid #008CBA;
+  }
+  .button3:hover {
+    background-color: #008CBA;
+    color: white;
+  }
+ 
