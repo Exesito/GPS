@@ -3,7 +3,7 @@ from app import app
 from app import models as db
 #from os import path
 from app.forms import EditForm1, EditForm2, EditForm3, IngresarRestaurante, RecoveryForm, ChangepasswordForm,RegisterForm, LoginForm, RegistroAdmin, RegistroEncargado
-from app.models import domo_cliente, domo_restaurante
+from app.models import domo_cliente, domo_direccion, domo_restaurante, domo_usuario
 
 from notifypy import Notify
 from flask import render_template, request,session, redirect,url_for
@@ -140,8 +140,7 @@ def login():
 def dashboard():
     user= session['user']
     usuario=session['tipo']
-    usr = db.domo_usuario.query.filter(db.domo_usuario.usr_login == user).first()
-    return render_template("HOME/user_home.html",usuario=usuario)
+    return render_template("HOME/user_home.html")
 
 @app.route('/recuperar_contrasena')
 def recuperar_contrasena():
@@ -581,22 +580,20 @@ def eliminar_rest(id):
 @app.route('/perfil<login>')
 def perfil(login):
 
+    usuario = db.domo_usuario.query.filter_by(usr_login=login).first()
+    cliente = db.db.session.query(db.domo_cliente,db.domo_usuario,db.domo_direccion,db.domo_ciudad,db.domo_region).filter(db.domo_usuario.usr_id==usuario.usr_id,
+                                db.domo_cliente.usr_id==usuario.usr_id,db.domo_cliente.dir_id==db.domo_direccion.dir_id,
+                            db.domo_direccion.ciu_id==db.domo_ciudad.ciu_id,db.domo_ciudad.reg_id==db.domo_region.reg_id).first()
 
-    usr = db.domo_usuario.query.filter_by(usr_login=login).first()
-    cliente = db.db.session.query(db.domo_cliente,db.domo_usuario,db.domo_direccion,db.domo_ciudad,db.domo_region).filter(db.domo_usuario.usr_id==usr.usr_id,
-                                db.domo_cliente.usr_id==usr.usr_id,
-                            db.domo_usuario.usr_id==db.domo_cliente.usr_id,db.domo_cliente.dir_id==db.domo_direccion.dir_id,
-                            db.domo_direccion.ciu_id==db.domo_ciudad.ciu_id,db.domo_ciudad.ciu_id==db.domo_region.reg_id).first()
-    
     return render_template("assets/editar_perfil.html",cliente=cliente)
 
 @app.route('/perfil/actualizar_perfil/<id>')
 def actualizar_perfil(id):
 
-    cliente = db.db.session.query(db.domo_cliente,db.domo_usuario,db.domo_direccion,db.domo_ciudad,db.domo_region).filter(db.domo_usuario.usr_id==id,
+    cliente = db.db.session.query(db.domo_cliente,db.domo_direccion,db.domo_ciudad,db.domo_region).filter(db.domo_usuario.usr_id==id,
                                 db.domo_cliente.usr_id==db.domo_usuario.usr_id,db.domo_direccion.dir_id==db.domo_cliente.dir_id,
                                 db.domo_direccion.ciu_id==db.domo_ciudad.ciu_id,
-                                db.domo_ciudad.ciu_id==db.domo_region.reg_id).first()
+                                db.domo_ciudad.reg_id==db.domo_region.reg_id).first()
 
     ciudades = db.db.session.query(db.domo_ciudad).all()
     regiones = db.db.session.query(db.domo_region).all()
@@ -630,3 +627,21 @@ def subir_nuevo_perfil(id):
 
         db.db.session.commit()
         return redirect(url_for('perfil',login=usr.usr_login))
+
+
+@app.route('/perfil/eliminar_perfil<id>')
+def eliminar_perfil(id):
+
+    cliente = db.db.session.query(db.domo_cliente).filter(db.domo_cliente.cli_id==id).first()
+
+    usuario = db.db.session.query(db.domo_usuario).filter(db.domo_cliente.cli_id==id,db.domo_cliente.usr_id==db.domo_usuario.usr_id).first()
+
+    direccion = db.db.session.query(db.domo_direccion).filter(db.domo_cliente.cli_id==id,db.domo_cliente.dir_id==db.domo_direccion.dir_id).first()
+
+    
+    db.db.session.delete(cliente)
+    db.db.session.delete(direccion)
+    db.db.session.delete(usuario)
+    db.db.session.commit()
+ 
+    return redirect(url_for('logout'))
