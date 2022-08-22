@@ -12,7 +12,7 @@ Actualizar Usuario
       <div class="col-lg-4 d-none d-lg-block">
   
       </div>
-      <div class="form-register col-lg-4 bg-dark d-flex flex-column align-items-end min-vh-100" id="formulariosito">
+      <div class="form-register col-lg-4 bg-dark d-flex flex-column align-items-end min-vh-100">
   
         <div class="px-lg-5 pt-lg-4 pb-lg-3 p-4 mb-auto w-100">
           <img src="{{url_for('static',filename='Logo.svg')}}" class="img-fluid" />
@@ -20,12 +20,12 @@ Actualizar Usuario
         <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
           <h1 class="font-weight-bold mb-4">Actualice datos del Usuario:</h1>
           <!--Acción de la forma-->
-          <form action="{{url_for('editar_usuario',id=usuario.domo_usuario.usr_id)}}" , method="post" id="editar_usuario" class="mb-5">
-          {% if usuario.tip_id ==1}
+          <form action="{{url_for('actualizar_usuario',id=usuario.usr_id)}}" , method="post" id="editar_usuario" class="mb-5">
+          {% if usuario.tip_id ==1%}
             <!--Login/Email Usuario-->
             <div class="mb-4">
-              {{form.email.label}}
-              {{form.email(class_="form-control")}}
+              {{form.email.label(class="inputtext")}}
+              {{form.email(class_="inputtext")}}
             </div>
 
             <!--Cambiar Contraseña-->
@@ -115,7 +115,7 @@ Actualizar Usuario
             <!--Estado Usuario-->
             <div class="mb-4">
               {{form.estado.label}}
-              {{form.estado(class_="form-control")}}
+              {{form.estado(class_="form-select")}}
             </div>
 
 
@@ -132,7 +132,7 @@ Actualizar Usuario
 
             <div class="mb-4">
               {{form.estado.label}}
-              {{form.estado(class_="form-control")}}
+              {{form.estado(class_="form-select")}}
             </div>
 
              <!--Nombre Usuario-->
@@ -167,7 +167,7 @@ Actualizar Usuario
 
             <div class="mb-4">
               {{form.estado.label}}
-              {{form.estado(class_="form-control")}}
+              {{form.estado(class_="form-select")}}
             </div>
 
 
@@ -177,7 +177,6 @@ Actualizar Usuario
             {{ form.submit(class_="btn btn-primary w-100") }}
           </form>
         </div>
-      </div>
 
       <div class="col-lg-4 d-none d-lg-block">
       </div>
