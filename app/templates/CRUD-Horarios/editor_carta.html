@@ -8,11 +8,7 @@ Carta Restaurante
 <div class="container">
     <div id="flex-div">
         <h2>Aquí se podrán editar y consultar las cartas del restaurante</h2>
-        <!-- <select class="combo_nombre half" onChange="combo(this, 'demo')"> 
-            {%for nombre in lista_rtr%}
-            <option>{{nombre}}</option>
-            {%endfor%}
-        </select> -->
+
         <a class="btn btn-success table-dependant col-xs-6" id="nuevo">+ Nuevo</a>
     </div>
   <table class="table table-striped table-bordered table-hover tablecustom table1" id="cartas" >
@@ -31,12 +27,12 @@ Carta Restaurante
       <tbody>
         {%for dato in lista_cartas%}
           <tr> 
-          <form action="{{url_for('editor_cartas')}}", method = "post">
-          <th scope="row">{{dato.domo_carta.car_id}}</th>
+          <form id="data" action="{{url_for('editor_cartas')}}", method = "post" enctype="multipart/form-data">
+          <th scope="row">{{dato.domo_carta.car_id}} </th>
           <td id="id" hidden>{{dato.domo_restaurante.rtr_id}}</td>
           <th scope="row">{{dato.domo_restaurante.rtr_nombre}}</th>
-          <td>{{dato.domo_carta.car_nombre}}</td>
-          <th id="link"> <a  href="{{dato.domo_carta.car_url}}">Link a carta !!</a> </th>
+          <td id="nombre_car"> {{dato.domo_carta.car_nombre}} <input id="car_nombre" type="text" hidden/></td>
+          <th class="linkk"> <a  href="{{dato.domo_carta.car_url}}">Link a carta !!</a>   <a hidden class="plswork"><input type="file" class="linkk"  name="file"/></th>
           
           <th><a value id="btn_submit" class="btn btn-secondary table-row-edit edit-button" >Editar</a><a class="btn btn-danger btn-delete">Eliminar</a></th>
           </form>

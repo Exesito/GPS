@@ -1,11 +1,11 @@
 $(document).ready( function () {
     new_row ='<tr> \n\
-                <form action="{{url_for(\'editor_cartas\')}}", method = "post"> \n\
+                <form action="{{url_for(\'editor_cartas\')}}", method = "post" enctype="multipart/form-data" id="data"> \n\
                 <th scope="row"></th> \n\
                     <td hidden></td> \n\
                     <td><select class="nuevo-combo" onChange="combo(this, "demo")"></td> \n\
                     <td></td> \n\
-                    <th> <a><input type="file" id="file" accept=".pdf" name="file"/> </a> </th> \n\
+                    <th> <a hidden><input type="file" class="linkk"  name="file"/> </a> </th> \n\
                     <th> <a value id="btn_submit" class="btn btn-secondary table-row-edit edit-button" >Editar</a> \n\
                         <a class="btn btn-danger btn-delete">Eliminar</a> \n\
                 </th> \n\
@@ -39,13 +39,13 @@ $(document).ready( function () {
             $(this).toggleClass('btn-success');
             $(this).data('editar', true);
 
-            
+            $(this).parents('tr').find('.plswork').removeAttr('hidden')
             currentTD.get(1).textContent
             currentTD.data('id', currentTD.get(0).textContent)
             currentTD.data('nombre', currentTD.get(1).textContent)
             currentTH.data('lastTH', currentTH.get(1).outerHTML)
             
-            $(this).parents('tr').find('#link').html("<a><input type='file' id='myFile' name='filename'/> </a>")
+            $(this).parents('tr').find('.linkk').html(' <a><input type="file" id="link"  name="file"/> </a>')
             
             
         } else {        //si dice guardar, debe revisar el contenido y enviarlo a la base de datos
@@ -54,33 +54,33 @@ $(document).ready( function () {
             nombre = String(currentTD.get(1).textContent)
             id = currentTH.get(0)
             rtr_id = $('#id').textContent;
+            
             if(!nombre)
                 empty = true
-            
             if(empty){
                 alert('por favor, rellene todos los campos.')
                 return
             }
             
             var url= window.location.pathname;
-            $.ajax({    //se manda info a la bdd
-                type: "POST",
-                url: url,
-                contentType: "application/json",
-                data: JSON.stringify(
-                {   "nombre":nombre,
-                    "id":id,
-                    "rtr_id": rtr_id,
-                },
-                ),
-                dataType: "json",
-                success: function(response) {
-                    console.log(response);
-                },
-                error: function(err) {
-                    console.log(err);
-                }
-            })
+                e = $(this).parents('tr').find('file')
+                console.log(e);
+                var formData = new FormData(e);
+                formData.append("nombre", $(this).parents('tr').find("nombre"))
+                formData.append("id", $(this).parents('tr').find("id"))
+            
+                $.ajax({
+                    url: window.location.pathname,
+                    type: 'POST',
+                    data: formData,
+                    success: function (data) {
+                        alert(data)
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            
             $(this).parents('#btn-submit').toggleClass('half')
             $.each(currentTD, function () {
                 $(this).prop('contenteditable', false)
@@ -91,6 +91,7 @@ $(document).ready( function () {
             $(this).toggleClass('btn-secundary');
             $(this).toggleClass('btn-success');
             $(this).parents('th').find('.cancel-button').remove()
+            styleTableButtons()
         }
     });
 
