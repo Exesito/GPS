@@ -1,5 +1,4 @@
 from flask_sqlalchemy import SQLAlchemy
-import json
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin
 import bcrypt
 
@@ -150,7 +149,7 @@ class domo_cliente(db.Model):
     cli_apellido = db.Column('cli_apellido', db.String(40))
     dir_id = db.Column('dir_id', db.Integer)
     cli_telefono = db.Column('cli_telefono', db.String(20))
-    cli_rut = db.Column('cli_rut', db.String(20))
+    cli_rut = db.Column('cli_rut', db.String(13))
     cli_tipo = db.Column('cli_tipo', db.String(1))
 
 

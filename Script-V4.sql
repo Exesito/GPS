@@ -79,6 +79,8 @@ create table DOMO_CLIENTE (
    CLI_NOMBRE           VARCHAR(40)          null,
    CLI_APELLIDO         VARCHAR(40)          null,
    CLI_TIPO             CHAR                 null,
+   CLI_TELEFONO         INT4                 null,
+   CLI_RUT              VARCHAR(13)          null,
    constraint PK_DOMO_CLIENTE primary key (CLI_ID)
 );
 
@@ -102,6 +104,7 @@ create table DOMO_ENCARGADORTR (
    ENC_ID               SERIAL               not null,
    ENC_NOMBRE           VARCHAR(40)          null,
    ENC_APELLIDO         VARCHAR(40)          null,
+   ENC_RUT              VARCHAR(13)          null,
    constraint PK_DOMO_ENCARGADORTR primary key (ENC_ID)
 );
 
@@ -208,7 +211,7 @@ create table DOMO_TIPOUSUARIO (
 create table DOMO_USUARIO (
    USR_ID               SERIAL               not null,
    TIP_ID               INT4                 null,
-   USR_LOGIN            VARCHAR(20)          null,
+   USR_LOGIN            VARCHAR(40)          null,
    USR_CONTRASENA       VARCHAR(80)          null,
    USR_ESTADO           VARCHAR(20)          null,
    constraint PK_DOMO_USUARIO primary key (USR_ID)

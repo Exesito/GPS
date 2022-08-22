@@ -1,4 +1,3 @@
-
 #from flask_security import LoginForm
 #from crypt import methods
 import re
@@ -203,12 +202,16 @@ def login():
                 session['user']= usuario.usr_login
                 session['tipo']=usuario.tip_id
 
+                print(session['user'] ,session['tipo'])
+
                 if session['tipo']==1:
                     return redirect(url_for('dashboard'))
                 elif session['tipo']==2:
                     return redirect(url_for('dashboard'))
                 elif session['tipo'] ==3:
                     return redirect(url_for('dashboard'))
+
+                
 
             else:
                 print("No coinciden")
@@ -385,14 +388,13 @@ def editar_usuario(id):
 @app.route('/gestionar_usuarios_admin/<id>', methods=['GET','POST'])
 def actualizar_usuario(id):
 
-    form
     if (request.method=='POST'):
 
         usuario=db.domo_usuario.query.filter_by(usr_id=id).first()
         if usuario.tip_id==1:
             form= EditForm1(obj=usuario)
-            cliente=db.domo_cliente.query.filter_by(usr_id=usuario.usr_id).first
-            direccion1=db.domo_direccion.query.filter_by(dir_id=cliente.dir_id).first
+            cliente=db.domo_cliente.query.filter_by(usr_id=usuario.usr_id).first()
+            direccion1=db.domo_direccion.query.filter_by(dir_id=cliente.dir_id).first()
             ciudad1=db.domo_ciudad.query.filter_by(ciu_id=direccion1.ciu_id)
 
             form.email.data=usuario.usr_login
