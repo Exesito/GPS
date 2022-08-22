@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 from app import app
 from app import models as db
 #from os import path
