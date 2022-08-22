@@ -12,6 +12,6 @@ app.config['SECURITY_PASSWORD_SALT'] = 'fhasdgihwntlgy8f'
 from webpay import bp as webpay_plus_bp
 app.register_blueprint(webpay_plus_bp, url_prefix="/webpay-plus")
 
-from app import models, views
+from app import models, views, module
 
 models.db.init_app(app)
