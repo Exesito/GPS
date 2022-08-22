@@ -110,3 +110,11 @@
 .style-form .row{
     padding: 1rem;
 }
+
+.reserva-exitosa-img{
+    transform: scaleX(-1);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    
+}

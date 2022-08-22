@@ -1,0 +1,167 @@
+{% extends "index.html" %}
+
+{% block title %}
+Ingresar Restaurante
+{% endblock %}
+
+{% block body %}
+<!--Imprimir cajas de texto para ingresar los datos de la actividad, y crear un botón de guardado.-->
+<section class="registro-fondo">
+
+  <div class="row g-0">
+    <div class="col-lg-4 d-none d-lg-block">
+
+    </div>
+    <div class="form-register col-lg-4 bg-dark d-flex flex-column align-items-end min-vh-100" id="formulariosito">
+
+      <div class="px-lg-5 pt-lg-4 pb-lg-3 p-4 mb-auto w-100">
+        <img src="{{url_for('static',filename='Logo.svg')}}" class="img-fluid" />
+      </div>
+      <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
+        <h1 class="font-weight-bold mb-4">Ingrese datos de Restaurante:</h1>
+        <!--Acción de la forma-->
+        <form action="{{url_for('ingresar_restaurante_post')}}" , method="post" id="ingresar_restaurante" class="mb-5">
+          <!--Nombre Restaurante-->
+          <div class="mb-4">
+            <label for="nombre">Nombre del Restaurante:</label>
+            <input type="text" class="form-control" name="nombre" placeholder="La picá de Alcachofas" required />
+          </div>
+          <!--Calle-->
+          <div class="mb-4">
+            <label for="calle">Calle:</label>
+            <input type="text" name="calle" placeholder="21 de mayo" class="form-control" />
+          </div>
+          <!--Numero de domicilio-->
+          <div class="mb-4">
+            <label for="numero">Número de domicilio:</label>
+            <input type="text" name="numero" placeholder="774" class="form-control" />
+          </div>
+          <!--Region-->
+          <div class="mb-4">
+            <label for="region">Región:</label>
+            <select name="region" id="regionsita" class="js-example-basic-single" style="width: 100%;">
+              <option value="0">Seleccione una región</option>
+              {% for item in regiones %}
+              <option value="{{item.reg_id}}">{{item.reg_nombre}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <!--Ciudad-->
+          <div class="mb-4">
+            <label for="ciudad">Ciudad:</label>
+            <select name="ciudad" class="form-select js-example-basic-single" id="ciudad" style="width: 100%;">
+              <option value="0">Seleccione Región</option>
+            </select>
+            {% for item in regiones %}
+            <select name="{{item.reg_id}}" id="{{item.reg_id}}" class="form-select js-example-basic-single form-select" style="width: 100%;" >
+              <option value="0">Seleccione Ciudad</option>
+              {% for ciudad in ciudades %}
+              {% if ciudad.reg_id == item.reg_id %}
+              <option value="{{ciudad.ciu_id}}">{{ciudad.ciu_nombre}}</option>
+              {% endif %}
+              {%endfor%}
+            </select>
+            {% endfor %}
+          </div>
+          <!--Nombre del Dueño-->
+          <div class="mb-4">
+            <label for="nombre dueño"> Nombre del dueño: </label>
+            <input type="text" name="nombre_dueno" placeholder="Juan" class="form-control" />
+          </div>
+          <!--Apellido del Dueño-->
+          <div class="mb-4">
+            <label for="apellido_dueno"> Apellido del dueño:</label>
+            <input type="text" name="apellido_dueno" placeholder="Montes" class="form-control" />
+          </div>
+          <!--Descripcion del retaurante-->
+          <div class="mb-4">Descripción del Restaurante:
+            <textarea class="form-control" name="descripcion" rows="5" cols="40"
+              placeholder="Descripción del restaurante"></textarea>
+          </div>
+
+          <!--Select de tipos de restaurante-->
+          <div class="mb-4">Tipo de Restaurante:
+            <select name="tipo_rest" required class="form-select js-example-basic-single">
+              <option value="xd">Seleccione tipo</option>
+              {% for item in tipo_restaurante %}
+              <option value="{{item.tpr_id}}">{{item.tpr_nombre}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <!--Opcion Vegetariana-->
+          <div class="mb-4">Opción vegetariana:
+            <select name="vegetariana" required class="form-select ">
+              <option value="-1">Seleccione opción</option>
+              <option value=true>Si</option>
+              <option value=false>No</option>
+            </select>
+          </div>
+          <!--Opcion de Vegana-->
+          <div class="mb-4">Opción vegana:
+            <select name="vegana" required class="form-select">
+              <option value="-1">Seleccione opción</option>
+              <option value=true>Si</option>
+              <option value=false>No</option>
+            </select>
+          </div>
+          <!--Boton-->
+          <div class="mb-4" id="botonsito">
+            <input class="btn btn-submit" type="submit" value="[INGRESAR]" style="justify-content:center" />
+ 
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-4 d-none d-lg-block">
+    </div>
+  </div>
+
+
+</section>
+
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#regionsita').select2({placeholder: 'Seleccione Región', allowClear: true});
+  });
+
+  $(document).ready(function() {
+    $('#ciudad').select2();
+  });
+
+  $(document).ready(function(){
+    let i=1;
+    $($('#regionsita').children('option')).each(function(){
+      $('#'+i).select2().next().hide();
+      i++;
+    });
+  });
+
+  $('#regionsita').change(function(){
+      console.log("xD");
+      if($('#regionsita').val()==0){
+      $('#ciudad').select2().next().show();
+      let i=1;
+      $($('#regionsita').children('option')).each(function(){
+        $('#'+i).select2().next().hide();
+        i++;
+      });
+    }else{
+      $('#ciudad').select2().next().hide();
+      let i=1;
+      $($('#regionsita').children('option')).each(function(){
+        if(i==$('#regionsita').val()){
+          $('#'+i).select2().next().show();
+        }else{
+          $('#'+i).select2().next().hide();
+        }
+        i++;
+      });
+    }
+  }); 
+
+</script>
+
+{% endblock %}

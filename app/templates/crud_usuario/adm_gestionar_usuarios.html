@@ -1,0 +1,116 @@
+
+{% extends "index.html" %}
+
+{% block title %}
+Gestionar Usuarios
+{% endblock %}
+
+
+{% block body %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="container fluid" id="tablita">
+            <div class="panel">
+                <div class="panel-heading container-fluid">
+                    <div class="row">
+                        <div class="col" id="xd">
+                            <h1>Lista de Usuarios</h1>
+                        </div>
+                        <div class="col" id="columnita">
+                            <div class="btn-group">
+                                <a href="{{url_for('ingresar_usuario_admin')}}" class="btn btn-default" title="add"
+                                    id="btn">
+                                    <i class="fa fa-plus"> Administrador</i>
+                                </a>
+                                &nbsp
+                                <a href="{{url_for('ingresar_usuario_encargado')}}" class="btn btn-default" title="addE" id="btn">
+                                    <i class="fa fa-plus"> Encargado  &nbsp</i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-responsive table-sm" id="users">
+                        <thead>
+                            <tr>
+                                <th>Id del <br> Usuario</th>
+                                <th>Tipo de <br> Usuario</th>
+                                <th>Email</th>
+                                <th>Estado</th>
+                                <th>Opciones</th>
+
+                            </tr>
+                        </thead>
+
+                        {% for item in usuarios %}
+                        <tr>
+                            <td>{{item.usr_id}}</td>
+                            <td>{{item.tip_id}}</td>
+                            <td>{{item.usr_login}}</td>
+                            <td>{{item.usr_estado}}</td>
+
+                            <td>
+                                <ul class="action-list">
+                                    <li><a href="{{url_for('actualizar_usuario',id=item.usr_id)}}"
+                                        data-tip="edit"><i class="fa fa-edit"></i>
+                                    </a>
+                                </li>
+                                <li><a href="{{url_for('eliminar_usuario',id=item.usr_id)}}" data-tip="delete" id="{{loop.index}}" onclick="confirmar(this.id)">
+                                    <i class="fa fa-trash" ></i>
+                                    </a>
+                                </li>
+                                <input type="hidden" name="{{loop.index}}" value="¿Está seguro que quiere eliminar el usuario de correo {{item.usr_login}} ?">
+                            </ul>
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block script %}
+<script>
+
+    $(document).ready(function () {
+        $('#users').DataTable({
+
+            "bDeferRender": true,
+            "oLanguage": {
+                "sEmptyTable": "No hay registros disponibles",
+                "sInfo": "Hay _TOTAL_ registros. Mostrando de (_START_ a _END_)",
+                "sLoadingRecords": "Por favor espera - Cargando...",
+                "sSearch": "Filtro:",
+                "sLengthMenu": "Mostrar _MENU_",
+                "oPaginate": {
+                    "sLast": "Última página",
+                    "sFirst": "Primera",
+                    "sNext": '<i class="fa fa-chevron-right" pagination-right></i>',
+                    "sPrevious": '<i class="fa fa-chevron-left" ></i>'
+                }
+            }
+        });
+    }
+    );
+
+    function confirmar(id) {
+        var mensaje = document.getElementsByName(id)[0].value;
+        let text;
+        if (confirm(mensaje) == true) {
+            text = "El usuario será eliminado";
+        } else {
+            text = "Cancelar la acción";
+        }
+    }
+</script>
+
+{% endblock %}
+
+
