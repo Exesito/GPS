@@ -63,6 +63,7 @@ class domo_reserva(db.Model):
     @staticmethod
     def get_by_id(id):
         return domo_reserva.query.filter_by(rsv_id = id).first()
+    
 class domo_direccion(db.Model):
     __tablename__ = 'domo_direccion'
     dir_id = db.Column('dir_id', db.Integer, primary_key = true)
@@ -105,13 +106,12 @@ class domo_restaurante(db.Model):
     dir_id = db.Column('dir_id', db.Integer, db.ForeignKey('domo_direccion.dir_id'))
     tpr_id = db.Column('tpr_id', db.Integer)
     rtr_nombre = db.Column('rtr_nombre', db.String(50))
-    rtr_rutacarta = db.Column('rtr_rutacarta', db.Text)
     rtr_descripcion = db.Column('rtr_descripcion', db.Text)
     rtr_opvega = db.Column('rtr_opvega', db.Boolean)
     rtr_opvege = db.Column('rtr_opvege', db.Boolean)
     rtr_duenonombre = db.Column('rtr_duenonombre', db.String(40))
     rtr_duenoapellido = db.Column('rtr_duenoapellido', db.String(40))
-
+    
     def get_mesas(self):
         return domo_mesa.query.filter_by(rtr_id = self.rtr_id).all()
     
@@ -129,10 +129,7 @@ class domo_restaurante(db.Model):
     def get_by_id(id):
         return domo_restaurante.query.filter_by(rtr_id = id).first()
 
-    msa_id = db.Column('msa_id', db.Integer, primary_key = true)
-    msa_numero = db.Column('msa_numero', db.Integer)
-    msa_capacidad = db.Column('msa_capacidad', db.Integer)
-    msa_descripcion = db.Column('msa_descripcion', db.Text)
+    
 class domo_tipodepago(db.Model):
     __tablename__ = 'domo_tipodepago'
     tpg_id = db.Column('tpg_id', db.Integer, primary_key = true)
@@ -208,7 +205,6 @@ class domo_horario(db.Model):
     hor_diatermino = db.Column('hor_diatermino', db.Integer)
     hor_horainicio = db.Column('hor_horainicio', db.Time)
     hor_horatermino = db.Column('hor_horatermino', db.Time)
-    hor_disponibilidad = db.Column('hor_disponibilidad', db.Boolean)
     hor_activo = db.Column('hor_activo', db.Boolean)
 
     def verify_horario_rtr(self, day, hour):

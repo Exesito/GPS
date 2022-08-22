@@ -1,40 +1,40 @@
 /*==============================================================*/
 /* DBMS name:      PostgreSQL 8                                 */
-/* Created on:     06-08-2022 18:28:08                          */
+/* Created on:     22-08-2022 3:04:43                           */
 /*==============================================================*/
 
 
-drop table DOMO_AFORO cascade;
+drop table DOMO_AFORO CASCADE;
 
-drop table DOMO_CARTA cascade;
+drop table DOMO_CARTA CASCADE;
 
-drop table DOMO_CIUDAD cascade;
+drop table DOMO_CIUDAD CASCADE;
 
-drop table DOMO_CLIENTE cascade;
+drop table DOMO_CLIENTE CASCADE;
 
-drop table DOMO_DIRECCION cascade;
+drop table DOMO_DIRECCION CASCADE;
 
-drop table DOMO_ENCARGADORTR cascade;
+drop table DOMO_ENCARGADORTR CASCADE;
 
-drop table DOMO_HORARIO cascade;
+drop table DOMO_HORARIO CASCADE;
 
-drop table DOMO_MESA cascade;
+drop table DOMO_MESA CASCADE;
 
-drop table DOMO_REGION cascade;
+drop table DOMO_REGION CASCADE;
 
-drop table DOMO_RESERVA cascade;
+drop table DOMO_RESERVA CASCADE;
 
-drop table DOMO_RESTAURANTE cascade;
+drop table DOMO_RESTAURANTE CASCADE;
 
-drop table DOMO_TIPODEPAGO cascade;
+drop table DOMO_TIPODEPAGO CASCADE;
 
-drop table DOMO_TIPORESTAURANTE cascade;
+drop table DOMO_TIPORESTAURANTE CASCADE;
 
-drop table DOMO_TIPOUSUARIO cascade;
+drop table DOMO_TIPOUSUARIO CASCADE;
 
-drop table DOMO_USUARIO cascade;
+drop table DOMO_USUARIO CASCADE;
 
-drop table DOMO_VALORACION cascade;
+drop table DOMO_VALORACION CASCADE;
 
 /*==============================================================*/
 /* Table: DOMO_AFORO                                            */
@@ -78,7 +78,9 @@ create table DOMO_CLIENTE (
    DIR_ID               INT4                 null,
    CLI_NOMBRE           VARCHAR(40)          null,
    CLI_APELLIDO         VARCHAR(40)          null,
-   CLI_TIPO             CHAR                 null,
+   CLI_RUT              VARCHAR(13)          null,
+   CLI_TELEFONO         INT4                 null,
+   CLI_CORREO           VARCHAR(50)          null,
    constraint PK_DOMO_CLIENTE primary key (CLI_ID)
 );
 
@@ -102,6 +104,7 @@ create table DOMO_ENCARGADORTR (
    ENC_ID               SERIAL               not null,
    ENC_NOMBRE           VARCHAR(40)          null,
    ENC_APELLIDO         VARCHAR(40)          null,
+   ENC_RUT              VARCHAR(13)          null,
    constraint PK_DOMO_ENCARGADORTR primary key (ENC_ID)
 );
 
@@ -208,7 +211,7 @@ create table DOMO_TIPOUSUARIO (
 create table DOMO_USUARIO (
    USR_ID               SERIAL               not null,
    TIP_ID               INT4                 null,
-   USR_LOGIN            VARCHAR(20)          null,
+   USR_LOGIN            VARCHAR(50)          null,
    USR_CONTRASENA       VARCHAR(80)          null,
    USR_ESTADO           VARCHAR(20)          null,
    constraint PK_DOMO_USUARIO primary key (USR_ID)

@@ -271,7 +271,6 @@ function styleTableButtons(){
     $('.dataTables_length').css("display","inline-flex")
     $('.dataTables_filter').css("display","inline-flex")
 }
-
 function replaceAll(str, find, replace) {
     var escapedFind=find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
     return str.replace(new RegExp(escapedFind, 'g'), replace);
@@ -280,20 +279,12 @@ function replaceAll(str, find, replace) {
 function getrtrnames(jq){
     var names = []
     names.push(jq)
-    names.forEach((name, i = 0) => {
-    name[0] = replaceAll(name[0], "[", "");
-    name[0] = replaceAll(name[0], "]", "");
-    name[0] = replaceAll(name[0], "'", "");
-
-    name[1] = replaceAll(name[1], "[", "");
-    name[1] = replaceAll(name[1], "]", "");
-    name[1] = replaceAll(name[1], "'", "");
-    
-    })
+    console.log(names);
     for(i = 0; i< names.length;i++){
-        for(j=0;j-names[i].length;j++){
-            names[i][j] = names[i][j].split('-')
-        }
+        names[0][i] = replaceAll(names[0][i], ']', ' ')
+        names[0][i] = replaceAll(names[0][i], '[', '')
+        names[0][i] = replaceAll(names[0][i], '\'', '')
+        names[0][i] = names[0][i].split('-')
     }
     return names;
 }

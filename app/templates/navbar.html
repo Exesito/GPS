@@ -16,6 +16,8 @@
                 
                 {% elif session['tipo']==2 %}
                 <a class="nav-link active" aria-current="page" href="{{url_for('dashboard')}}">Inicio</a>
+                <a class="nav-link" href="{{url_for('editor_horarios')}}">Gestionar Horarios</a>
+                <a class="nav-link" href="{{url_for('editor_cartas')}}">Gestionar Cartas</a>
                 <a class="nav-link" href="{{url_for('logout')}}">Cerrar Sesión</a>
 
 

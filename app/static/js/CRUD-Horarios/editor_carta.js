@@ -13,13 +13,14 @@ $(document).ready( function () {
              </tr>)'
 
     $('body').on('click', '#nuevo', function(){
-        var names = []
-        names.push($('#rtr_names').html().split(','))
+        var names = getrtrnames($('#rtr_names').html().split(','))
+        
+        
         $('#cartas > tbody:last-child').append(new_row)
 
-        for(i = 0; i<= names.length; i++){
-            $('.nuevo-combo').append("<option>" + names[0][i] + "</option>")
-         }
+        for(j=0;j-names[0].length;j++){
+            $('.nuevo-combo').append("<option>" + names[0][j][1] + "</option>")
+        }
          $('.nuevo-combo').toggleClass('nuevo-combo')
         $('#cartas > tbody:last-child').find('.edit-btn').click()
     });
@@ -138,4 +139,21 @@ function styleTableButtons(){
     $('.paginate_button').css("display","inline-flex")
     $('.dataTables_length').css("display","inline-flex")
     $('.dataTables_filter').css("display","inline-flex")
+}
+
+function getrtrnames(jq){
+    var names = []
+    names.push(jq)
+    for(i = 0; i< names.length;i++){
+        names[0][i] = replaceAll(names[0][i], ']', ' ')
+        names[0][i] = replaceAll(names[0][i], '[', '')
+        names[0][i] = replaceAll(names[0][i], '\'', '')
+        names[0][i] = names[0][i].split('-')
+    }
+    return names;
+}
+
+function replaceAll(str, find, replace) {
+    var escapedFind=find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+    return str.replace(new RegExp(escapedFind, 'g'), replace);
 }

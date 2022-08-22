@@ -4,9 +4,7 @@ from sqlalchemy import func
 
 @app.route('/editor_horarios',methods=['GET','POST'])
 def editor_horarios():
-    session['email'] = 'RFIMP9RQN M4T3I4RS2K'  #Linea para establecer un usuario mientras no hayan sesiones
-
-    email = session["email"]
+    email = session["user"]
     if request.method =='POST':
         
         nombre = request.json["nombre"]
