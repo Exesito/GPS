@@ -24,8 +24,8 @@ Actualizar Usuario
           {% if usuario.tip_id ==1%}
             <!--Login/Email Usuario-->
             <div class="mb-4">
-              {{form.email.label(class="inputtext")}}
-              {{form.email(class_="inputtext")}}
+              {{form.email.label}}
+              {{form.email(placeholder="{{usuario.usr_login}}")}}
             </div>
 
             <!--Cambiar Contraseña-->

@@ -137,49 +137,41 @@ def eliminar_usuario(id):
 #    usuario = db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_id==id).first()
 #    return render_template("assets/adm_editar_usuario.html", usuario=usuario)    
 
-@app.route('/gestionar_usuarios_admin/editar/<id>', methods=['GET','POST'])
+@app.route('/gestionar_usuarios_admin/editar/<id>')
 def actualizar_usuario(id):
     usuario = db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_id==id).first()
+    
+    if usuario.tip_id==1:
 
-    form=EditForm3()
-    if (request.method=='POST'):
-        
+        redirect(url_for('actualizar_usuario1',usuario.usr_id))
+
+    if usuario.tip_id==2:
+        redirect(url_for('actualizar_usuario2',usuario.usr_id))
+
+    else:
+        redirect(url_for('actualizar_usuario3',usuario.usr_id))
+
+
+
+@app.route('/gesionar_usuarios_admin/editar1/<id>',methods=['GET','POST'])
+def actualizar_usuario1(id):
+    form=EditForm1()
+    usuario= db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_id==id).first()
+    cliente=db.domo_cliente.query.filter_by(usr_id=usuario.usr_id).first()
+    direccion1=db.domo_direccion.query.filter_by(dir_id=cliente.dir_id).first()
+
+    if (request.method=='POST'):    
         if usuario.tip_id==1:
-            form= EditForm1(obj=usuario)
-            cliente=db.domo_cliente.query.filter_by(usr_id=usuario.usr_id).first
-            direccion1=db.domo_direccion.query.filter_by(dir_id=cliente.dir_id).first
-            ciudad1=db.domo_ciudad.query.filter_by(ciu_id=direccion1.ciu_id)
-
-            form.email.data=usuario.usr_login
             email=request.form.get('email')
-
             contrasena=request.form.get('contrasena')
-
-            form.estado.data=usuario.usr_estado
             estado=request.form.get('estado')
-
-            form.nombre.data=cliente.cli_nombre
             nombre = request.form.get('nombre')
-
-            form.apellido.data=cliente.cli_apellido
             apellido=request.form.get('nombre')
-
-            form.rut.data=cliente.cli_rut
             rut=request.form.get('rut')
-
-            form.celular.data=cliente.cli_telefono
             celular=request.form.get('celular')
-
-            form.calle.data=direccion1.dir_nombrecalle
             calle = request.form.get('calle')
-
-            form.numero.data=direccion1.dir_numerocalle
             numero = request.form.get('numero')
-
-            form.region.data=ciudad1.reg_id
             region = request.form.get('region')
-
-            form.ciudad.data=ciudad1.ciu_id
             ciudad = request.form.get(region)
 
             if(direccion1.dir_numerocalle != numero and direccion1.dir_nombrecalle != calle and direccion1.ciu_id != ciudad):
@@ -203,29 +195,22 @@ def actualizar_usuario(id):
             cliente.cli_telefono=celular
 
             db.db.session.commit()
+    return render_template("crud_usuario/adm_editar_usuario.html", usuario=usuario, cliente=cliente , form = form)
 
+@app.route('/gesionar_usuarios_admin/editar2/<id>',methods=['GET','POST'])
+def actualizar_usuario2(id):
+    usuario= db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_id==id).first()
+    encargado=db.domo_cliente.query.filter_by(usr_id=usuario.usr_id).first()
+    if (request.method=='POST'): 
         if usuario.tip_id==2:
-
-            form=EditForm2(obj=usuario)
-            
+            form=EditForm2()
             encargado=db.db.session.query(db.domo_encargadortr).filter(db.domo_encargadortr.usr_id==usuario.usr_id).first()
 
-            form.estado.data=usuario.usr_estado
             email=request.form.get('email')
-
-            form.estado.data=usuario.usr_estado
             contrasena=request.form.get('contrasena')
-
-            form.estado.data=usuario.usr_estado
             estado=request.form.get('estado')
-
-            form.estado.data=usuario.usr_estado
             nombre=request.form.get('nombre')
-
-            form.estado.data=usuario.usr_estado
             apellido=request.form.get('apellido')
-
-            form.estado.data=usuario.usr_estado
             rut=request.form.get('rut')
 
             usuario.usr_login = email
@@ -241,16 +226,17 @@ def actualizar_usuario(id):
             encargado.enc_rut=rut
             db.db.session.commit()
 
+    return render_template("crud_usuario/adm_editar_usuario.html", usuario=usuario, encargado=encargado , form = form)
+
+@app.route('/gesionar_usuarios_admin/editar3/<id>',methods=['GET','POST'])
+def actualizar_usuario3(id):
+    usuario= db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_id==id).first()
+    if (request.method=='POST'):
         if usuario.tip_id==3:
             form=EditForm3(obj=usuario)
 
-            form.estado.data=usuario.usr_estado
             email=request.form.get('email')
-
-            form.estado.data=usuario.usr_estado
             contrasena=request.form.get('contrasena')
-
-            form.estado.data=usuario.usr_estado
             estado=request.form.get('estado')
 
             usuario.usr_login = email
@@ -263,7 +249,4 @@ def actualizar_usuario(id):
             db.db.session.commit()
 
         db.db.session.commit()
-
-    usuarios = db.db.session.query(db.domo_usuario.usr_id,db.domo_usuario.usr_login,db.domo_usuario.tip_id,db.domo_usuario.usr_estado).all()
-
-    return render_template("crud_usuario/adm_editar_usuario.html", usuario=usuario,usuarios=usuarios, form=form)
+    return render_template("crud_usuario/adm_editar_usuario.html", usuario=usuario, form = form)
