@@ -1,0 +1,65 @@
+{% extends "index.html" %}
+
+{% block title %}
+¡Reserva aquí!
+{% endblock %}
+
+{% block body %}
+    <div class="reserva-container img-0">
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container black-background">
+
+          <div class="grid-top-reserva">
+          <div class="gtitle">
+            <h1 class="display-6">Restaurante {{data["nombre"]}}</h1>
+          </div>
+          
+          <div class="gdescription">
+            <p class="lead">{{data["descripcion"]}}
+          </div>
+
+          <div class="gdown">
+            <hr class="solid">
+            Para realizar tu reserva tienes que seleccionar un horario disponible y una mesa disponible.<p>
+          </div>
+        </div>
+           </div>
+    </div>
+
+    <div class="grid-reserva">
+
+
+    <div class="grid1">
+      <form action="{{ url_for('reserva_create', id_restaurante = data.get('RESTAURANTE_ID')) }}" method=post>
+      {% include "reserva/form_reservar.html" %}
+
+      {% include "reserva/form_mesa.html" %}
+      </form>
+
+    </div>
+
+    <div class="grid2">
+      <div class="card style-image">    
+        <div class="card-header">
+          Distribución de Mesas
+        </div>
+      <div class="">
+        <img class="card-img-top" src="../static/media/mesas-default.jpg">
+      </div>
+      </div>
+    </div>
+
+    <div class="grid3">
+      <div class="card style-image">
+        <div class="card-header">
+          Carta
+        </div>
+        <a href="{{ url_for('static', filename='menu/menu_test.pdf') }}" download><img style="max-width: 100%; padding:1rem;"src="{{ url_for('static', filename='media/menu-default.png') }}"></a>
+        <p>Descargué su carta <a href="{{ url_for('static', filename='menu/menu_test.pdf') }}" download>aquí</a>.</p>
+      </div>
+    </div>
+
+    </div>
+  </div>
+{% endblock %}

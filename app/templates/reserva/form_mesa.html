@@ -1,0 +1,32 @@
+<div class="card style-form" style="width: 22rem;">
+    <div class="card-header">
+      Seleccione Mesa
+    </div>
+
+    <ul class="list-group list-group-flush">
+      {{ mesa_form.mesa.label }}
+      {{ mesa_form.mesa(class_="form-control") }}
+
+      {% if session.get('cli_id') is not none %}
+      {{ client_form.medio_de_pago.label }}
+         <ul class="form-control">
+        <li><input id="medio_de_pago-0" name="medio_de_pago" type="radio" value="DEBITO">
+          <label for="medio_de_pago-0">Débito (Presencial)</label>
+        </li>
+        <li><input id="medio_de_pago-1" name="medio_de_pago" type="radio" value="EFECTIVO">
+          <label for="medio_de_pago-1">Efectivo</label></li>
+        <li>
+          <input id="medio_de_pago-2" name="medio_de_pago" type="radio" value="WEBPAY">
+          <label for="medio_de_pago-2"><img class="wp-img"src="{{ url_for('static', filename='media/webpay.png') }}"></label>
+        </li>
+        
+      </ul>
+      {% endif %}
+
+
+      {{ mesa_form.submit(class_="btn btn-primary btn-color") }}
+      </ul>
+
+    
+</div>
+  

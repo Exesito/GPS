@@ -1,0 +1,44 @@
+<div class="card style-form" style="width: 96%;">
+    <div class="card-header">
+      Rellene sus datos
+    </div>
+  <form action="{{url_for('reserva_new_client', id_restaurante = data.get('RESTAURANTE_ID'), id_reserva = data.get('id_reserva'))}}" method=post>
+    <ul class="list-group list-group-flush">
+      <div class="row">
+      <div class="col">
+      {{ client_form.nombre.label }}
+      {{ client_form.nombre(class_="form-control") }}
+
+      {{ client_form.apellido.label }}
+      {{ client_form.apellido(class_="form-control") }}
+
+      {{ client_form.telefono.label }}
+      {{ client_form.telefono(class_="form-control") }}
+      </div>
+      <div class="col">
+      {{ client_form.rut.label }}
+      {{ client_form.rut(class_="form-control") }}
+
+      {{ client_form.medio_de_pago.label }}
+
+      <ul class="form-control">
+        <li><input id="medio_de_pago-0" name="medio_de_pago" type="radio" value="DEBITO">
+          <label for="medio_de_pago-0">Débito (Presencial)</label>
+        </li>
+        <li><input id="medio_de_pago-1" name="medio_de_pago" type="radio" value="EFECTIVO">
+          <label for="medio_de_pago-1">Efectivo</label></li>
+        <li>
+          <input id="medio_de_pago-2" name="medio_de_pago" type="radio" value="WEBPAY">
+          <label for="medio_de_pago-2"><img class="wp-img"src="{{ url_for('static', filename='media/webpay.png') }}"></label>
+        </li>
+        
+      </ul>
+      
+      </div>
+    </div>
+    <hr> 
+      {{ client_form.submit(class_="btn btn-primary btn-color") }}
+      </ul>
+  </form>
+    
+</div>

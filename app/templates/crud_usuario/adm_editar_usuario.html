@@ -1,0 +1,239 @@
+{% extends "index.html" %}
+
+{% block title %}
+Actualizar Usuario
+{% endblock %}
+
+{% block body %}
+
+<section class="registro-fondo">
+
+    <div class="row g-0">
+      <div class="col-lg-4 d-none d-lg-block">
+  
+      </div>
+      <div class="form-register col-lg-4 bg-dark d-flex flex-column align-items-end min-vh-100">
+  
+        <div class="px-lg-5 pt-lg-4 pb-lg-3 p-4 mb-auto w-100">
+          <img src="{{url_for('static',filename='Logo.svg')}}" class="img-fluid" />
+        </div>
+        <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
+          <h1 class="font-weight-bold mb-4">Actualice datos del Usuario:</h1>
+          <!--Acción de la forma-->
+          <form action="{{url_for('actualizar_usuario',id=usuario.usr_id)}}" , method="post" id="editar_usuario" class="mb-5">
+          {% if usuario.tip_id ==1%}
+            <!--Login/Email Usuario-->
+            <div class="mb-4">
+              {{form.email.label(class="inputtext")}}
+              {{form.email(class_="inputtext")}}
+            </div>
+
+            <!--Cambiar Contraseña-->
+            <div class="mb-4">
+              {{form.password.label}}
+              {{form.password(class_="form-control")}}
+            </div>
+            
+
+            <!--Nombre Usuario-->
+            <div class="mb-4">
+              {{form.nombre.label}}
+              {{form.nombre(class_="form-control")}}
+            </div>
+
+            <!--Apellido Usuario-->
+            <div class="mb-4">
+              {{form.apellido.label}}
+              {{form.apellido(class_="form-control")}}
+            </div>
+
+            <!--rut usuario-->
+            <div class="mb-4">
+              {{form.rut.label}}
+              {{form.rut(class_="form-control")}}
+            </div>
+
+            <!--Celular Usuario-->
+            <div class="mb-4">
+              {{form.celular.label}}
+              {{form.celular(class_="form-control")}}
+            </div>
+
+
+            <!--Region Usuario-->
+            <div class="mb-4">
+              <label for="region">Región:</label>
+              <select name="region" id="regionsita" class="js-example-basic-single" style="width: 100%;">
+                <option value="0">Seleccione una región</option>
+                {% for item in regiones %}
+                {% if item.reg_id == restaurante.domo_region.reg_id %}
+                <option value="{{item.reg_id}}" selected>{{item.reg_nombre}}</option>
+                {% else %}
+                <option value="{{item.reg_id}}">{{item.reg_nombre}}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </div>
+
+
+            <!--Ciudad Usuario-->
+            <div class="mb-4">
+              <label for="ciudad">Ciudad:</label>
+              <select name="ciudad" class="form-select js-example-basic-single" id="ciudad" style="width: 100%;">
+                <option value="0">Seleccione Región</option>
+              </select>
+              {% for item in regiones %}
+              <select name="{{item.reg_id}}" id="{{item.reg_id}}" class="form-select js-example-basic-single form-select" style="width: 100%;" >
+                <option value="0">Seleccione Ciudad</option>
+                {% for ciudad in ciudades %}
+                {% if ciudad.reg_id == item.reg_id %}
+                    {% if ciudad.ciu_id == restaurante.domo_ciudad.ciu_id %}
+                    <option value="{{ciudad.ciu_id}}" selected>{{ciudad.ciu_nombre}}</option>
+                     {% else %}
+                    <option value="{{ciudad.ciu_id}}">{{ciudad.ciu_nombre}}</option>
+                    {% endif %}
+                {% endif %}
+                {%endfor%}
+              </select>
+              {% endfor %}
+            </div>
+
+            <!--Calle Usuario-->
+            <div class="mb-4">
+              <div class="mb-4">
+                {{form.calle.label}}
+                {{form.calle(class_="form-control")}}
+              </div>
+            </div>
+
+            <!--Numero Usuario-->
+            <div class="mb-4">
+              {{form.numero.label}}
+              {{form.numero(class_="form-control")}}
+            </div>
+
+            <!--Estado Usuario-->
+            <div class="mb-4">
+              {{form.estado.label}}
+              {{form.estado(class_="form-select")}}
+            </div>
+
+
+            {% elif usuario.tip_id ==2 %}
+            <div class="mb-4">
+              {{form.email.label}}
+              {{form.email(class_="form-control")}}
+            </div>
+            <!--Cambiar Contraseña-->
+            <div class="mb-4">
+              {{form.password.label}}
+              {{form.password(class_="form-control")}}
+            </div>
+
+            <div class="mb-4">
+              {{form.estado.label}}
+              {{form.estado(class_="form-select")}}
+            </div>
+
+             <!--Nombre Usuario-->
+             <div class="mb-4">
+              {{form.nombre.label}}
+              {{form.nombre(class_="form-control")}}
+            </div>
+
+            <!--Apellido Usuario-->
+            <div class="mb-4">
+            {{form.apellido.label}}
+            {{form.apellido(class_="form-control")}}
+            </div>
+
+            <!--Rut usuario-->
+            <div class="mb-4">
+            {{form.rut.label}}
+            {{form.rut(class_="form-control")}}
+            </div>
+
+
+            {% elif usuario.tip_id==3 %}
+            <div class="mb-4">
+              {{form.email.label}}
+              {{form.email(class_="form-control")}}
+            </div>
+            <!--Cambiar Contraseña-->
+            <div class="mb-4">
+              {{form.password.label}}
+              {{form.password(class_="form-control")}}
+            </div>
+
+            <div class="mb-4">
+              {{form.estado.label}}
+              {{form.estado(class_="form-select")}}
+            </div>
+
+
+            {% endif %}
+            </div>
+            <!--Boton-->
+            {{ form.submit(class_="btn btn-primary w-100") }}
+          </form>
+        </div>
+
+      <div class="col-lg-4 d-none d-lg-block">
+      </div>
+
+    </div>
+
+  </section>
+
+
+
+
+{% endblock%}
+
+{% block script %}
+<script type="text/javascript">
+    $(document).ready(function() {
+      $('#regionsita').select2({placeholder: 'Seleccione Región', allowClear: true});
+    });
+  
+    $(document).ready(function() {
+      $('#ciudad').select2().next().hide();
+    });
+  
+    $(document).ready(function(){
+      let i=1;
+      $($('#regionsita').children('option')).each(function(){
+        if(i==$('#regionsita').val()){
+          $('#'+i).select2().next().show();
+        }else{
+            $('#'+i).select2().next().hide();
+        }
+        i++;
+      });
+    });
+  
+    $('#regionsita').change(function(){
+        console.log("xD");
+        if($('#regionsita').val()==0){
+        $('#ciudad').select2().next().show();
+        let i=1;
+        $($('#regionsita').children('option')).each(function(){
+          $('#'+i).select2().next().hide();
+          i++;
+        });
+      }else{
+        $('#ciudad').select2().next().hide();
+        let i=1;
+        $($('#regionsita').children('option')).each(function(){
+          if(i==$('#regionsita').val()){
+            $('#'+i).select2().next().show();
+          }else{
+            $('#'+i).select2().next().hide();
+          }
+          i++;
+        });
+      }
+    }); 
+  
+  </script>
+{% endblock %}

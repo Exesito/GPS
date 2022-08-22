@@ -1,0 +1,29 @@
+
+{% extends "index.html" %}
+
+{% block title %}
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Ejemplos Webpay Plus - Crear Transaccion</title>
+{% endblock %}
+
+{% block body %}
+    <div class="card" style="margin:2rem;">
+        <div class="card-header">
+            Pago con Webpay Plus
+        </div>
+    <img class="wp-img"src="{{ url_for('static', filename='media/webpay.png') }}">
+
+    <h1>Pago con Webpay</h1>
+
+    Estimad@ cliente, actualmente está en el proceso de pago de la reserva a través de la plataforma WEBPAY.
+
+    <br>
+    <br>
+    <form action="{{ response.url }}" method="POST">
+        <input type="hidden" name="token_ws" value="{{ response.token }}">
+        <input type="submit" value="Pagar con Webpay">
+        </form>
+</div>
+
+
+{% endblock %}
