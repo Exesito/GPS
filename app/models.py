@@ -36,6 +36,9 @@ class domo_restaurante(db.Model):
     rtr_opvege = db.Column('rtr_opvege', db.Boolean)
     rtr_duenonombre = db.Column('rtr_duenonombre', db.String(40))
     rtr_duenoapellido = db.Column('rtr_duenoapellido', db.String(40))
+    rtr_cantidadmesas = db.Column('rtr_cantidadmesas', db.Integer)
+    rtr_cantidadsillas = db.Column('rtr_cantidadsillas', db.Integer)
+
 
 class domo_direccion(db.Model):
     __tablename__ = 'domo_direccion'
@@ -125,6 +128,7 @@ class domo_cliente(db.Model):
     cli_rut = db.Column('cli_rut', db.String(20))
     cli_tipo = db.Column('cli_tipo', db.String(1))
 
+
 class domo_carta(db.Model):
     __tablename__ = 'domo_carta'
     car_id = db.Column('car_id', db.Integer, primary_key = true)
@@ -132,3 +136,4 @@ class domo_carta(db.Model):
     car_nombre = db.Column('car_nombre', db.String(20))
     car_url = db.Column('car_url', db.String(255))
     car_activa = db.Column('car_activa', db.Boolean)
+

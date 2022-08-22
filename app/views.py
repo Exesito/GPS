@@ -3,6 +3,7 @@
 import re
 from app import app
 from app import models as db
+from app.forms import RegisterForm, LoginForm
 from app.models import domo_horario, domo_usuario
 from notifypy import Notify
 from flask import render_template, request, session, redirect,url_for
@@ -93,4 +94,11 @@ def editor_cartas():
             rtr_names.append(string)
     
     return render_template("CRUD-Horarios/editor_carta.html", lista_rtr = lista_rtr, lista_cartas = cartas, rtr_names = rtr_names)
+ 
+
+@app.route('/gestionar_mesas')
+def gestionar_mesas():
+    mesas = db.db.session.query(db.domo_restaurante.rtr_cantidadmesas).filter(db.domo_restaurante.rtr_id==10).first()
+    sillas = db.db.session.query(db.domo_restaurante.rtr_cantidadsillas).filter(db.domo_restaurante.rtr_id==10).first()
+    return render_template("assets/gestionar_mesas.html", mesas=mesas, sillas=sillas)
 
