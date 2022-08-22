@@ -7,31 +7,23 @@
 {% endblock %}
 
 {% block body %}
-    <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Ejemplo Webpay Plus - Crear Transaccion</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Step: <strong>Create Transaction</strong></li>
-    </ol>
-    </nav>
+    <div class="card" style="margin:2rem;">
+        <div class="card-header">
+            Pago con Webpay Plus
+        </div>
+    <img class="wp-img"src="{{ url_for('static', filename='media/webpay.png') }}">
 
+    <h1>Pago con Webpay</h1>
 
-    <div class="alert alert-warning" role="alert">
-    <h3>request</h3>
-        {% for k, v in request.items() %}
-            {{ k }} = {{ v }},
-        {% endfor %}
-</div>
-    <div class="alert alert-primary" role="alert">
-    <h3>result</h3>
-    {{ response }}
-</div>
-<br>
-    <div class="alert alert-success" role="alert">
-        <p>Sesion iniciada con exito en Webpay patpass</p>
-    </div>
+    Estimad@ cliente, actualmente está en el proceso de pago de la reserva a través de la plataforma WEBPAY.
+
+    <br>
     <br>
     <form action="{{ response.url }}" method="POST">
-    <input type="hidden" name="token_ws" value="{{ response.token }}">
-    <input type="submit" value="Ejecutar Pago con Webpay">
-    </form>
+        <input type="hidden" name="token_ws" value="{{ response.token }}">
+        <input type="submit" value="Pagar con Webpay">
+        </form>
+</div>
+
+
 {% endblock %}

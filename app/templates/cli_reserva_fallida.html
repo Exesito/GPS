@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+
+{% block title %}
+Error Reserva
+{% endblock %}
+
+{% block body %}
+    <div class="reserva-container img-0">
+
+    <div class="card" style="margin: 2rem">
+        <div class="card-header">
+            ¡Ha ocurrido un error!
+        </div>
+        <div style="padding: 2rem">
+            <div class="row">
+            <div class="col-4">
+                <img style="max-width: 100%;"
+                class="reserva-exitosa-img"
+                src="{{ url_for('static', filename='media/error.jpg') }}">
+            </div>
+
+            <div class="col-8">
+                <h2>Estimad@ cliente, ha ocurrido un error en la solicitud de su reserva, por favor intentelo nuevamente.</h2>
+            </div>
+        </div>
+        </div>
+    </div>
+
+  </div>
+{% endblock %}

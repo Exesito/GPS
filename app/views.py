@@ -4,6 +4,7 @@ from app import app, models
 from app.forms import RegisterForm, ReservaForm, MesaForm, ClientForm
 from app.models import User, domo_cliente, domo_reserva, domo_restaurante
 from flask import render_template, request, url_for, redirect, session
+from sqlalchemy import func
 
 db = models.db
 
@@ -35,7 +36,7 @@ def register():
 @app.route('/reservar/<id>', methods=['GET','POST'])
 def reservar(id):
     
-    #session["cli_id"] = 1
+    session["cli_id"] = 1
     
     day_choice = [1,2,3]
     hour_choice = [1,2,3]
@@ -77,8 +78,8 @@ def reserva_not_registered(id_restaurante, id_reserva):
     
     return render_template("cli_reservar_not_registered.html", data = data, client_form = client_form)
 
-@app.route('/reservar/<id_reserva>/create_new_client/', methods=['GET','POST'])
-def reserva_new_client(id_reserva):
+@app.route('/reservar/<id_restaurante>/<id_reserva>/create_new_client/', methods=['GET','POST'])
+def reserva_new_client(id_restaurante, id_reserva):
     
     if request.method == 'POST':
     
@@ -91,11 +92,12 @@ def reserva_new_client(id_reserva):
         reserva = domo_reserva.get_by_id(id_reserva)
         
         cliente = domo_cliente.get_by_rut(rut)
-        print(cliente)
+        
         if cliente is not None:
             cliente.cli_telefono = telefono
         else:
-            cliente = domo_cliente(cli_nombre=nombre, cli_apellido=apellido, cli_telefono=telefono)
+            max_id_cli = models.db.session.query(func.max(models.domo_cliente.cli_id)).scalar() + 1
+            cliente = domo_cliente(cli_id = max_id_cli, cli_nombre=nombre, cli_apellido=apellido, cli_telefono=telefono, cli_rut = rut)
             db.session.add(cliente)
         
         dict_mdp = {
@@ -106,13 +108,14 @@ def reserva_new_client(id_reserva):
       
         reserva.cli_id = cliente.cli_id
         reserva.tpr_id = dict_mdp[medio_de_pago]
+        reserva.estado = "REALIZADA"
         
         db.session.commit()
         
-        if medio_de_pago is "WEBPAY":
-            pass
+        if medio_de_pago == "WEBPAY":
+            return redirect(url_for('webpay_plus.create', rsv_id = id_reserva, cli_id = cliente.cli_id))
         
-        return #retorna reserva exitosa
+        return redirect(url_for('reserva_exitosa', id_restaurante = id_restaurante, id_reserva = id_reserva))#retorna reserva exitosa
 
 @app.route('/reservar/<id_restaurante>/generar_reserva', methods=['GET','POST'])
 def reserva_create(id_restaurante):
@@ -143,35 +146,33 @@ def reserva_create(id_restaurante):
         reserva.cli_id = session["cli_id"]
         reserva.tpg_id = dict_mdp[medio_de_pago] 
         
-        if medio_de_pago is "WEBPAY":
-            pass
+        if medio_de_pago == "WEBPAY":
+            return redirect(url_for('webpay_plus.webpay_plus_create', rsv_id = id_reserva, cli_id = session["cli_id"]))
         
         reserva.estado = "REALIZADA"
         db.session.commit()
         
         return redirect(url_for('reserva_exitosa', id_restaurante = id_restaurante, id_reserva = id_reserva))
 
-
-@app.route('/reservar/<id_restaurante>/<id_reserva>/update_reserva', methods=['GET','POST'])
-def reserva_update_new_client(id_restaurante, id_reserva):
-    
-    if request.method == 'POST':
-        return     
-    return    
-
 @app.route('/reservar/<id_restaurante>/<id_reserva>/reserva_exitosa', methods=['GET','POST'])
 def reserva_exitosa(id_restaurante, id_reserva):
     
     restaurante = models.domo_restaurante.get_by_id(id_restaurante)
     reserva = models.domo_reserva.get_by_id(id_reserva)
+    cliente = models.domo_cliente.get_by_id(reserva.cli_id)
+    mesa = models.domo_mesa.get_by_id(reserva.msa_id)
     
-    return render_template("cli_ver_reservas.html")
+    return render_template("cli_reserva_exitosa.html", restaurante=restaurante, reserva=reserva, cliente=cliente, mesa = mesa)
+
+@app.route('/reservar/error', methods=['GET','POST'])
+def reserva_error():
+    
+    return render_template("cli_reserva_fallida.html")
 
 @app.route('/cliente/ver_reservas', methods=['GET','POST'])
 def cli_ver_reservas():
     
     return render_template("cli_ver_reservas.html")
-
 
 @app.route('/restaurante/ver_reservas', methods=['GET','POST'])
 def res_ver_reservas():

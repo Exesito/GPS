@@ -1,0 +1,57 @@
+{% extends "index.html" %}
+
+{% block title %}
+¡Reserva aquí!
+{% endblock %}
+
+{% block body %}
+    <div class="reserva-container img-0">
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container black-background">
+
+          <div class="grid-top-reserva">
+          <div class="gtitle">
+            <h1 class="display-6">Restaurante {{restaurante.rtr_nombre}}</h1>
+          </div>
+          
+          <div class="gdescription">
+            <p class="lead">{{restaurante.rtr_descripcion}}
+          </div>
+
+          <div class="gdown">
+            <hr class="solid">
+          </div>
+        </div>
+           </div>
+    </div>
+
+    <div class="card" style="margin: 2rem">
+        <div class="card-header">
+            Reserva exitosa
+        </div>
+        <div style="padding: 2rem">
+            <div class="row">
+            <div class="col-3">
+                <img style="max-width: 100%;"
+                class="reserva-exitosa-img"
+                src="{{ url_for('static', filename='media/reserva_exitosa.jpg') }}">
+            </div>
+
+            <div class="col-9">
+                <h2>Estimad@ <b>{{cliente.cli_nombre}}</b>, su reserva está realizada con éxito en el restaurante <b>{{restaurante.rtr_nombre}}</b>,
+                    a las <b>{{reserva.rsv_hora}}</b> horas, para el día <b>{{reserva.rsv_fecha}}</b> en la <b>mesa {{mesa.msa_numero}}</b> con capacidad
+                    de <b>{{mesa.msa_capacidad}}</b> persona. Se enviará una copia de los datos a través de correo eléctronico.
+                    </h2></br>
+                    
+                    <h4>Gracias por preferir la plataforma DOMO. Cualquier consulta sobre la reserva se puede comunicar con el restaurante asociado o
+                        contactando con DOMO indicando el número de ticket <b>N°{{reserva.rsv_id}}</b></br>
+                        En caso de ser usuario puede encontrar los datos asociados a su reserva en el apartado de <b><a>MIS RESERVAS</a></b>.
+                    </h4>
+            </div>
+        </div>
+        </div>
+    </div>
+
+  </div>
+{% endblock %}

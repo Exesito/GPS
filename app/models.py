@@ -76,6 +76,12 @@ class domo_reserva(db.Model):
         query = domo_restaurante.query.join(domo_mesa).join(domo_reserva).filter(domo_restaurante.rtr_id == id).all()
         return query
     
+    def get_restaurante(self):
+
+        query = db.session.query(domo_reserva, domo_mesa, domo_restaurante).filter(domo_reserva.msa_id == domo_mesa.msa_id, domo_mesa.rtr_id == domo_restaurante.rtr_id, domo_reserva.rsv_id == self.rsv_id).first()
+        print(query)
+        return query.domo_restaurante.rtr_id
+    
     @staticmethod
     def get_by_id(id):
         return domo_reserva.query.filter_by(rsv_id = id).first()
