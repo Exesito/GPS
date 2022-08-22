@@ -7,16 +7,44 @@
             aria-controls="navbarID" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarID">
             <div class="navbar-nav">
                 <a class="nav-link active" aria-current="page" href="{{url_for('index')}}">Inicio</a>
 
+                <a class="nav-link" href="{{url_for('login')}}">Iniciar Sesion</a>
+               
+        <div class="collapse navbar-collapse container-fluid" id="navbarID">
+            <div class="navbar-nav container-fluid">
+
+                {% if session['tipo'] ==1 %}
+                <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+                    <li class="nav-item dropdown" >
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-offset="10,-200">
+                            <i class="fa fa-gear" style="font-size:100%;"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item" href="{{url_for('perfil',login=session['user'])}}">Perfil</a></li>
+                            <li><a class="dropdown-item" href="{{url_for('logout')}}">Cerrar Sesión</a></li>
+                        </ul>
+                    </li>
+                
+                {% elif session['tipo']==2 %}
+                <a class="nav-link active" aria-current="page" href="{{url_for('dashboard')}}">Inicio</a>
                 <a class="nav-link" href="{{url_for('editor_horarios')}}">Gestionar Horarios</a>
                 <a class="nav-link" href="{{url_for('editor_cartas')}}">Gestionar Cartas</a>
-                <a class="nav-link" href="{{url_for('login')}}">Iniciar Sesion</a>
-                <a class="nav-link" href="{{url_for('gestionar_restaurantes')}}">Gestionar Restaurante</a>
-                <a class="nav-link" href="{{url_for('gestionar_mesas')}}">Mesas</a>
+                <a class="nav-link" href="{{url_for('gestionar_mesas')}}">Gestionar Mesas</a>
+                <a class="nav-link" href="{{url_for('logout')}}">Cerrar Sesión</a>
 
+
+                {% elif session['tipo']== 3 %}
+                <a class="nav-link active" aria-current="page" href="{{url_for('dashboard')}}">Inicio</a>
+                <a class="nav-link" href="{{url_for('gestionar_restaurantes')}}">Gestionar Restaurante</a>
+                <a class="nav-link" href="{{url_for('gestionar_usuarios_admin')}}">Gestionar Usuarios</a>
+                <a class="nav-link" href="{{url_for('logout')}}">Cerrar Sesión</a>
+
+
+                {% endif %}
             </div>
         </div>
      </div>

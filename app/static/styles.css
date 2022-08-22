@@ -17,6 +17,13 @@ body {
     font-family: 'Spartan', sans-serif;
     font-weight: 300;
     color: var(--light);
+    padding-top: 0 !important;
+    font-family: 'Spartan', sans-serif;
+    font-weight: 300;
+    color: var(--light);
+    width: 100%;
+    min-width: auto;
+    height: auto;
 }
 
 .text-light { color: var(--light) !important; }
@@ -62,6 +69,7 @@ body {
 .registro{
     color: #FFFFFF !important;
 }
+
 
 .tablecustom {
     width: 100%;
@@ -144,4 +152,55 @@ body {
 
 .flex{
     display: flex;
+}
+
+.form-register{
+    /*color: #FFFFFF !important;*/
+    background: #FFFFFF;
+    padding: 5px;    
+    margin: auto;
+    margin-top: 50px;
+    box-shadow: 7px 13px 37px #000000;
+    border-radius: 15px;
+    margin-bottom: 5%;
+}
+
+.registro-fondo{
+    background-image: url(../static/media/img3.jpg);
+}
+
+
+.content{
+    padding-top: 2rem; 
+}
+
+.opacity{
+    opacity: 0.5;
+    background-color: #000000;
+    border-radius: 1rem;
+}
+
+#botonsito{
+    text-align: center;
+    margin-bottom: 5%;
+}
+
+.btn-submit{
+    background-color: aqua;
+}
+
+.btn-submit:hover{
+    background-color: rgb(0, 234, 234);
+}
+
+.dropdown{
+    margin-left: 80rem;
+}
+
+.card{
+    margin-top: 2%;
+    background-color: #310746;
+    border-radius: 1rem;
+    width: 99%;
+
 }

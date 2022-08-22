@@ -22,7 +22,8 @@ class domo_horario(db.Model):
     hor_horainicio = db.Column('hor_horainicio', db.Time)
     hor_horatermino = db.Column('hor_horatermino', db.Time)
     hor_activo = db.Column('hor_activo', db.Boolean)
-    
+    hor_disponibilidad = db.Column('hor_disponibilidad', db.Boolean) # no está en v4 de sql. hay que añadirlo a productivo
+
 
 class domo_restaurante(db.Model):
     __tablename__ = 'domo_restaurante'
@@ -100,13 +101,35 @@ class domo_tipousuario(db.Model):
     tip_nombre = db.Column('tip_nombre', db.String(20))
     tip_descripcion = db.Column('tip_descripcion', db.Text)
 
-class domo_usuario(db.Model):
+
+class domo_usuario(db.Model, UserMixin):
     __tablename__ = 'domo_usuario'
     usr_id = db.Column('usr_id', db.Integer, primary_key = true)
     tip_id = db.Column('tip_id', db.Integer, db.ForeignKey('domo_tipousuario.tip_id'))
-    usr_login = db.Column('usr_login', db.String(20))
+    usr_login = db.Column('usr_login', db.String(40))
     usr_contrasena = db.Column('usr_contrasena', db.String(80))
     usr_estado = db.Column('usr_estado', db.String(20))
+
+    @property
+    def password(self):
+        raise AttributeError('password not readable')
+    @password.setter
+    def password(self, password):
+
+        pw = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+        self.usr_contrasena=pw.decode('utf-8')
+        print(self.usr_contrasena)
+        
+    def verify_password(self, password):
+        return bcrypt.checkpw(password.encode('utf-8'), self.usr_contrasena)
+    
+    def __init__(self, id, tipo,email,password,estado):
+        self.usr_id=id
+        self.tip_id = tipo #Tipo de Usuario Cliente
+        self.usr_login = email
+        self.password = password
+        self.usr_estado = estado
+
 
 
 class domo_encargadortr(db.Model):
@@ -116,6 +139,8 @@ class domo_encargadortr(db.Model):
     rtr_id = db.Column('rtr_id', db.Integer)
     enc_nombre = db.Column('enc_nombre', db.String(40))
     enc_apellido = db.Column('enc_apellido', db.String(40))
+    enc_rut= db.Column('enc_rut',db.String(13))
+
 
 class domo_cliente(db.Model):
     __tablename__ = 'domo_cliente'
@@ -136,4 +161,6 @@ class domo_carta(db.Model):
     car_nombre = db.Column('car_nombre', db.String(20))
     car_url = db.Column('car_url', db.String(255))
     car_activa = db.Column('car_activa', db.Boolean)
+    cli_telefono = db.Column('cli_telefono', db.Integer)
+    cli_rut = db.Column('cli_rut', db.String(13))
 
