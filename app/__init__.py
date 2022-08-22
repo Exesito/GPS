@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 import os
 from notifypy import Notify
 
+
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'Secret'
 app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:peterfields@127.0.0.1:5432/domo-local'     #bdd local nachito
