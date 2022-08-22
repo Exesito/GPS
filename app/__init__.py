@@ -8,6 +8,6 @@ app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:admin@localhost:5
 app.config['SECURITY_PASSWORD_HASH'] = 'scrtcript'
 app.config['SECURITY_PASSWORD_SALT'] = 'fhasdgihwntlgy8f'
 
-from app import models, views
+from app import models, views, module
 
 models.db.init_app(app)
