@@ -32,9 +32,9 @@
 
     <div class="grid1">
       <form action="{{ url_for('reserva_create', id_restaurante = data.get('RESTAURANTE_ID')) }}" method=post>
-      {% include "assets/form_reservar.html"%}
+      {% include "reserva/form_reservar.html"%}
 
-      {% include "assets/form_mesa.html"%}
+      {% include "reserva/form_mesa.html"%}
       </form>
 
     </div>
