@@ -34,17 +34,10 @@ Gestionar Usuarios
                     <table class="table table-responsive table-sm" id="users">
                         <thead>
                             <tr>
+                                <th>Id del <br> Usuario</th>
                                 <th>Tipo de <br> Usuario</th>
                                 <th>Email</th>
                                 <th>Estado</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Rut</th>
-                                <th>Celular</th>
-                                <th>Calle</th>                                
-                                <th>Número <br> de Domicilio</th>
-                                <th>Ciudad</th>
-                                <th>Región</th>
                                 <th>Opciones</th>
 
                             </tr>
@@ -52,55 +45,23 @@ Gestionar Usuarios
 
                         {% for item in usuarios %}
                         <tr>
+                            <td>{{item.usr_id}}</td>
                             <td>{{item.tip_id}}</td>
                             <td>{{item.usr_login}}</td>
                             <td>{{item.usr_estado}}</td>
 
-                            {% if item.tip_id==1 %}
-
-                            {% for item1 in clientes %}
-                            <td>{{item1.domo_cliente.cli_nombre}}</td>
-                            <td>{{item1.domo_cliente.cli_apellido}}</td>
-                            <td>{{item1.domo_cliente.cli_rut}}</td>
-                            <td>{{item1.domo_direccion.dir_nombrecalle}}</td>
-                            <td>{{item1.domo_direccion.dir_numerocalle}}</td>
-                            <td>{{item1.domo_ciudad.ciu_nombre}}</td>
-                            <td>{{item1.domo_region.reg_nombre}}</td>
-                            {% endfor %}
-
-                            {% elif item.tip_id==2 %}
-
-                            {% for item2 in encargados %}
-                            <td>{{item2.domo_encargadortr.enc_nombre}}</td>
-                            <td>{{item2.domo_encargadortr.enc_apellido}}</td>
-                            <td>{{item2.domo_encargadortr.enc_rut}}</td>
-                            <td>NO</td>
-                            <td>NO</td>
-                            <td>NO</td>
-                            <td>NO</td>
-                            <td>NO</td>
-                            {% endfor %}
-
-                            {% else %}
-                            <td>NO</td>
-                            <td>NO</td>
-                            <td>NO</td>
-                            <td>NO</td>
-                            <td>NO</td>
-                            <td>NO</td>
-                            <td>NO</td>
-                            <td>NO</td>
-                            {% endif %}
-
-
                             <td>
                                 <ul class="action-list">
-                                    <li><a href="{{url_for('editar_usuario',id=item.usr_id)}}"
-                                            data-tip="edit"><i class="fa fa-edit"></i></a></li>
-                                    <li><a href="{{url_for('eliminar_usuario',id=item.usr_id)}}" data-tip="delete" id="{{loop.index}}" onclick="confirmar(this.id)">
-                                        <i class="fa fa-trash" ></i></a></li>
-                                    <input type="hidden" name="{{loop.index}}" value="¿Está seguro que quiere eliminar el usuario con correo {{item.usr_login}}?">
-                                </ul>
+                                    <li><a href="{{url_for('actualizar_usuario',id=item.usr_id)}}"
+                                        data-tip="edit"><i class="fa fa-edit"></i>
+                                    </a>
+                                </li>
+                                <li><a href="{{url_for('eliminar_usuario',id=item.usr_id)}}" data-tip="delete" id="{{loop.index}}" onclick="confirmar(this.id)">
+                                    <i class="fa fa-trash" ></i>
+                                    </a>
+                                </li>
+                                <input type="hidden" name="{{loop.index}}" value="¿Está seguro que quiere eliminar el usuario de correo {{item.usr_login}} ?">
+                            </ul>
                             </td>
                         </tr>
 

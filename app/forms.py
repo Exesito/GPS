@@ -53,7 +53,8 @@ class RegistroAdmin(Form):
     confirm = PasswordField('Repite contraseña', [validators.DataRequired(), validators.Length(min=6, max=35)])
     estado= SelectField('Estado de la cuenta', choices=[('ACTIVA','Activa'),('INACTIVA','Inactiva'),('BANEADA','Baneada'),('PENDIENTE','Pendiente')])
 
-    submit = SubmitField("Crear Cuenta")
+    submit = SubmitField('Crear Cuenta')
+
 
 class EditForm3(Form):
     email = StringField('Correo Eléctronico', [validators.DataRequired(message='Ingrese email'), validators.Email(), validators.Length(min=6, max=35)])
@@ -70,14 +71,14 @@ class EditForm2(Form):
     estado= SelectField('Estado de la cuenta', choices=[('ACTIVA','ACTIVA'),('INACTIVA','INACTIVA'),('BANEADA','BANEADA'),('PENDIENTE','PENDIENTE')])
     
 
-    submit= SubmitField("Guardar Cambios")
+    submit= SubmitField('Guardar Cambios')
 
 class EditForm1(Form):
     email = StringField('Correo Eléctronico', [validators.DataRequired(message='Ingrese email'), validators.Email(), validators.Length(min=6, max=35)])
     password = PasswordField('Nueva Contraseña', [validators.DataRequired(),validators.EqualTo('confirm', message='Las contraseñas deben coincidir')])
     estado= SelectField('Estado de la cuenta', choices=[('ACTIVA','ACTIVA'),('INACTIVA','INACTIVA'),('BANEADA','BANEADA'),('PENDIENTE','PENDIENTE')])
 
-    submit= SubmitField("Guardar Cambios")
+    submit= SubmitField('Guardar Cambios')
 
 
 
