@@ -63,16 +63,6 @@ class domo_reserva(db.Model):
     @staticmethod
     def get_by_id(id):
         return domo_reserva.query.filter_by(rsv_id = id).first()
-
-class domo_horario(db.Model):
-    __tablename__ = 'domo_horario'
-    hor_id = db.Column('hor_id', db.Integer, primary_key = true)
-    rtr_id = db.Column('rtr_id', db.Integer ,db.ForeignKey('domo_rtr.rtr_id'))
-    hor_diainicio = db.Column('hor_diainicio', db.Integer)
-    hor_diatermino = db.Column('hor_diatermino', db.Integer)
-    hor_horainicio = db.Column('hor_horainicio', db.Time)
-    hor_horatermino = db.Column('hor_horatermino', db.Time)
-    hor_disponibilidad = db.Column('hor_disponibilidad', db.Boolean)
 class domo_direccion(db.Model):
     __tablename__ = 'domo_direccion'
     dir_id = db.Column('dir_id', db.Integer, primary_key = true)
@@ -109,12 +99,6 @@ class domo_mesa(db.Model):
     @staticmethod
     def get_by_id(id):
         return domo_mesa.query.filter_by(msa_id = id).first()
-    
-class domo_tipodepago(db.Model):
-    __tablename__ = 'domo_tipodepago'
-    tpg_id = db.Column('tpg_id', db.Integer, primary_key = True)
-    tpg_etiqueta =  db.Column('tpg_etiqueta', db.String(30))
-    tpg_descripcion = db.Column('tpg_descripcion', db.String(50))
 class domo_restaurante(db.Model):
     __tablename__ = 'domo_restaurante'
     rtr_id = db.Column('rtr_id', db.Integer, primary_key = True)
