@@ -6,7 +6,7 @@ from flask import render_template, request, session, redirect,url_for
 
 @app.route('/editor_cartas',methods=['GET','POST'])
 def editor_cartas():
-    session['email'] = 'P5W512FM N3REWJ0IEN9'  #Linea para establecer un usuario mientras no hayan sesiones
+    session['email'] = 'pruebanachooo@ubiobio.cl'  #Linea para establecer un usuario mientras no hayan sesiones
     
     email = session["email"]    
     if request.method =='POST':

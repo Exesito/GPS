@@ -43,9 +43,10 @@ $(document).ready( function () {
             currentTD.get(1).textContent
             currentTD.data('id', currentTD.get(0).textContent)
             currentTD.data('nombre', currentTD.get(1).textContent)
-            currentTH.data('lastTH', currentTH.get(1).outerHTML)
+    
+            currentTH.data('lastTH', currentTH.get(2).outerHTML)
             
-            $(this).parents('tr').find('.linkk').html(' <a><input type="file" id="link"  name="file"/> </a>')
+            $(this).parents('tr').find('.linkk').html(' <a><input type="file" class="linkk"  name="file"/> </a>')
             
             
         } else {        //si dice guardar, debe revisar el contenido y enviarlo a la base de datos
@@ -101,8 +102,9 @@ $(document).ready( function () {
 
         currentTD.get(0).textContent = currentTD.data("id")
         currentTD.get(1).textContent = currentTD.data('nombre')
-        $(this).parents('tr').find('#link').html(currentTH.data('lastTH'))
-        
+        //currentTH.get(2).outerHTML = currentTH.data('lastTH')
+        $(this).parents('tr').find('.linkk').html(currentTH.data('lastTH'))
+        $(this).parents('tr').find('.plswork').remove()
         $.each(currentTD, function () {
             $(this).prop('contenteditable', false)
                 
