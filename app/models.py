@@ -82,10 +82,16 @@ class domo_reserva(db.Model):
         print(query)
         return query.domo_restaurante.rtr_id
     
+    def error(self):
+        
+        self.estado = "FALLIDA"
+        db.session.commit()
+        
+        return
+    
     @staticmethod
     def get_by_id(id):
         return domo_reserva.query.filter_by(rsv_id = id).first()
-
 
 class domo_mesa(db.Model):
     __tablename__ = 'domo_mesa'
@@ -97,8 +103,7 @@ class domo_mesa(db.Model):
     
     @staticmethod
     def get_by_id(id):
-        return domo_mesa.query.filter_by(msa_id = id).first()
-    
+        return domo_mesa.query.filter_by(msa_id = id).first()    
 class domo_tipodepago(db.Model):
     __tablename__ = 'domo_tipodepago'
     tpg_id = db.Column('tpg_id', db.Integer, primary_key = True)
@@ -130,6 +135,18 @@ class domo_restaurante(db.Model):
         
         return new_reserva.rsv_id
         
+    @staticmethod
+    def get_reservas(id):
+        
+        query = db.session.query(domo_restaurante, domo_cliente, domo_mesa, domo_reserva).filter(
+            domo_restaurante.rtr_id == domo_mesa.rtr_id,
+            domo_mesa.msa_id == domo_reserva.msa_id,
+            domo_reserva.cli_id == domo_cliente.cli_id,
+            domo_restaurante.rtr_id == id
+        ).all()
+        
+        return query
+    
     @staticmethod
     def get_by_id(id):
         return domo_restaurante.query.filter_by(rtr_id = id).first()
@@ -164,6 +181,17 @@ class domo_cliente(db.Model):
     cli_telefono = db.Column('cli_telefono', db.String(20))
     cli_rut = db.Column('cli_rut', db.String(20))
     cli_tipo = db.Column('cli_tipo', db.String(1))
+    
+    @staticmethod 
+    def get_reservas(id):
+        
+        query = db.session.query(domo_reserva, domo_mesa, domo_restaurante).filter(
+            domo_reserva.cli_id == id,
+            domo_reserva.msa_id == domo_mesa.msa_id,
+            domo_restaurante.rtr_id == domo_mesa.rtr_id
+        ).all()
+        
+        return query
     
     @staticmethod
     def get_by_rut(rut): #rut sin puntos ni guion
