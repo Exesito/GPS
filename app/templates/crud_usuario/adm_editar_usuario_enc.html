@@ -1,7 +1,7 @@
 {% extends "index.html" %}
 
 {% block title %}
-Actualizar Usuario Administrador
+Actualizar Usuario Encargado
 {% endblock %}
 
 {% block body %}
@@ -13,14 +13,15 @@ Actualizar Usuario Administrador
   
       </div>
       <div class="form-register col-lg-4 bg-dark d-flex flex-column align-items-end min-vh-100">
+  
         <div class="px-lg-5 pt-lg-4 pb-lg-3 p-4 mb-auto w-100">
           <img src="{{url_for('static',filename='Logo.svg')}}" class="img-fluid" />
         </div>
         <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
           <h1 class="font-weight-bold mb-4">Actualice datos del Usuario:</h1>
           <!--Acción de la forma-->
-          <form action="{{url_for('actualizar_usuario3',id=usuario.usr_id)}}" , method="post" id="editar_usuario" class="mb-5">
-          
+          <form action="{{url_for('actualizar_usuario2',id=usuario.usr_id)}}" , method="post" id="editar_usuario" class="mb-5">
+
             <!--Login/Email Usuario-->
             <div class="mb-4">
               {{form.email.label}}
@@ -64,18 +65,51 @@ Actualizar Usuario Administrador
               </select>
             </div>
 
+             <!--Nombre Usuario-->
+            <div class="mb-4">
+              {{form.nombre.label}}
+              <input type="text" class="form-control" name="nombre" placeholder="{{encargado.enc_nombre}}" required />
+            </div>
+
+            <!--Apellido Usuario-->
+            <div class="mb-4">
+              {{form.apellido.label}}
+              <input type="text" class="form-control" name="apellido" placeholder="{{encargado.enc_apellido}}" required />
+            </div>
+
+            <!--rut usuario-->
+            <div class="mb-4">
+              {{form.rut.label}}
+              <input type="text" class="form-control" name="rut" placeholder="{{encargado.enc_rut}}" required />
+            </div>
+
+            <div class="mb-4">
+              {{form.restaurante.label}} 
+              <br>
+              <select name="restaurant" required id="restaurante" class="js-example-basic-single" style="width: 100%;">
+                <option value="0">Seleccione un restaurante</option>
+                {% for item in restaurantes %}
+                {% if item.rtr_id==encargado.rtr_id %}
+                <option value="{{item.rtr_id}}" selected>{{item.rtr_nombre}}</option>
+                {% else %}
+                <option value="{{item.rtr_id}}">{{item.rtr_nombre}}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+
+            </div>
+
             <!--Boton-->
             {{ form.submit(class_="btn btn-primary w-100") }}
           </form>
         </div>
 
       
-
     </div>
     <div class="col-lg-4 d-none d-lg-block">
       </div>
-    </div>
 
+    </div>
 
   </section>
 
@@ -85,5 +119,19 @@ Actualizar Usuario Administrador
 {% endblock%}
 
 {% block script %}
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#restaurante').select2({placeholder: 'Seleccione Restaurante', allowClear: true});
+  });
 
+  $(document).ready(function(){
+    let i=1;
+    $($('#restaurante').children('option')).each(function(){
+      $('#'+i).select2().next().hide();
+      i++;
+    });
+  });
+
+
+</script>
 {% endblock %}

@@ -29,7 +29,7 @@ def ingresar_usuario_encargado():
         nombre=request.form.get('nombre')
         apellido=request.form.get('apellido')
         rut=request.form.get('rut')
-        restaurant=request.form.get('restaurante')
+        restaurante=request.form.get('restaurante')
         tipo=2
         max_id_enc=0
         max_id_usr=0
@@ -50,7 +50,7 @@ def ingresar_usuario_encargado():
             else:
                 max_id_enc = db.db.session.query(func.max(db.domo_encargadortr.enc_id)).scalar() + 1
         
-            new_enc= db.domo_encargadortr(enc_id=max_id_enc,usr_id=max_id_usr,rtr_id=restaurant,enc_nombre=nombre,enc_apellido=apellido,
+            new_enc= db.domo_encargadortr(enc_id=max_id_enc,usr_id=max_id_usr,rtr_id=restaurante,enc_nombre=nombre,enc_apellido=apellido,
                                       enc_rut=rut)
             db.db.session.add(new_enc)
             db.db.session.commit()
@@ -132,33 +132,20 @@ def eliminar_usuario(id):
         
     return redirect(url_for('gestionar_usuarios_admin'))
 
-#@app.route('/gestionar_usuarios_admin/<id>')
-#def editar_usuario(id):
-#    usuario = db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_id==id).first()
-#    return render_template("assets/adm_editar_usuario.html", usuario=usuario)    
 
-@app.route('/gestionar_usuarios_admin/editar/<id>')
-def actualizar_usuario(id):
-    usuario = db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_id==id).first()
     
-    if usuario.tip_id==1:
-
-        redirect(url_for('actualizar_usuario1',usuario.usr_id))
-
-    if usuario.tip_id==2:
-        redirect(url_for('actualizar_usuario2',usuario.usr_id))
-
-    else:
-        redirect(url_for('actualizar_usuario3',usuario.usr_id))
-
-
-
 @app.route('/gesionar_usuarios_admin/editar1/<id>',methods=['GET','POST'])
 def actualizar_usuario1(id):
-    form=EditForm1()
+    
     usuario= db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_id==id).first()
+    form=EditForm1()
     cliente=db.domo_cliente.query.filter_by(usr_id=usuario.usr_id).first()
-    direccion1=db.domo_direccion.query.filter_by(dir_id=cliente.dir_id).first()
+    #direccion1=db.domo_direccion.query.filter_by(dir_id=cliente.dir_id).first()
+    direccion1 = db.db.session.query(db.domo_direccion, db.domo_ciudad, db.domo_region).filter(db.domo_direccion.dir_id==cliente.dir_id, 
+                                        db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id, 
+                                        db.domo_ciudad.reg_id == db.domo_region.reg_id).first()
+    ciudades = db.db.session.query(db.domo_ciudad.ciu_id, db.domo_ciudad.reg_id,db.domo_ciudad.ciu_nombre).all()
+    regiones = db.db.session.query(db.domo_region.reg_id,db.domo_region.reg_nombre).all()
 
     if (request.method=='POST'):    
         if usuario.tip_id==1:
@@ -166,26 +153,23 @@ def actualizar_usuario1(id):
             contrasena=request.form.get('contrasena')
             estado=request.form.get('estado')
             nombre = request.form.get('nombre')
-            apellido=request.form.get('nombre')
+            apellido=request.form.get('apellido')
             rut=request.form.get('rut')
             celular=request.form.get('celular')
             calle = request.form.get('calle')
             numero = request.form.get('numero')
-            region = request.form.get('region')
+            region = request.form.get('regiones')
             ciudad = request.form.get(region)
 
-            if(direccion1.dir_numerocalle != numero and direccion1.dir_nombrecalle != calle and direccion1.ciu_id != ciudad):
-                max_id = db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() + 1
-                new_direccion = db.domo_direccion(dir_id=max_id, ciu_id=ciudad, dir_numerocalle=numero, dir_nombrecalle=calle)
-                db.db.session.add(new_direccion)
-                db.db.session.commit()
-                cliente.dir_id = max_id
+            direccion1.domo_direccion.dir_nombrecalle=calle
+            direccion1.domo_direccion.dir_numerocalle=numero
+            direccion1.domo_direccion.ciu_id=ciudad
             
             usuario.usr_login = email
 
-            if len(contrasena)>0:
-                hash=bcrypt.hashpw(contrasena.encode('utf-8'),bcrypt.gensalt())
-                usuario.usr_contrasena=hash.decode('utf-8')
+            if contrasena!=None:
+                pw = bcrypt.hashpw(contrasena.encode('utf-8'), bcrypt.gensalt())
+                usuario.usr_contrasena=pw.decode('utf-8')
 
             usuario.usr_estado=estado
 
@@ -195,27 +179,28 @@ def actualizar_usuario1(id):
             cliente.cli_telefono=celular
 
             db.db.session.commit()
-    return render_template("crud_usuario/adm_editar_usuario.html", usuario=usuario, cliente=cliente , form = form)
+    return render_template("crud_usuario/adm_editar_usuario_cli.html", usuario=usuario, cliente=cliente , regiones=regiones, ciudades=ciudades, form = form, direccion=direccion1)
 
 @app.route('/gesionar_usuarios_admin/editar2/<id>',methods=['GET','POST'])
 def actualizar_usuario2(id):
     usuario= db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_id==id).first()
-    encargado=db.domo_cliente.query.filter_by(usr_id=usuario.usr_id).first()
-    if (request.method=='POST'): 
+    restaurantes=db.db.session.query(db.domo_restaurante.rtr_id,db.domo_restaurante.rtr_nombre).all()
+    form=EditForm2()
+    encargado=db.domo_encargadortr.query.filter_by(usr_id=usuario.usr_id).first()
+    
+    if (request.method=='POST' ):  
         if usuario.tip_id==2:
-            form=EditForm2()
-            encargado=db.db.session.query(db.domo_encargadortr).filter(db.domo_encargadortr.usr_id==usuario.usr_id).first()
-
             email=request.form.get('email')
             contrasena=request.form.get('contrasena')
             estado=request.form.get('estado')
             nombre=request.form.get('nombre')
             apellido=request.form.get('apellido')
             rut=request.form.get('rut')
+            restaurante=request.form.get('restaurante')
 
             usuario.usr_login = email
 
-            if len(contrasena)>0:
+            if contrasena!=None:
                 hash=bcrypt.hashpw(contrasena.encode('utf-8'),bcrypt.gensalt())
                 usuario.usr_contrasena=hash.decode('utf-8')
 
@@ -224,24 +209,24 @@ def actualizar_usuario2(id):
             encargado.enc_nombre=nombre
             encargado.enc_apellido=apellido
             encargado.enc_rut=rut
+            encargado.rtr_id=restaurante
             db.db.session.commit()
 
-    return render_template("crud_usuario/adm_editar_usuario.html", usuario=usuario, encargado=encargado , form = form)
+    return render_template("crud_usuario/adm_editar_usuario_enc.html", usuario=usuario, encargado=encargado ,restaurantes=restaurantes, form = form)
 
 @app.route('/gesionar_usuarios_admin/editar3/<id>',methods=['GET','POST'])
 def actualizar_usuario3(id):
     usuario= db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_id==id).first()
+    form=EditForm3()
     if (request.method=='POST'):
         if usuario.tip_id==3:
-            form=EditForm3(obj=usuario)
-
             email=request.form.get('email')
             contrasena=request.form.get('contrasena')
             estado=request.form.get('estado')
 
             usuario.usr_login = email
 
-            if len(contrasena)>0:
+            if contrasena!=None:
                 hash=bcrypt.hashpw(contrasena.encode('utf-8'),bcrypt.gensalt())
                 usuario.usr_contrasena=hash.decode('utf-8')
 
