@@ -18,7 +18,13 @@ Valorar
                 </div>
 
                 <div class="card-body">
-                    {% include "valorar/form_valorar.html" %}
+
+                    {% include "valorar/valoracion.html" %}
+                    <br>
+                    <div class="text-center">
+                        <a href="{{url_for('valorar_add', rsv_id = rsv_id)}}" class="btn btn-primary">Editar</a>
+                        <a href="{{url_for('valorar_delete', rsv_id = rsv_id)}}" onclick="return confirm('¿Seguro quiere elininar la valoracion?')" class="btn btn-danger">Eliminar</a>
+                    </div>
                 </div>
             </div>
         </div>

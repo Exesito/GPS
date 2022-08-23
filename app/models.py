@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 import json
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin
+from sqlalchemy import func
 import bcrypt
 from datetime import date
 
@@ -179,18 +180,19 @@ class domo_cliente(db.Model):
     cli_apellido = db.Column('cli_apellido', db.String(40))
     dir_id = db.Column('dir_id', db.Integer)
     cli_telefono = db.Column('cli_telefono', db.String(20))
+    cli_correo = db.Column('cli_correo', db.String(40))
     cli_rut = db.Column('cli_rut', db.String(20))
-    cli_tipo = db.Column('cli_tipo', db.String(1))
     
     @staticmethod 
     def get_reservas(id):
         
-        query = db.session.query(domo_reserva, domo_mesa, domo_restaurante).filter(
+        query = db.session.query(domo_reserva, domo_mesa, domo_restaurante, domo_valoracion).join(
+            domo_valoracion, domo_valoracion.rsv_id == domo_reserva.rsv_id, isouter=True
+            ).filter(
             domo_reserva.cli_id == id,
             domo_reserva.msa_id == domo_mesa.msa_id,
             domo_restaurante.rtr_id == domo_mesa.rtr_id
         ).all()
-        
         return query
     
     @staticmethod
@@ -221,3 +223,39 @@ class domo_horario(db.Model):
     @staticmethod
     def get_by_id_rest(id):
         return domo_horario.query.filter_by(rtr_id = id).all()
+    
+class domo_valoracion(db.Model):
+    __tablename__ = 'domo_valoracion'
+    val_id = db.Column('val_id', db.Integer, primary_key = True)
+    rsv_id = db.Column('rsv_id', db.Integer ,db.ForeignKey('domo_reserva.rsv_id'))
+    val_descripcion = db.Column('val_descripcion', db.String(255))
+    val_estrella = db.Column('val_estrella', db.Integer)
+    
+    @staticmethod
+    def valorar(rsv_id, text, valor):
+        
+        query = domo_valoracion.query.filter(domo_valoracion.rsv_id == rsv_id).first()
+        
+        if query is None:
+            
+            max_id = db.session.query(func.max(domo_valoracion.val_id)).scalar() + 1
+            new_valoracion = domo_valoracion(val_id = max_id, rsv_id = rsv_id, val_descripcion = text, val_estrella = valor)
+            db.session.add(new_valoracion)
+        
+        else:
+            
+            query.val_descripcion = text
+            query.val_estrella = valor
+            
+        db.session.commit()
+        
+        return
+    
+    @staticmethod
+    def delete(rsv_id):
+        
+        query = domo_valoracion.query.filter(domo_valoracion.rsv_id == rsv_id).first()
+        db.session.delete(query)
+        db.session.commit()
+        
+        return

@@ -38,8 +38,10 @@ Consultar Reservas
                     {% endif %}
                 </td>
                 <td class="text-center">
-                    {% if item.domo_reserva.rsv_estado == "REALIZADA" %}
-                        <a class='btn btn-success'><i class="fa fa-plus" aria-hidden="true"></i></a>
+                    {% if item.domo_valoracion.val_id %}
+                        <a href="{{url_for('valorar_view', rsv_id = item.domo_reserva.rsv_id)}}" class='btn btn-warning'><i class="fa fa-star" aria-hidden="true"></i> {{item.domo_valoracion.val_estrella}}</a>
+                    {% elif item.domo_reserva.rsv_estado == "REALIZADA" %}
+                        <a href="{{url_for('valorar_view', rsv_id = item.domo_reserva.rsv_id)}}" class='btn btn-success'><i class="fa fa-plus" aria-hidden="true"></i></a>
                     {% endif %}
                 </td>
             </tr>
