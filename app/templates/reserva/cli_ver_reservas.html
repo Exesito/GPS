@@ -18,6 +18,7 @@ Consultar Reservas
                     <th>Hora</th>
                     <th>Estado</th>
                     <th>Cancelar</th>
+                    <th>Valoración</th>
 
                 </tr>
             </thead>
@@ -30,8 +31,17 @@ Consultar Reservas
                 <td>{{item.domo_reserva.rsv_fecha}}</td>
                 <td>{{item.domo_reserva.rsv_hora}}</td>
                 <td>{{item.domo_reserva.rsv_estado}}</td>
-                <td><a href="{{url_for('cli_cancelar_reserva', rsv_id = item.domo_reserva.rsv_id, cli_id=cli_id)}}" class='btn btn-danger'>
-                    <i class="fa fa-times" aria-hidden="true"></i></a></td>
+                <td>
+                    {% if item.domo_reserva.rsv_estado == "CREADA" %}
+                    <a href="{{url_for('cli_cancelar_reserva', rsv_id = item.domo_reserva.rsv_id, cli_id=cli_id)}}" class='btn btn-danger'>
+                    <i class="fa fa-times" aria-hidden="true"></i></a>
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    {% if item.domo_reserva.rsv_estado == "REALIZADA" %}
+                        <a class='btn btn-success'><i class="fa fa-plus" aria-hidden="true"></i></a>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </table>

@@ -8,11 +8,10 @@ db = models.db
 
 #### Caso de Uso 2 - Ernesto Opazo ####
 
-def add_valoracion():
+@app.route('/valorar/<id_rsv>', methods=['GET','POST'])
+def add_valoracion(id_rsv):
     
-    
-    
-    pass
+    return render_template("valorar/valorar.html")
 
 def update_valoracion():
     
