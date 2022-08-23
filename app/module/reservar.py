@@ -6,7 +6,7 @@ from sqlalchemy import func
 
 db = models.db
 
-#### -- Caso de uso realizar reserva - Ernesto Opazo --####
+####-- Caso de uso realizar reserva - Ernesto Opazo --####
 
 @app.route('/reservar/<id>', methods=['GET','POST'])
 def reservar(id):
@@ -183,4 +183,4 @@ def cli_cancelar_reserva(cli_id, rsv_id):
     
     return redirect(url_for('cli_ver_reservas', cli_id = cli_id))
 
-########- FIN DE CASO DE USO -#################
+####-- FIN DE CASO DE USO --####
