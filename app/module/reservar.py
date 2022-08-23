@@ -1,6 +1,6 @@
 from app import app, models
 from app.forms import RegisterForm, ReservaForm, MesaForm, ClientForm
-from app.models import User, domo_cliente, domo_reserva, domo_restaurante
+from app.models import User, domo_cliente, domo_reserva, domo_restaurante, domo_valoracion
 from flask import render_template, request, url_for, redirect, session
 from sqlalchemy import func
 
@@ -35,8 +35,9 @@ def reservar(id):
         "descripcion": restaurante.rtr_descripcion
     }
     
+    valoraciones = domo_restaurante.get_valoraciones_max(id, 3)
     
-    return render_template("reserva/cli_reservar.html", data = data, form = form, mesa_form = mesa_form, client_form = client_form)
+    return render_template("reserva/cli_reservar.html", data = data, form = form, mesa_form = mesa_form, client_form = client_form, valoraciones=valoraciones)
 
 @app.route('/reservar/<id_restaurante>/<id_reserva>/datos_cliente', methods=['GET','POST'])
 def reserva_not_registered(id_restaurante, id_reserva):

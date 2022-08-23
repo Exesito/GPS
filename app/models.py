@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 import json
 from flask_security import Security, SQLAlchemyUserDatastore, UserMixin
-from sqlalchemy import func
+from sqlalchemy import func, desc
 import bcrypt
 from datetime import date
 
@@ -145,6 +145,28 @@ class domo_restaurante(db.Model):
             domo_reserva.cli_id == domo_cliente.cli_id,
             domo_restaurante.rtr_id == id
         ).all()
+        
+        return query
+    
+    @staticmethod
+    def get_valoraciones(id):
+        
+        query = db.session.query(domo_valoracion).filter(
+            domo_restaurante.rtr_id == domo_mesa.rtr_id,
+            domo_mesa.msa_id == domo_reserva.msa_id,
+            domo_valoracion.rsv_id == domo_reserva.rsv_id
+        ).order_by(desc(domo_valoracion.val_id)).all()
+        
+        return query
+    
+    @staticmethod
+    def get_valoraciones_max(id, max):
+        
+        query = db.session.query(domo_valoracion).filter(
+            domo_restaurante.rtr_id == domo_mesa.rtr_id,
+            domo_mesa.msa_id == domo_reserva.msa_id,
+            domo_valoracion.rsv_id == domo_reserva.rsv_id
+        ).order_by(desc(domo_valoracion.val_id)).limit(max).all()
         
         return query
     

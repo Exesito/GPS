@@ -35,8 +35,12 @@ def valorar_view(rsv_id):
     
     return render_template("valorar/valorar_view.html", rsv_id = rsv_id, valoracion = valoracion)
 
-def valorar_list():
-    pass
+@app.route('/restaurante/<rtr_id>/valoraciones/', methods=['GET','POST'])
+def valorar_list(rtr_id):
+    
+    valoraciones = domo_restaurante.get_valoraciones(rtr_id)
+    
+    return render_template("valorar/list_valoraciones.html", valoraciones = valoraciones)
 
 @app.route('/valoracion/delete/<rsv_id>', methods=['GET','POST'])
 def valorar_delete(rsv_id):
