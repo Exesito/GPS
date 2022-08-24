@@ -27,3 +27,21 @@ def editor_cartas():
     [result.append(x) for x in rtr_names if x not in result] 
     return render_template("CRUD-Horarios/editor_carta.html", lista_cartas = cartas, rtr_names = rtr_names)
 
+@app.route('/nueva_carta/<car_id>',methods=['GET','POST'])
+def nueva_carta(car_id):
+    
+    if method == 'POST':
+        
+        if 'file' not in request.files:
+            flash('No file part')
+        file = request.files['new_carta']
+        # If the user does not select a file, the browser submits an
+        # empty file without a filename.
+        if file.filename == '':
+            flash('No selected file')
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('download_file', name=filename))
+
+    return redirect('editor_cartas')
