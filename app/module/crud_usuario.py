@@ -165,18 +165,23 @@ def actualizar_usuario1(id):
             direccion1.domo_direccion.dir_numerocalle=numero
             direccion1.domo_direccion.ciu_id=ciudad
             
-            usuario.usr_login = email
+            if email!="":
+                usuario.usr_login = email
 
-            if contrasena!=None:
+            if (contrasena!=None)and (contrasena!=""):
                 pw = bcrypt.hashpw(contrasena.encode('utf-8'), bcrypt.gensalt())
                 usuario.usr_contrasena=pw.decode('utf-8')
 
-            usuario.usr_estado=estado
-
-            cliente.cli_nombre = nombre
-            cliente.cli_apellido = apellido
-            cliente.cli_rut = rut
-            cliente.cli_telefono=celular
+            if estado!="":
+                usuario.usr_estado=estado
+            if nombre!="":
+                cliente.cli_nombre = nombre
+            if apellido!="":    
+                cliente.cli_apellido = apellido
+            if rut!="":
+                cliente.cli_rut = rut
+            if celular!="":
+                cliente.cli_telefono=celular
 
             db.db.session.commit()
     return render_template("crud_usuario/adm_editar_usuario_cli.html", usuario=usuario, cliente=cliente , regiones=regiones, ciudades=ciudades, form = form, direccion=direccion1)
@@ -198,18 +203,31 @@ def actualizar_usuario2(id):
             rut=request.form.get('rut')
             restaurante=request.form.get('restaurante')
 
-            usuario.usr_login = email
+            
+            if (email!=None) and (email!=""):
+                usuario.usr_login = email
 
-            if contrasena!=None:
+            if (estado!=None) and (estado!=""):
+                usuario.usr_estado=estado
+
+            if (nombre!=None) and (nombre!=""):
+                encargado.enc_nombre=nombre
+            
+            if (apellido!=None) and (apellido!=""):
+                encargado.enc_apellido=apellido
+
+            if (rut!=None) and (rut!=""):
+                encargado.enc_rut=rut
+            
+            if (restaurante!=None) and (restaurante!=""):
+                encargado.rtr_id=restaurante
+
+
+            if (contrasena!=None)and (contrasena!=""):
                 hash=bcrypt.hashpw(contrasena.encode('utf-8'),bcrypt.gensalt())
                 usuario.usr_contrasena=hash.decode('utf-8')
-
-            usuario.usr_estado=estado
-
-            encargado.enc_nombre=nombre
-            encargado.enc_apellido=apellido
-            encargado.enc_rut=rut
-            encargado.rtr_id=restaurante
+            
+            
             db.db.session.commit()
 
     return render_template("crud_usuario/adm_editar_usuario_enc.html", usuario=usuario, encargado=encargado ,restaurantes=restaurantes, form = form)
@@ -224,13 +242,16 @@ def actualizar_usuario3(id):
             contrasena=request.form.get('contrasena')
             estado=request.form.get('estado')
 
-            usuario.usr_login = email
+            if (email!=None) and (email!=""):
+                usuario.usr_login = email
 
-            if contrasena!=None:
+            if (contrasena!=None)and (contrasena!=""):
                 hash=bcrypt.hashpw(contrasena.encode('utf-8'),bcrypt.gensalt())
                 usuario.usr_contrasena=hash.decode('utf-8')
 
-            usuario.usr_estado=estado
+            if (estado!=None) and (estado!=""):
+                usuario.usr_estado=estado
+
             db.db.session.commit()
 
         db.db.session.commit()

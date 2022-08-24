@@ -24,7 +24,7 @@ Actualizar Usuario Cliente
             <!--Login/Email Usuario-->
             <div class="mb-4">
               {{form.email.label}}
-              <input type="text" class="form-control" name="email" placeholder="{{usuario.usr_login}}" required />
+              <input type="text" class="form-control" name="email" placeholder="{{usuario.usr_login}}" />
               
             </div>
 
@@ -38,25 +38,25 @@ Actualizar Usuario Cliente
             <!--Nombre Usuario-->
             <div class="mb-4">
               {{form.nombre.label}}
-              <input type="text" class="form-control" name="nombre" placeholder="{{cliente.cli_nombre}}" required />
+              <input type="text" class="form-control" name="nombre" placeholder="{{cliente.cli_nombre}}" />
             </div>
 
             <!--Apellido Usuario-->
             <div class="mb-4">
               {{form.apellido.label}}
-              <input type="text" class="form-control" name="apellido" placeholder="{{cliente.cli_apellido}}" required />
+              <input type="text" class="form-control" name="apellido" placeholder="{{cliente.cli_apellido}}" />
             </div>
 
             <!--rut usuario-->
             <div class="mb-4">
               {{form.rut.label}}
-              <input type="text" class="form-control" name="rut" placeholder="{{cliente.cli_rut}}" required />
+              <input type="text" class="form-control" name="rut" placeholder="{{cliente.cli_rut}}" />
             </div>
 
             <!--Celular Usuario-->
             <div class="mb-4">
               {{form.celular.label}}
-              <input type="text" class="form-control" name="celular" placeholder="{{cliente.cli_telefono}}" required />
+              <input type="text" class="form-control" name="celular" placeholder="{{cliente.cli_telefono}}" />
             </div>
 
 
@@ -97,20 +97,20 @@ Actualizar Usuario Cliente
             <div class="mb-4">
               <div class="mb-4">
                 {{form.calle.label}}
-                <input type="text" class="form-control" name="calle" placeholder="{{direccion.domo_direccion.dir_nombrecalle}}" required />
+                <input type="text" class="form-control" name="calle" placeholder="{{direccion.domo_direccion.dir_nombrecalle}}" />
               </div>
             </div>
 
             <!--Numero Usuario-->
             <div class="mb-4">
               {{form.numero.label}}
-              <input type="text" class="form-control" name="numero" placeholder="{{direccion.domo_direccion.dir_numerocalle}}" required />
+              <input type="text" class="form-control" name="numero" placeholder="{{direccion.domo_direccion.dir_numerocalle}}" />
             </div>
 
             <!--Estado Usuario-->
             <div class="mb-4">
               {{form.estado.label}}
-              <select name="estado" required class="form-select js-example-basic-single">
+              <select name="estado" class="form-select js-example-basic-single">
                 <option value="0">Seleccione estado</option>
                 {% if usuario.usr_estado == 'ACTIVA' %}
                 <option value="ACTIVA" selected>Activa</option>

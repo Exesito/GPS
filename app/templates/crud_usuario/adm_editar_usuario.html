@@ -24,7 +24,7 @@ Actualizar Usuario Administrador
             <!--Login/Email Usuario-->
             <div class="mb-4">
               {{form.email.label}}
-              <input type="text" class="form-control" name="email" placeholder="{{usuario.usr_login}}" required />
+              <input type="text" class="form-control" name="email" placeholder="{{usuario.usr_login}}" />
               
             </div>
 
@@ -37,7 +37,7 @@ Actualizar Usuario Administrador
             <!--Estado Usuario-->
             <div class="mb-4">
               {{form.estado.label}}
-              <select name="estado" required class="form-select js-example-basic-single">
+              <select name="estado" class="form-select js-example-basic-single">
                 <option value="0">Seleccione estado</option>
                 {% if usuario.usr_estado == 'ACTIVA' %}
                 <option value="ACTIVA" selected>Activa</option>

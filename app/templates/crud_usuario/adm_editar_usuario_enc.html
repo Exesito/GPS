@@ -25,7 +25,7 @@ Actualizar Usuario Encargado
             <!--Login/Email Usuario-->
             <div class="mb-4">
               {{form.email.label}}
-              <input type="text" class="form-control" name="email" placeholder="{{usuario.usr_login}}" required />
+              <input type="text" class="form-control" name="email" placeholder="{{usuario.usr_login}}" />
               
             </div>
 
@@ -38,7 +38,7 @@ Actualizar Usuario Encargado
             <!--Estado Usuario-->
             <div class="mb-4">
               {{form.estado.label}}
-              <select name="estado" required class="form-select js-example-basic-single">
+              <select name="estado" class="form-select js-example-basic-single">
                 <option value="0">Seleccione estado</option>
                 {% if usuario.usr_estado == 'ACTIVA' %}
                 <option value="ACTIVA" selected>Activa</option>
@@ -68,25 +68,25 @@ Actualizar Usuario Encargado
              <!--Nombre Usuario-->
             <div class="mb-4">
               {{form.nombre.label}}
-              <input type="text" class="form-control" name="nombre" placeholder="{{encargado.enc_nombre}}" required />
+              <input type="text" class="form-control" name="nombre" placeholder="{{encargado.enc_nombre}}"  />
             </div>
 
             <!--Apellido Usuario-->
             <div class="mb-4">
               {{form.apellido.label}}
-              <input type="text" class="form-control" name="apellido" placeholder="{{encargado.enc_apellido}}" required />
+              <input type="text" class="form-control" name="apellido" placeholder="{{encargado.enc_apellido}}"  />
             </div>
 
             <!--rut usuario-->
             <div class="mb-4">
               {{form.rut.label}}
-              <input type="text" class="form-control" name="rut" placeholder="{{encargado.enc_rut}}" required />
+              <input type="text" class="form-control" name="rut" placeholder="{{encargado.enc_rut}}"  />
             </div>
 
             <div class="mb-4">
               {{form.restaurante.label}} 
               <br>
-              <select name="restaurant" required id="restaurante" class="js-example-basic-single" style="width: 100%;">
+              <select name="restaurant" id="restaurante" class="js-example-basic-single" style="width: 100%;">
                 <option value="0">Seleccione un restaurante</option>
                 {% for item in restaurantes %}
                 {% if item.rtr_id==encargado.rtr_id %}
