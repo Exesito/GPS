@@ -1,5 +1,9 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from notifypy import Notify
+import os
+
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'Secret'
@@ -10,6 +14,8 @@ app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://g25proyecto:g25proyecto106
 app.config['SECURITY_PASSWORD_HASH'] = 'scrtcript'
 app.config['SECURITY_PASSWORD_SALT'] = 'fhasdgihwntlgy8f'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['UPLOAD_FOLDER'] = os.path.join(os.path.expanduser('~'), '/cartas')
+
 
 from webpay import bp as webpay_plus_bp
 app.register_blueprint(webpay_plus_bp, url_prefix="/webpay-plus")

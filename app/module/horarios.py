@@ -4,7 +4,9 @@ from sqlalchemy import func
 
 @app.route('/editor_horarios',methods=['GET','POST'])
 def editor_horarios():
-    email = session["user"]
+
+    email = session["email"]
+
     if request.method =='POST':
         
         nombre = request.json["nombre"]
