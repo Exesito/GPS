@@ -11,8 +11,6 @@ db = models.db
 @app.route('/reservar/<id>', methods=['GET','POST'])
 def reservar(id):
     
-    session["cli_id"] = 1
-    
     day_choice = [1,2,3]
     hour_choice = [1,2,3]
     
@@ -121,10 +119,11 @@ def reserva_create(id_restaurante):
         
         reserva.cli_id = session["cli_id"]
         reserva.tpg_id = dict_mdp[medio_de_pago] 
+        db.session.commit()
         
         if medio_de_pago == "WEBPAY":
             return redirect(url_for('webpay_plus.webpay_plus_create', rsv_id = id_reserva, cli_id = session["cli_id"]))
-        db.session.commit()
+        
         
         return redirect(url_for('reserva_exitosa', id_restaurante = id_restaurante, id_reserva = id_reserva))
 

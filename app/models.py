@@ -11,7 +11,7 @@ db = SQLAlchemy()
 class domo_reserva(db.Model):
     
     __tablename__ = 'domo_reserva'
-    rsv_id = db.Column('rsv_id', db.Integer, primary_key = True, autoincrement=True)
+    rsv_id = db.Column('rsv_id', db.Integer, primary_key = True)
     msa_id = db.Column('msa_id', db.Integer, db.ForeignKey('domo_mesa.msa_id'))
     tpg_id = db.Column('tpg_id', db.Integer, db.ForeignKey('domo_tipodepago.tpg_id'))
     cli_id = db.Column('cli_id', db.Integer, db.ForeignKey('domo_cliente.cli_id'))
@@ -63,7 +63,7 @@ class domo_reserva(db.Model):
     
     def error(self):
         
-        self.estado = "FALLIDA"
+        self.rsv_estado = "FALLIDA"
         db.session.commit()
         
         return
@@ -109,13 +109,6 @@ class domo_mesa(db.Model):
     @staticmethod
     def get_by_id(id):
         return domo_mesa.query.filter_by(msa_id = id).first() 
-       
-class domo_tipodepago(db.Model):
-    __tablename__ = 'domo_tipodepago'
-    tpg_id = db.Column('tpg_id', db.Integer, primary_key = True)
-    tpg_etiqueta =  db.Column('tpg_etiqueta', db.String(30))
-    tpg_descripcion = db.Column('tpg_descripcion', db.String(50))
-    
 
 class domo_restaurante(db.Model):
     __tablename__ = 'domo_restaurante'
@@ -135,8 +128,8 @@ class domo_restaurante(db.Model):
     def generate_reserva(self, hora, fecha, mesa_id, estado):    
         
         hora = "%d:00:00" % (int(hora))
-        
-        new_reserva = domo_reserva(rsv_hora = hora, rsv_fecha = fecha, rsv_estado = estado, msa_id = mesa_id, rsv_fechaderegistro = date.today())     
+        max_id_rsv = db.session.query(func.max(domo_reserva.rsv_id)).scalar() + 1
+        new_reserva = domo_reserva(rsv_id = max_id_rsv, rsv_hora = hora, rsv_fecha = fecha, rsv_estado = estado, msa_id = mesa_id, rsv_fechaderegistro = date.today())     
         db.session.add(new_reserva)
         db.session.commit()
         
@@ -149,7 +142,8 @@ class domo_restaurante(db.Model):
             domo_restaurante.rtr_id == domo_mesa.rtr_id,
             domo_mesa.msa_id == domo_reserva.msa_id,
             domo_reserva.cli_id == domo_cliente.cli_id,
-            domo_restaurante.rtr_id == id
+            domo_restaurante.rtr_id == id,
+            domo_reserva.rsv_estado != "PROCESANDO"
         ).all()
         
         return query
@@ -172,7 +166,7 @@ class domo_restaurante(db.Model):
             domo_restaurante.rtr_id == domo_mesa.rtr_id,
             domo_mesa.msa_id == domo_reserva.msa_id,
             domo_valoracion.rsv_id == domo_reserva.rsv_id
-        ).order_by(desc(domo_valoracion.val_id))g.limit(max).all()
+        ).order_by(desc(domo_valoracion.val_id)).limit(max).all()
         
         return query
     
@@ -242,6 +236,11 @@ class domo_cliente(db.Model):
     cli_rut = db.Column('cli_rut', db.String(20))
     
     @staticmethod 
+    def get_by_usr_id(usr_id):
+        query = domo_cliente.query.filter(domo_cliente.usr_id == usr_id).first()
+        return query
+    
+    @staticmethod 
     def get_reservas(id):
         
         query = db.session.query(domo_reserva, domo_mesa, domo_restaurante, domo_valoracion).join(
@@ -249,7 +248,8 @@ class domo_cliente(db.Model):
             ).filter(
             domo_reserva.cli_id == id,
             domo_reserva.msa_id == domo_mesa.msa_id,
-            domo_restaurante.rtr_id == domo_mesa.rtr_id
+            domo_restaurante.rtr_id == domo_mesa.rtr_id,
+            domo_reserva.rsv_estado != "PROCESANDO"
         ).all()
         return query
 
