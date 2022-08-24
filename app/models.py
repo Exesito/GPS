@@ -184,7 +184,8 @@ class domo_restaurante(db.Model):
         query = db.session.query(domo_valoracion).filter(
             domo_restaurante.rtr_id == domo_mesa.rtr_id,
             domo_mesa.msa_id == domo_reserva.msa_id,
-            domo_valoracion.rsv_id == domo_reserva.rsv_id
+            domo_valoracion.rsv_id == domo_reserva.rsv_id,
+            domo_restaurante.rtr_id == id
         ).order_by(desc(domo_valoracion.val_id)).limit(max).all()
         
         return query
