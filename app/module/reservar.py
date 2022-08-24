@@ -1,4 +1,4 @@
-from app import app, models
+from app import app, models, functions
 from app.forms import RegisterForm, ReservaForm, MesaForm, ClientForm
 from app.models import domo_cliente, domo_reserva, domo_restaurante, domo_valoracion
 from flask import render_template, request, url_for, redirect, session
@@ -138,6 +138,10 @@ def reserva_exitosa(id_restaurante, id_reserva):
     
     reserva.rsv_estado = "CREADA"
     db.session.commit()
+    
+    mensaje =  "Su reserva a sido aprobada para el dia " + str(reserva.rsv_fecha) + " a las " + str(reserva.rsv_hora)
+    mensaje =  mensaje + ", con codigo " + str(reserva.rsv_id)
+    functions.enviar_email_cliente(reserva.get_cliente(), mensaje, "Reserva realizada con exito")
     
     return render_template("reserva/cli_reserva_exitosa.html", restaurante=restaurante, reserva=reserva, cliente=cliente, mesa = mesa)
 

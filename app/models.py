@@ -71,6 +71,20 @@ class domo_reserva(db.Model):
     @staticmethod
     def get_by_id(id):
         return domo_reserva.query.filter_by(rsv_id = id).first()
+    
+    def get_cliente(self):
+        return domo_cliente.query.filter(domo_cliente.cli_id == self.cli_id).first()
+
+    @staticmethod
+    def get_by_id(id):
+        return domo_reserva.query.filter_by(rsv_id = id).first()
+    
+    
+    @staticmethod
+    def get_reservas_today():
+        return domo_reserva.query.filter_by(domo_reserva.rsv_fecha == date.today(), 
+                                            domo_reserva.rsv_hora >= datetime.time(8,0,0), 
+                                            domo_reserva.rsv_estado == "REALIZADA")
 
 class domo_direccion(db.Model):
     __tablename__ = 'domo_direccion'
@@ -216,6 +230,12 @@ class domo_usuario(db.Model, UserMixin):
     @staticmethod
     def get_by_id(id):
         return domo_usuario.query.filter_by(usr_id = id).first()
+    
+    @staticmethod
+    def get_by_cliente(id):
+        cliente = domo_cliente.query.filter(domo_cliente.cli_id == id).first()
+        return domo_usuario.query.filter(cliente.usr_id == domo_usuario.usr_id).first()
+        
 class domo_encargadortr(db.Model):
     __tablename__ = 'domo_encargadortr'
     enc_id = db.Column('enc_id', db.Integer, primary_key = true)
@@ -260,6 +280,12 @@ class domo_cliente(db.Model):
     @staticmethod
     def get_by_id(id):
         return domo_cliente.query.filter_by(cli_id = id).first()
+    
+    @staticmethod
+    def get_by_cliente(id):
+        cliente = domo_cliente.query.filter_by(domo_cliente.cli_id == id).first()
+        return domo_usuario.query.filter_by(cliente.usr_id == domo_usuario.usr_id).first()
+    
 class domo_horario(db.Model):
     __tablename__ = 'domo_horario'
     hor_id = db.Column('hor_id', db.Integer, primary_key = True)
