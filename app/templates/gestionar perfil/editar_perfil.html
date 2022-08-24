@@ -91,7 +91,7 @@ Perfil de Usuario
                                     <a class="btn btn-primary"
                                         href="{{url_for('actualizar_perfil',id=cliente.cli_id)}}">Editar
                                         perfil</a>
-                                    <a class="btn btn-danger" onclick="confirmar()"
+                                    <a class="btn btn-danger" onclick="return confirmar()"
                                         href="{{url_for('eliminar_perfil',id=cliente.cli_id)}}">Eliminar
                                         perfil</a>
                                 </div>
@@ -141,11 +141,12 @@ Perfil de Usuario
 <script>
     function confirmar(id) {
         let mensaje = "¿Esta seguro de eliminar su cuenta? Esta acción no se puede deshacer";
-        let text;
-        if (confirm(mensaje) == true) {
+        if (confirm(mensaje)) {
             text = "El restaurante será eliminado";
+            return true;
         } else {
             text = "Se cancela la acción";
+            return false;
         }
     }
 </script>
