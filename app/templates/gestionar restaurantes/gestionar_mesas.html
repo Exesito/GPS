@@ -1,0 +1,139 @@
+{% extends "index.html" %}
+{% block title %}
+Gestionar Mesas
+{% endblock %}
+{% block body %}
+
+<head>
+    <script>
+    function agregarMesa(){
+        //Crear una nueva Mesa
+        let div = document.createElement('div');
+        const editor = document.querySelector('#editor-dd');
+        editor.appendChild(div);
+        div.classList.add("ui-widget-content","draggable","mesa");
+        div.style = "color: white; font-size: 1em; text-shadow: 1px 1px black;";
+
+        const icono = document.createElement('i');
+        icono.classList.add("fa","fa-cutlery");
+        div.appendChild(icono);
+
+        //Enumerar por orden de creación
+        var total_mesas = document.getElementsByClassName("mesa");
+        var enumerar = document.createTextNode(" "+String(total_mesas.length));
+        div.appendChild(enumerar);
+    }
+
+    function agregarSilla(){
+        //Crear una nueva Silla
+        let div = document.createElement('div');
+        const editor = document.querySelector('#editor-dd');
+        editor.appendChild(div);
+        div.classList.add("ui-widget-content","draggable","silla");
+
+        const icono = document.createElement('i');
+        icono.classList.add("fas","fa-chair");
+        div.appendChild(icono);
+    }
+
+    function undo_enable(){
+        let botones = document.getElementsByClassName('btn-default')
+        for(let i = 0; i < botones.length; i++){
+            botones[i].disabled = false;
+        }
+        const editor = document.getElementById('editor-dd');
+        editor.removeChild(editor.lastChild);
+    }
+
+    //Max es la cantidad maxima (sillas o mesas), btn es el boton a desactivar al llegar al maximo
+    //y ClassToUse es la clase que se usará para la iteración y obtener la cantidad.
+    function clamp_disable(max,btn,classToUse){
+        let cantidad = document.querySelectorAll(classToUse);
+        let total = cantidad.length;
+        if(total >= max){
+            document.querySelector(btn).disabled = true;
+        }
+    }
+
+    function convertDraggables(){
+        jQuery(document).ready( function (){
+            jQuery( ".draggable" ).draggable({ grid: [36,36], containment: "#grid"});
+        });
+    }
+
+    //Capturar obtiene el elemento completo #editor-grid, imprimiendolo a un canvas usando una librería llamada html2canvas.
+    function capturar() {
+        let total_capturas = document.querySelectorAll('canvas').length;
+        let banco_de_capturas = document.getElementById("screenshot");
+
+        //Si ya hay más de 2 capturas en total, removemos.
+        if(total_capturas > 1){
+            banco_de_capturas.innerHTML = '';
+        } 
+
+        let grid = document.getElementById("editor-grid");
+
+        html2canvas(grid).then(
+            function(canvas){ //Aqui printeo la imagen
+                canvas.style = "border: 1px solid; margin-left: 6px;"
+                banco_de_capturas.appendChild(canvas);
+                }
+            )
+    }
+    </script>
+</head>
+<body>
+    <div><!--Editor de Local-->
+        <div class="container-fluid py-4">
+            <h1 style="margin-top: 0.6em;">Editor de Local</h1> 
+
+            <div class="flex">
+                <h5>Mesas Disponibles: 
+                    <span>
+                        {{mesas.rtr_cantidadmesas}}
+                    </span>
+                </h5>
+            </div>
+
+            <div class="flex">
+                <h5>Sillas Disponibles: 
+                    <span>
+                        {{sillas.rtr_cantidadsillas}}
+                    </span>
+                </h5>
+            </div>
+            
+            <div class="flex">
+                <button onclick="
+                agregarSilla();
+                convertDraggables();
+                clamp_disable( {{sillas.rtr_cantidadsillas}}, '#btn-silla', '.silla');"
+                id="btn-silla" type="button" class="btn btn-default">+ Agregar Silla</button>
+
+                <button onclick="
+                agregarMesa();
+                convertDraggables();
+                clamp_disable( {{mesas.rtr_cantidadmesas}}, '#btn-mesa', '.mesa')" 
+                id="btn-mesa" type="button" class="btn btn-default">+ Agregar Mesa</button>
+            </div>
+
+            <div class="flex">
+            <button onclick="capturar()" class="btn btn-primary">
+                <i class="fa fa-camera"></i>&nbsp;Capturar
+            </button>
+            <button onclick="undo_enable()" type="button" class="btn btn-danger">
+                <i class="fa fa-undo"></i>&nbsp;Deshacer
+            </button>
+            </div>
+
+            <div id="editor-grid">
+                <div id="grid"></div>
+                <div id="editor-dd"></div>
+            </div>
+            <p style="font-size: 1.4em; padding-top: 2em;">Tus capturas</p>
+            <div id="screenshot"></div>
+        </div>
+    </div>
+</body>
+
+{% endblock %}

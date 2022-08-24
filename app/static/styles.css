@@ -130,3 +130,74 @@ body {
     border-radius: 1rem;
     width: 99%;
 }
+
+/*Caso de Uso Mulchi*/
+.silla{
+    width: 36px;
+    height: 36px;
+    font-size: 36px;
+    text-shadow: 1px 1px black;
+    background-color: hsla(0, 0%, 0% ,0) !important;
+    border: 1px solid hsla(0, 0%, 0% ,0) !important;
+    margin-top: -8px;
+    margin-left: 2px;
+}
+
+.mesa{
+    width: 72px;
+    height: 72px;
+    background-color: crimson !important;
+}
+
+.fa-chair{
+    color: chartreuse;
+}
+
+.fa-cutlery{
+    margin-left: 18px;
+    margin-top: 16px;
+    font-size: 1.6em;
+}
+
+.draggable{
+    left: 12px;
+    top: 338px;
+    position: absolute;
+    cursor: move;
+}
+
+.btn{
+    text-shadow: 1px 1px #000000;
+    color: white;
+    margin: 0.15em;
+}
+
+.btn-default{
+    font-size: 13px;
+    background-color: #8d6db8;
+    box-shadow: 2px 2px #491f4e;
+}
+
+.btn-default:active{
+    background-color: #533575;
+    color: gray;
+}
+
+#grid{
+    margin-top: 40px;
+    width: 40.55em;
+    height: 40.56em;
+    background-color: #603e86;
+    background-image:
+        repeating-linear-gradient(#ccc 0 1px, transparent 1px 50%),
+        repeating-linear-gradient(90deg, #ccc 0 1px, transparent 1px 50%);
+    background-size: 72px 72px;
+}
+
+#editor-grid{
+    width: 650px;
+}
+
+.flex{
+    display: flex;
+}
