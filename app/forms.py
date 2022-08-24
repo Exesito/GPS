@@ -14,6 +14,7 @@ class ClientForm(Form):
     telefono = StringField('Telefono', [validators.Length(min=1, max=12)])
     rut = StringField('Rut', [validators.Length(min=1, max=12)])
     direccion = StringField('Dirección', [validators.Length(min=1, max=60)])
+    email = StringField('Correo Eléctronico', [validators.DataRequired(message='Ingrese email'), validators.Email(), validators.Length(min=6, max=35)])
     medio_de_pago = RadioField("Medio de Pago", choices=[("DEBITO",'Débito (Presencial)'), ("EFECTIVO","Efectivo"), ("WEBPAY","")])
     
     submit = SubmitField("Completar Reserva y pagar")
@@ -27,8 +28,8 @@ class RegisterForm(Form):
     values=[0]
     #username = StringField('', [validators.Length(min=4, max=25)])
     email = StringField('Correo Eléctronico', [validators.DataRequired(message='Ingrese email'), validators.Email(), validators.Length(min=6, max=35)])
-    password = PasswordField('Nueva Contraseña', [validators.DataRequired(),validators.EqualTo('confirm', message='Las contraseñas deben coincidir')])
-    confirm = PasswordField('Repite Contraseña', [validators.DataRequired()])
+    password = PasswordField('Nueva Contraseña', [validators.DataRequired(),validators.Length(min=3,max=16)])
+    confirm = PasswordField('Repite Contraseña', [validators.DataRequired(),validators.EqualTo('password', message='Las contraseñas deben coincidir'),validators.Length(min=3,max=16)])
     nombre= StringField('Nombre', [validators.DataRequired(),  validators.Length(min=3, max=35)])
     apellido= StringField('Apellido', [validators.DataRequired(), validators.Length(min=2, max=35)])
     rut= StringField('Rut', [validators.DataRequired(), validators.Length(min=6, max=13)])
@@ -79,25 +80,36 @@ class RegistroAdmin(Form):
 
 class EditForm3(Form):
     email = StringField('Correo Eléctronico', [validators.DataRequired(message='Ingrese email'), validators.Email(), validators.Length(min=6, max=35)])
-    password = PasswordField('Nueva Contraseña', [validators.DataRequired(),validators.EqualTo('confirm', message='Las contraseñas deben coincidir')])
+    password = PasswordField('Nueva Contraseña', [validators.DataRequired()])
     estado= SelectField('Estado de la cuenta', choices=[('ACTIVA','ACTIVA'),('INACTIVA','INACTIVA'),('BANEADA','BANEADA'),('PENDIENTE','PENDIENTE')])
     submit= SubmitField("Guardar Cambios")
 
 class EditForm2(Form):
+    values=[0]
     email = StringField('Correo Eléctronico', [validators.DataRequired(message='Ingrese email'), validators.Email(), validators.Length(min=6, max=35)])
-    password = PasswordField('Nueva Contraseña', [validators.DataRequired(),validators.EqualTo('confirm', message='Las contraseñas deben coincidir')])
+    password = PasswordField('Nueva Contraseña', [validators.DataRequired()])
     nombre= StringField('Nombre', [validators.DataRequired(),  validators.Length(min=3, max=35)])
     apellido= StringField('Apellido', [validators.DataRequired(), validators.Length(min=2, max=35)])
     rut= StringField('Rut', [validators.DataRequired(), validators.Length(min=6, max=13)])
     estado= SelectField('Estado de la cuenta', choices=[('ACTIVA','ACTIVA'),('INACTIVA','INACTIVA'),('BANEADA','BANEADA'),('PENDIENTE','PENDIENTE')])
-    
+    restaurante=SelectField('Restaurante',[validators.AnyOf(values,message='Seleccione un restaurante',values_formatter=None)])
 
     submit= SubmitField('Guardar Cambios')
 
 class EditForm1(Form):
+    values=[0]
     email = StringField('Correo Eléctronico', [validators.DataRequired(message='Ingrese email'), validators.Email(), validators.Length(min=6, max=35)])
-    password = PasswordField('Nueva Contraseña', [validators.DataRequired(),validators.EqualTo('confirm', message='Las contraseñas deben coincidir')])
+    password = PasswordField('Nueva Contraseña', [validators.DataRequired()])
     estado= SelectField('Estado de la cuenta', choices=[('ACTIVA','ACTIVA'),('INACTIVA','INACTIVA'),('BANEADA','BANEADA'),('PENDIENTE','PENDIENTE')])
+    nombre= StringField('Nombre', [validators.DataRequired(),  validators.Length(min=3, max=35)])
+    apellido= StringField('Apellido', [validators.DataRequired(), validators.Length(min=2, max=35)])
+    rut= StringField('Rut', [validators.DataRequired(), validators.Length(min=6, max=13)])
+    celular=IntegerField('Celular',[validators.Length(min=5,max=15)])#,[validators.DataRequired()]
+    region=SelectField('Región',[validators.AnyOf(values,message='Seleccione una región',values_formatter=None)])
+    ciudad=SelectField('Ciudad',[validators.AnyOf(values,message='Seleccione una ciudad',values_formatter=None)])
+    calle=StringField('Calle', [validators.DataRequired()])
+    numero=IntegerField('Número', [validators.DataRequired()])
+
 
     submit= SubmitField('Guardar Cambios')
 

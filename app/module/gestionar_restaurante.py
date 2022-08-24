@@ -62,12 +62,12 @@ def ingresar_restaurante_post():
             vegana = False
         
         new_rest = db.domo_restaurante(rtr_id=max_id,dir_id=max_id_dir,tpr_id=tipo_rest,
-                                       rtr_nombre=nombre,rtr_rutacarta="xd",rtr_descripcion=descripcion, rtr_opvege=vegetariana, 
+                                       rtr_nombre=nombre,rtr_descripcion=descripcion, rtr_opvege=vegetariana, 
                                        rtr_opvega=vegana,rtr_duenonombre=nombre_dueno,rtr_duenoapellido=apellido_dueno)
         
         db.db.session.add(new_rest)
         db.db.session.commit()
-        return render_template("gestionar restaurantes/ingresar_restaurante.html",tipo_restaurante=tipo_restaurante,ciudades=ciudades,regiones=regiones)
+        return redirect(url_for('gestionar_restaurantes'))
 
 @app.route('/gestionar_restaurantes')
 def gestionar_restaurantes():
@@ -99,6 +99,8 @@ def editar_template(id):
 def actualizar_rest(id):
     
     if (request.method=='POST'):
+
+
         nombre = request.form.get('nombre')
         calle = request.form.get('calle')
         numero = request.form.get('numero')
@@ -118,17 +120,21 @@ def actualizar_rest(id):
         direccion = db.domo_direccion.query.filter_by(dir_id=restaurante.dir_id).first()
 
         if(direccion.dir_numerocalle != numero and direccion.dir_nombrecalle != calle and direccion.ciu_id != ciudad):
-            max_id = db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() + 1
-            new_direccion = db.domo_direccion(dir_id=max_id, ciu_id=ciudad, dir_numerocalle=numero, dir_nombrecalle=calle)
-            db.db.session.add(new_direccion)
-            db.db.session.commit()
-            restaurante.dir_id = max_id
+            if(numero!="" and calle !="" and calle!=""):
+                max_id = db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() + 1
+                new_direccion = db.domo_direccion(dir_id=max_id, ciu_id=ciudad, dir_numerocalle=numero, dir_nombrecalle=calle)
+                db.db.session.add(new_direccion)
+                db.db.session.commit()
+                restaurante.dir_id = max_id
 
+
+        if(nombre !=""):
+            restaurante.rtr_nombre = nombre
 
         restaurante.tpr_id = tipo_rest
-        restaurante.rtr_nombre = nombre
-        restaurante.rtr_rutacarta = "xd"
-        restaurante.rtr_descripcion = descripcion
+
+        if(descripcion !=""):
+            restaurante.rtr_descripcion = descripcion
 
         if(vegetariana == "true"):
             vege = True
@@ -142,17 +148,16 @@ def actualizar_rest(id):
             vega = False
 
         restaurante.rtr_opvega = vega
-        restaurante.rtr_duenonombre = nombre_dueno
-        restaurante.rtr_duenoapellido = apellido_dueno
+        if(nombre_dueno !=""):
+            restaurante.rtr_duenonombre = nombre_dueno
+
+        if(apellido_dueno!=""):
+            restaurante.rtr_duenoapellido = apellido_dueno
+
+
         db.db.session.commit()
 
-        restaurantes = db.db.session.query(db.domo_restaurante, db.domo_direccion, db.domo_ciudad, db.domo_region, db.domo_tiporestaurante).filter(
-                                        db.domo_restaurante.dir_id == db.domo_direccion.dir_id,
-                                        db.domo_tiporestaurante.tpr_id == db.domo_restaurante.tpr_id,
-                                        db.domo_direccion.ciu_id == db.domo_ciudad.ciu_id,
-                                        db.domo_ciudad.reg_id==db.domo_region.reg_id).all()
-
-        return render_template("gestionar restaurantes/gestionar_restaurantes.html", restaurantes=restaurantes)
+        return redirect(url_for('gestionar_restaurantes'))
 
 @app.route('/gestionar_restaurantes<id>')
 def eliminar_rest(id):

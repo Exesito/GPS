@@ -1,0 +1,30 @@
+{% extends "index.html" %}
+
+{% block title %}
+Valoraciones
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <h1>Reservas</h1>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover table-fixed tablecustom" table id="restaurantes">
+
+            <thead class="thead-dark">
+                <tr>
+                    <th>Comentario</th>
+                    <th>Valoración</th>
+                </tr>
+            </thead>
+
+
+            {% for item in valoraciones %}
+            <tr>
+                <td>{{item.val_descripcion  }}</td>
+                <td><span class="badge badge-warning"><i class="fa fa-star" aria-hidden="true"></i> {{item.val_estrella}}</span></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

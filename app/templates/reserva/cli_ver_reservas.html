@@ -12,40 +12,37 @@ Consultar Reservas
 
             <thead class="thead-dark">
                 <tr>
-                    <th>Nombre</th>
-                    <th>Descripción</th>
-                    <th>Tipo de Restaurante</th>
-                    <th>Calle</th>
-                    <th>Número de Domicilio</th>
-                    <th>Ciudad</th>
-                    <th>Región</th>
-                    <th>Opcion Vegetariana</th>
-                    <th>Opción Vegana</th>
-                    <th>Nombre del Dueño</th>
-                    <th>Apellido Dueño</th>
-                    <th>Opciones</th>
+                    <th>Restaurante</th>
+                    <th>Mesa</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Estado</th>
+                    <th>Cancelar</th>
+                    <th>Valoración</th>
 
                 </tr>
             </thead>
 
 
-            {% for item in restaurantes %}
+            {% for item in reservas %}
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                
-                <td>Si</td>
-
-                <td></td>
-                <td></td>
+                <td>{{item.domo_restaurante.rtr_nombre}}</td>
+                <td>{{item.domo_mesa.msa_numero}}</td>
+                <td>{{item.domo_reserva.rsv_fecha}}</td>
+                <td>{{item.domo_reserva.rsv_hora}}</td>
+                <td>{{item.domo_reserva.rsv_estado}}</td>
                 <td>
-                    Editar
-                    Eliminar
+                    {% if item.domo_reserva.rsv_estado == "CREADA" %}
+                    <a href="{{url_for('cli_cancelar_reserva', rsv_id = item.domo_reserva.rsv_id, cli_id=cli_id)}}" class='btn btn-danger'>
+                    <i class="fa fa-times" aria-hidden="true"></i></a>
+                    {% endif %}
+                </td>
+                <td class="text-center">
+                    {% if item.domo_valoracion.val_id %}
+                        <a href="{{url_for('valorar_view', rsv_id = item.domo_reserva.rsv_id)}}" class='btn btn-warning'><i class="fa fa-star" aria-hidden="true"></i> {{item.domo_valoracion.val_estrella}}</a>
+                    {% elif item.domo_reserva.rsv_estado == "REALIZADA" %}
+                        <a href="{{url_for('valorar_view', rsv_id = item.domo_reserva.rsv_id)}}" class='btn btn-success'><i class="fa fa-plus" aria-hidden="true"></i></a>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

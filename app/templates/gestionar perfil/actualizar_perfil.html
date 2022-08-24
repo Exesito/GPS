@@ -26,14 +26,12 @@ Actualizar perfil
           <!--Nombre-->
           <div class="mb-4">
             <label for="nombre">Nombre:</label>
-            <input type="text" class="form-control" name="nombre" placeholder="{{cliente.domo_cliente.cli_nombre}}"
-              required />
+            <input type="text" class="form-control" name="nombre" placeholder="{{cliente.domo_cliente.cli_nombre}}"/>
           </div>
           <!--Apellido-->
           <div class="mb-4">
             <label for="apellido">Apellido:</label>
-            <input type="text" class="form-control" name="apellido" placeholder="{{cliente.domo_cliente.cli_apellido}}"
-              required />
+            <input type="text" class="form-control" name="apellido" placeholder="{{cliente.domo_cliente.cli_apellido}}"/>
             <!--Calle-->
           </div>
           <div class="mb-4">
@@ -148,7 +146,8 @@ Actualizar perfil
     }
   });
 
-  $("#rut").rut({formatOn: 'keyup'});
+  $("#rut")
+  .rut({formatOn: 'keyup', validateOn: 'keyup'})
 
 </script>
 {% endblock %}

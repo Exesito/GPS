@@ -35,6 +35,10 @@ def webpay_plus_commit():
 
     response = (Transaction()).commit(token=token)
     print("response: {}".format(response))
+    
+    if(response['status'] == 'FAILED'):
+        domo_reserva.get_by_id(response['buy_order']).error()
+        return(redirect(url_for('reserva_error')))
 
     return redirect(url_for('reserva_exitosa', id_restaurante = domo_reserva.get_by_id(response['buy_order']).get_restaurante(), id_reserva= response['buy_order']))
 
@@ -43,7 +47,8 @@ def webpay_plus_commit_error():
     token = request.form.get("token_ws")
     print("commit error for token_ws: {}".format(token))
 
-    #response = Transaction.commit(token=token)
+    response = Transaction.commit(token=token)
+    domo_reserva.get_by_id(response['buy_order']).error()
     #print("response: {}".format(response))
     response = {
         "error": "Transacción con errores"

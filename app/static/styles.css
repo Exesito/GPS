@@ -17,9 +17,6 @@
 
 body {
     padding-top: 20px;
-    font-family: 'Spartan', sans-serif;
-    font-weight: 300;
-    color: var(--light);
     padding-top: 0 !important;
     font-family: 'Spartan', sans-serif;
     font-weight: 300;
@@ -34,7 +31,6 @@ body {
 .bg-dark-x { background-color: var(--dark-x); }
 
 .btn {
-    min-height: 3.125rem;
     font-weight: 600;
 }
 
@@ -128,7 +124,7 @@ body {
     margin-left: 80rem;
 }
 
-.card{
+.login .card{
     margin-top: 2%;
     background-color: #310746;
     border-radius: 1rem;

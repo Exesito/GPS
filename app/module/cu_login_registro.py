@@ -107,7 +107,9 @@ def login():
                 session['tipo']=usuario.tip_id
 
                 if session['tipo']==1:
+                    session['cli_id']= domo_cliente.get_by_usr_id(usuario.usr_id).cli_id #### LA RESERVA OCUPA ESTO ####
                     return redirect(url_for('dashboard'))
+                
                 elif session['tipo']==2:
                     return redirect(url_for('dashboard'))
                 elif session['tipo'] ==3:
