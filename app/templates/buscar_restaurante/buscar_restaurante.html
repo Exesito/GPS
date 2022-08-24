@@ -1,0 +1,161 @@
+{% extends "index.html" %}
+
+{% block title %}
+DOMO- Buscar Restaurantes
+{% endblock %}
+
+{% block body %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Búsqueda de Restaurantes</title>
+  <!-- google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Mulish&display=swap" rel="stylesheet">
+  <!-- custom css -->
+  <link href="css/style.css" rel="stylesheet">
+</head>
+
+<div class="container-fluid" style="padding-top: 2%">
+  <div class="row buscador-izquierdo">
+    <div class="col-md-2">
+      <div class="Filtros">
+        <input type="text" class="form-control" aria-label="Text input with segmented button dropdown" id="searchbar"
+          onkeyup="Barra_Busqueda()" placeholder="Búsqueda de Restaurantes" title="Type in a name">
+        {% for item in tipo %}
+        <div class="row">
+          <table style="border:1px solid;">
+            <tr style="height: 80px;">
+              <td style="text-aligh: center;vertical-aligh: middle;">
+                <input type="checkbox" id='{{item.tpr_id}}' checked></input> 
+                <labelfor={{item.tpr_id}}>{{item.tpr_nombre}}</label>
+                <script>console.log({{ "item.tpr_nombre"}})</script>
+              </td>
+            </tr>
+        </table>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+    <div class="col-md-10">
+      <div class="container">
+        {% for item in restaurantes %}
+        <div class="{{item.domo_tiporestaurante.tpr_nombre}}">
+          <div class="col-md-10">
+            <div class="card" id='{{item.tpr_id}}'>
+                <div class="card-body">
+                    <p class="card-text">
+                        <div class="detect card-body">
+                            <a
+                              href="{{url_for('reservar',id=item.domo_restaurante.rtr_id)}}">
+                              <h2>
+                                {{item.domo_restaurante.rtr_nombre}}
+                              </h4></a>
+                          </div>
+                          <div class="card-footer col-md-2">
+                            {{item.domo_tiporestaurante.tpr_nombre}}
+                          </div>
+                    </p>
+                </div>
+                <div class="card-footer">
+                 
+                </div>
+            </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+
+</html>
+{% endblock %}
+
+{% block script %}
+<script>
+  var nombre_rest = [];
+  {% for item in restaurantes %}
+  nombre_rest.push('{{item.domo_restaurante.rtr_nombre}}');
+  {% endfor %}
+
+  console.log(nombre_rest);
+
+  var visible = [];
+  {% for item in restaurantes %}
+  visible.push('{{item.domo_restaurante.rtr_visible}}');
+  console.log('hola');
+  {% endfor %}
+
+  console.log(visible);
+
+  var tipo_rest = [];
+  {% for item in restaurantes %}
+  tipo_rest.push('{{item.domo_tiporestaurante.tpr_nombre}}');
+  {% endfor %}
+
+  console.log(tipo_rest);
+
+  var clases_rest = [];
+  {% for item in tipo %}
+  clases_rest.push('{{item.tpr_nombre}}');
+  {% endfor %}
+  console.log(clases_rest);
+
+  var tpr_id = [];
+  {% for item in tipo %}
+  tpr_id.push('{{item.tpr_id}}');
+  {% endfor %}
+  var last = tpr_id.length - 1;
+
+  function Barra_Busqueda() {
+
+    var input;
+    input = document.getElementById("searchbar").value;
+    input = input.toLowerCase();
+    let x = document.getElementsByClassName('card');
+
+    for (i = 0; i < nombre_rest.length; i++) {
+      console.log(x[i]);
+      if (!x[i].innerHTML.toLowerCase().includes(input)) {
+        x[i].style.display = "none";
+      }
+      else {
+        x[i].style.display = "";
+      }
+    }
+  }
+
+  function hide(classToHide) {
+    [].forEach.call(document.getElementsByClassName(classToHide), function (el) {
+      el.hidden = true;
+    });
+  }
+
+  // Show the element with classToShow
+  function show(classToShow) {
+    [].forEach.call(document.getElementsByClassName(classToShow), function (el) {
+      el.hidden = false;
+    });
+  }
+
+  //eventos de los checkbox
+  tpr_id.forEach(function (value) {
+    document.getElementById(value).onchange = function () {
+      if (this.checked) show(clases_rest[value - 1]);
+      else hide(clases_rest[value - 1]);
+    }
+  });
+
+  document.getElementById(0).onchange = function () {
+    if (this.checked) show(clases_rest[last]);
+    else hide(clases_rest[last]);
+  }
+
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{% endblock %}

@@ -1,6 +1,6 @@
 from app import app, models, functions
 from app.forms import RegisterForm, ReservaForm, MesaForm, ClientForm
-from app.models import domo_cliente, domo_reserva, domo_restaurante, domo_valoracion
+from app.models import User, domo_cliente, domo_reserva, domo_restaurante, domo_valoracion
 from flask import render_template, request, url_for, redirect, session
 from sqlalchemy import func
 
@@ -10,6 +10,8 @@ db = models.db
 
 @app.route('/reservar/<id>', methods=['GET','POST'])
 def reservar(id):
+    
+    session["cli_id"] = 1
     
     day_choice = [1,2,3]
     hour_choice = [1,2,3]
@@ -62,7 +64,6 @@ def reserva_new_client(id_restaurante, id_reserva):
         telefono = request.form["telefono"]
         rut = request.form["rut"]
         medio_de_pago = request.form["medio_de_pago"]
-        email = request.form["email"]
         
         reserva = domo_reserva.get_by_id(id_reserva)
         
@@ -72,7 +73,7 @@ def reserva_new_client(id_restaurante, id_reserva):
             cliente.cli_telefono = telefono
         else:
             max_id_cli = models.db.session.query(func.max(models.domo_cliente.cli_id)).scalar() + 1
-            cliente = domo_cliente(cli_id = max_id_cli, cli_nombre=nombre, cli_apellido=apellido, cli_telefono=telefono, cli_rut = rut, cli_correo = email)
+            cliente = domo_cliente(cli_id = max_id_cli, cli_nombre=nombre, cli_apellido=apellido, cli_telefono=telefono, cli_rut = rut)
             db.session.add(cliente)
         
         dict_mdp = {
@@ -120,11 +121,10 @@ def reserva_create(id_restaurante):
         
         reserva.cli_id = session["cli_id"]
         reserva.tpg_id = dict_mdp[medio_de_pago] 
-        db.session.commit()
         
         if medio_de_pago == "WEBPAY":
             return redirect(url_for('webpay_plus.webpay_plus_create', rsv_id = id_reserva, cli_id = session["cli_id"]))
-        
+        db.session.commit()
         
         return redirect(url_for('reserva_exitosa', id_restaurante = id_restaurante, id_reserva = id_reserva))
 
@@ -139,9 +139,6 @@ def reserva_exitosa(id_restaurante, id_reserva):
     reserva.rsv_estado = "CREADA"
     db.session.commit()
     
-    mensaje =  "Su reserva a sido aprobada para el dia " + str(reserva.rsv_fecha) + " a las " + str(reserva.rsv_hora)
-    mensaje =  mensaje + ", con codigo " + str(reserva.rsv_id)
-    functions.enviar_email_cliente(reserva.get_cliente(), mensaje, "Reserva realizada con exito")
     
     return render_template("reserva/cli_reserva_exitosa.html", restaurante=restaurante, reserva=reserva, cliente=cliente, mesa = mesa)
 
@@ -167,9 +164,13 @@ def res_ver_reservas(rtr_id):
 @app.route('/restaurante/<rtr_id>/ver_reservas/aprobar/<rsv_id>')
 def aprobar_reserva(rtr_id, rsv_id):
     
-    domo_reserva.get_by_id(rsv_id).rsv_estado = "REALIZADA"
+    reserva = domo_reserva.get_by_id(rsv_id)
+    reserva.rsv_estado = "REALIZADA"
     db.session.commit()
-    
+    mensaje =  "Su reserva a sido aprobada para el día " + reserva.rsv_fecha + " a las " + reserva.rsv_hora 
+    mensaje += ", con codigo " + rsv_id
+    functions.enviar_email_cliente(reserva.get_cliente(), mensaje, "Reserva realizada con exito")
+
     return redirect(url_for('res_ver_reservas', rtr_id = rtr_id))
 
 @app.route('/restaurante/<rtr_id>/ver_reservas/cancelar/<rsv_id>')
