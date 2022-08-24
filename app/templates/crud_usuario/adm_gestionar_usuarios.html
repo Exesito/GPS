@@ -52,10 +52,23 @@ Gestionar Usuarios
 
                             <td>
                                 <ul class="action-list">
-                                    <li><a href="{{url_for('actualizar_usuario',id=item.usr_id)}}"
+                                    {% if item.tip_id==1 %}
+                                    <li><a href="{{url_for('actualizar_usuario1',id=item.usr_id)}}"
                                         data-tip="edit"><i class="fa fa-edit"></i>
                                     </a>
-                                </li>
+                                    </li>
+                                    {% elif item.tip_id==2 %}
+                                    <li><a href="{{url_for('actualizar_usuario2',id=item.usr_id)}}"
+                                        data-tip="edit"><i class="fa fa-edit"></i>
+                                    </a>
+                                    </li>
+
+                                    {% else %}
+                                    <li><a href="{{url_for('actualizar_usuario3',id=item.usr_id)}}"
+                                        data-tip="edit"><i class="fa fa-edit"></i>
+                                    </a>
+                                    </li>
+                                    {% endif %}
                                 <li><a href="{{url_for('eliminar_usuario',id=item.usr_id)}}" data-tip="delete" id="{{loop.index}}" onclick="confirmar(this.id)">
                                     <i class="fa fa-trash" ></i>
                                     </a>
