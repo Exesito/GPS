@@ -4,7 +4,7 @@ from flask_security import Security, SQLAlchemyUserDatastore, UserMixin
 from sqlalchemy import func, desc
 import bcrypt
 from sqlalchemy import true
-from datetime import date
+from datetime import date, datetime
 
 db = SQLAlchemy()
 
@@ -138,6 +138,7 @@ class domo_restaurante(db.Model):
     rtr_duenoapellido = db.Column('rtr_duenoapellido', db.String(40))
     rtr_cantidadmesas = db.Column('rtr_cantidadmesas', db.Integer)
     rtr_cantidadsillas = db.Column('rtr_cantidadsillas', db.Integer)
+    rtr_visible = db.Column('rtr_visible', db.Boolean)
     
     def get_mesas(self):
         return domo_mesa.query.filter_by(rtr_id = self.rtr_id).all()
