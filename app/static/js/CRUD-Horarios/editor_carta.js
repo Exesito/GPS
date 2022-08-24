@@ -1,29 +1,34 @@
 $(document).ready( function () {
     new_row ='<tr> \n\
-                <form action="{{url_for(\'editor_cartas\')}}", method = "post" enctype="multipart/form-data" id="data"> \n\
-                <th scope="row"></th> \n\
-                    <td hidden></td> \n\
-                    <td><select class="nuevo-combo" onChange="combo(this, "demo")"></td> \n\
-                    <td></td> \n\
-                    <th> <a><input type="file" class="linkk"  name="file"/> </a> </th> \n\
-                    <th> <a value id="btn_submit" class="btn btn-secondary table-row-edit edit-button" >Editar</a> \n\
-                        <a class="btn btn-danger btn-delete">Eliminar</a> \n\
-                </th> \n\
+                <form id="dataa" action="/nueva_carta/-1", method = "post" enctype="multipart/form-data"> \n\
+                    <th scope="row"> </th>    \n\
+                    <td id="id" hidden>-1</td>    \n\
+                    <th scope="row"><select class="nuevo-combo" onChange="combo(this, "demo")"></th>   \n\
+                    <td id="car_nombre"> <input id="nombre_carta" type="text"/></td>    \n\
+                    <th id="linkk">     \n\
+                        <input class="plswork" type="file" name = "new_carta">   \n\
+                        <input class="plswork" type="submit">    \n\
+                    </th>   \n\
+                    <th><a hidden value id="btn_submit" class="btn btn-secondary table-row-edit edit-button" >Editar</a>   \n\
+                    <a class="btn btn-danger btn-delete">Eliminar</a>   \n\
+                    </th>   \n\
                 </form> \n\
              </tr>)'
 
-    $('body').on('click', '#nuevo', function(){
-        var names = getrtrnames($('#rtr_names').html().split(','))
+    // $('body').on('click', '#nuevo', function(){
+    //     var names = getrtrnames($('#rtr_names').html().split(','))
         
         
-        $('#cartas > tbody:last-child').append(new_row)
+    //     $('#cartas > tbody:last-child').append(new_row)
 
-        for(j=0;j-names[0].length;j++){
-            $('.nuevo-combo').append("<option>" + names[0][j][1] + "</option>")
-        }
-         $('.nuevo-combo').toggleClass('nuevo-combo')
-        $('#cartas > tbody:last-child').find('.edit-btn').click()
-    });
+    //     for(j=0;j-names[0].length;j++){
+    //         $('.nuevo-combo').append("<option>" + names[0][j][1] + "</option>")
+    //     }
+    //      $('.nuevo-combo').toggleClass('nuevo-combo')
+    //     $('#cartas > tbody:last-child').find('.edit-btn').click()
+
+
+    // });
 
     $('body').on('click', '#btn_submit',function() { //Función que se activa al hacer click en editar
         var currentTD = $(this).parents('tr').find('td');
@@ -40,13 +45,13 @@ $(document).ready( function () {
             $(this).toggleClass('btn-success');
             $(this).data('editar', true);
 
+            $(this).parents('tr').find('.link').toggleClass('invisible')
             $(this).parents('tr').find('.plswork').removeAttr('hidden')
+            
             currentTD.get(1).textContent
             currentTD.data('id', currentTD.get(0).textContent)
             currentTD.data('nombre', currentTD.get(1).textContent)
-            currentTH.data('lastTH', currentTH.get(1).outerHTML)
-            
-            $(this).parents('tr').find('.linkk').html(' <a><input type="file" id="link"  name="file"/> </a>')
+            currentTH.data('lastTH', currentTH.get(2).outerHTML)
             
             
         } else {        //si dice guardar, debe revisar el contenido y enviarlo a la base de datos
@@ -72,23 +77,22 @@ $(document).ready( function () {
                 console.log(formData)
 
                 
-            // sendData(formData)
-                $.ajax({
-                    url: window.location.pathname,
-                    type: 'POST',
-                    data: formData,
-                    success: function (data) {
-                        console.log(data)
-                    },
-                    cache: false,
-                    contentType: false,
-                    processData: false
-                });
+            //  sendData(formData)
+            //     $.ajax({
+            //         url: window.location.pathname,
+            //         type: 'POST',
+            //         data: formData,
+            //         success: function (data) {
+            //             console.log(data)
+            //         },
+            //         cache: false,
+            //         contentType: false,
+            //         processData: false
+            //     });
             
             $(this).parents('#btn-submit').toggleClass('half')
             $.each(currentTD, function () {
                 $(this).prop('contenteditable', false)
-                    
                 });
             $(this).html("Editar")
             $(this).toggleClass('half');
@@ -105,8 +109,8 @@ $(document).ready( function () {
 
         currentTD.get(0).textContent = currentTD.data("id")
         currentTD.get(1).textContent = currentTD.data('nombre')
-        $(this).parents('tr').find('#link').html(currentTH.data('lastTH'))
-        
+        $(this).parents('tr').find('.link').toggleClass('invisible')
+        $(this).parents('tr').find('.plswork').attr('hidden', true)
         $.each(currentTD, function () {
             $(this).prop('contenteditable', false)
                 
@@ -120,8 +124,14 @@ $(document).ready( function () {
     })
 
     $("body").on("click", ".btn-delete", function(){  
-        if(confirm('¿Estás seguro de eliminar esta carta?'))
-            $(this).parents("tr").remove();  
+        if(confirm('¿Estás seguro de eliminar esta carta?')){
+           
+        id = $(this).parents('tr').find('#id').html()
+        console.log(id);
+        delData(id)
+        $(this).parents("tr").remove(); 
+    }
+
     });
 
     $('#cartas').DataTable({ //paginación de tabla
@@ -161,10 +171,13 @@ function replaceAll(str, find, replace) {
     return str.replace(new RegExp(escapedFind, 'g'), replace);
 }
 
-async function sendData(form){
-    let response = await fetch('/editor_cartas', {
-        method: 'POST',
-        body: form
-    });
-    return response;
+async function delData(id){
+    var xhr = new XMLHttpRequest();
+    yourUrl = window.location.pathname + '/del/' + id
+    xhr.open("POST", yourUrl, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({
+        value: null
+    }));
 }
+

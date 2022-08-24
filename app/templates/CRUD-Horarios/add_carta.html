@@ -1,0 +1,96 @@
+{% extends "index.html" %}
+
+{% block title %}
+Ingresar Carta
+{% endblock %}
+
+{% block body %}
+<!--Imprimir cajas de texto para ingresar los datos de la carta, y crear un botón de guardado.-->
+<section class="registro-fondo">
+
+  <div class="row g-0">
+    <div class="col-lg-4 d-none d-lg-block">
+
+    </div>
+    <div class="form-register col-lg-4 bg-dark d-flex flex-column align-items-end min-vh-100" id="formulariosito">
+
+      <div class="px-lg-5 pt-lg-4 pb-lg-3 p-4 mb-auto w-100">
+        <img src="{{url_for('static',filename='Logo.svg')}}" class="img-fluid" />
+      </div>
+      <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
+        <h1 class="font-weight-bold mb-4">Ingrese datos de la carta:</h1>
+        <!--Acción de la forma-->
+        <form action="{{url_for('add_carta', rtr_names = rtr_names)}}" , method="post" id="ingresar_carta" class="mb-5" enctype="multipart/form-data">
+          <!--Nombre Restaurante-->
+          <div class="mb-4">
+            <label for="nombre">Nombre de la carta:</label>
+            <input type="text" class="form-control" name="nombre_carta" placeholder="Carta de Vinos" required />
+          </div>
+          <div class="mb-4">
+            <label for="nombre">Restaurant:</label>
+            <a hidden id="rtr_names">{{rtr_names}}</a>
+            <input hidden type="text" name="rtr_id" id="rtr_id"></input>
+            <select name="nombre_rtr" class="nuevo-combo" onChange="combo(this, 'demo')">
+          </div>
+          <div class="mb-4">
+            <label for="nombre">Carta:</label>
+                
+            <input type="file" name = "new_carta">  
+                 
+            
+          </div>
+          <input type="submit">  
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-4 d-none d-lg-block">
+    </div>
+  </div>
+
+
+</section>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready( function () {
+        
+        var names = getrtrnames($('#rtr_names').html().split(','))
+        for(j=0;j-names[0].length;j++){
+            $('.nuevo-combo').append("<option>" + names[0][j][1] + "</option>")
+        }
+        
+         $('.nuevo-combo').toggleClass('nuevo-combo')
+        
+    });
+
+    let select = document.querySelector('#nombre_rtr')
+    
+    select.addEventListener('change', (e) => {
+      nombre = select.value
+    })
+    console.log(nombre);
+
+    
+
+    function getrtrnames(jq){
+    var names = []
+    names.push(jq)
+    for(i = 0; i< names.length;i++){
+        names[0][i] = replaceAll(names[0][i], ']', ' ')
+        names[0][i] = replaceAll(names[0][i], '[', '')
+        names[0][i] = replaceAll(names[0][i], '\'', '')
+        names[0][i] = names[0][i].split('-')
+    }
+    return names;
+
+    function replaceAll(str, find, replace) {
+    var escapedFind=find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+    return str.replace(new RegExp(escapedFind, 'g'), replace);
+}
+}
+</script>
+
+
+{% endblock %}
