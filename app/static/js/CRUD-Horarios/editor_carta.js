@@ -5,7 +5,7 @@ $(document).ready( function () {
                     <td hidden></td> \n\
                     <td><select class="nuevo-combo" onChange="combo(this, "demo")"></td> \n\
                     <td></td> \n\
-                    <th> <a hidden><input type="file" class="linkk"  name="file"/> </a> </th> \n\
+                    <th> <a><input type="file" class="linkk"  name="file"/> </a> </th> \n\
                     <th> <a value id="btn_submit" class="btn btn-secondary table-row-edit edit-button" >Editar</a> \n\
                         <a class="btn btn-danger btn-delete">Eliminar</a> \n\
                 </th> \n\
@@ -13,13 +13,14 @@ $(document).ready( function () {
              </tr>)'
 
     $('body').on('click', '#nuevo', function(){
-        var names = []
-        names.push($('#rtr_names').html().split(','))
+        var names = getrtrnames($('#rtr_names').html().split(','))
+        
+        
         $('#cartas > tbody:last-child').append(new_row)
 
-        for(i = 0; i<= names.length; i++){
-            $('.nuevo-combo').append("<option>" + names[0][i] + "</option>")
-         }
+        for(j=0;j-names[0].length;j++){
+            $('.nuevo-combo').append("<option>" + names[0][j][1] + "</option>")
+        }
          $('.nuevo-combo').toggleClass('nuevo-combo')
         $('#cartas > tbody:last-child').find('.edit-btn').click()
     });
@@ -43,10 +44,9 @@ $(document).ready( function () {
             currentTD.get(1).textContent
             currentTD.data('id', currentTD.get(0).textContent)
             currentTD.data('nombre', currentTD.get(1).textContent)
-    
-            currentTH.data('lastTH', currentTH.get(2).outerHTML)
+            currentTH.data('lastTH', currentTH.get(1).outerHTML)
             
-            $(this).parents('tr').find('.linkk').html(' <a><input type="file" class="linkk"  name="file"/> </a>')
+            $(this).parents('tr').find('.linkk').html(' <a><input type="file" id="link"  name="file"/> </a>')
             
             
         } else {        //si dice guardar, debe revisar el contenido y enviarlo a la base de datos
@@ -64,18 +64,21 @@ $(document).ready( function () {
             }
             
             var url= window.location.pathname;
-                e = $(this).parents('tr').find('file')
-                console.log(e);
-                var formData = new FormData(e);
+                form = $('#dataa')[0]
+                var formData = new FormData(form);
                 formData.append("nombre", $(this).parents('tr').find("nombre"))
                 formData.append("id", $(this).parents('tr').find("id"))
-            
+                
+                console.log(formData)
+
+                
+            // sendData(formData)
                 $.ajax({
                     url: window.location.pathname,
                     type: 'POST',
                     data: formData,
                     success: function (data) {
-                        alert(data)
+                        console.log(data)
                     },
                     cache: false,
                     contentType: false,
@@ -102,9 +105,8 @@ $(document).ready( function () {
 
         currentTD.get(0).textContent = currentTD.data("id")
         currentTD.get(1).textContent = currentTD.data('nombre')
-        //currentTH.get(2).outerHTML = currentTH.data('lastTH')
-        $(this).parents('tr').find('.linkk').html(currentTH.data('lastTH'))
-        $(this).parents('tr').find('.plswork').remove()
+        $(this).parents('tr').find('#link').html(currentTH.data('lastTH'))
+        
         $.each(currentTD, function () {
             $(this).prop('contenteditable', false)
                 
@@ -140,4 +142,29 @@ function styleTableButtons(){
     $('.paginate_button').css("display","inline-flex")
     $('.dataTables_length').css("display","inline-flex")
     $('.dataTables_filter').css("display","inline-flex")
+}
+
+function getrtrnames(jq){
+    var names = []
+    names.push(jq)
+    for(i = 0; i< names.length;i++){
+        names[0][i] = replaceAll(names[0][i], ']', ' ')
+        names[0][i] = replaceAll(names[0][i], '[', '')
+        names[0][i] = replaceAll(names[0][i], '\'', '')
+        names[0][i] = names[0][i].split('-')
+    }
+    return names;
+}
+
+function replaceAll(str, find, replace) {
+    var escapedFind=find.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+    return str.replace(new RegExp(escapedFind, 'g'), replace);
+}
+
+async function sendData(form){
+    let response = await fetch('/editor_cartas', {
+        method: 'POST',
+        body: form
+    });
+    return response;
 }
