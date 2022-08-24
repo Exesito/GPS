@@ -177,7 +177,6 @@ class domo_restaurante(db.Model):
         ).order_by(desc(domo_valoracion.val_id)).all()
         
         return query
-    
     @staticmethod
     def get_valoraciones_max(id, max):
         
