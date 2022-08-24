@@ -100,7 +100,7 @@ class domo_tiporestaurante(db.Model):
 
 class domo_mesa(db.Model):
     __tablename__ = 'domo_mesa'
-    rtr_id = db.Column('rtr_id', db.Integer, db.ForeignKey('domo_rtr.rtr_id'))
+    rtr_id = db.Column('rtr_id', db.Integer, db.ForeignKey('domo_restaurante.rtr_id'))
     msa_id = db.Column('msa_id', db.Integer, primary_key = True)
     msa_numero = db.Column('msa_numero', db.Integer)
     msa_capacidad = db.Column('msa_capacidad', db.Integer)
@@ -263,7 +263,7 @@ class domo_cliente(db.Model):
 class domo_horario(db.Model):
     __tablename__ = 'domo_horario'
     hor_id = db.Column('hor_id', db.Integer, primary_key = True)
-    rtr_id = db.Column('rtr_id', db.Integer ,db.ForeignKey('domo_rtr.rtr_id'))
+    rtr_id = db.Column('rtr_id', db.Integer ,db.ForeignKey('domo_restaurante.rtr_id'))
     hor_nombre = db.Column('hor_nombre', db.String(20))
     hor_diainicio = db.Column('hor_diainicio', db.Integer)
     hor_diatermino = db.Column('hor_diatermino', db.Integer)
