@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 def app():
     app = Flask(__name__)
     app.config["SECRET_KEY"] = 'Secret'
-    #app.config["SQLALCHEMY_DATABASE_URI"]= 'postgresql://postgres:a@localhost:5432/GPS_TESTING'   #exe
+    #app.config["SQLALCHEMY_DATABASE_URI"]= 'postgresql://postgres:ag@localhost:5432/GPS_TESTING'   #exe
     #app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:peterfields@127.0.0.1:5432/domo-local'     #bdd local nachito
     #app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://postgres:admin@127.0.0.1:5432/DOMO-LOCAL'     #bdd local tefy  #bdd servidor ubb
     app.config['SECURITY_PASSWORD_HASH'] = 'scrtcript'
@@ -62,6 +62,5 @@ def test_verify_fecha():
 def test_verify_fecha_false():
     reserva = domo_reserva(rsv_id = 277, rsv_estado = "PRUEBA", rsv_fecha = date.today(), rsv_fechaderegistro = date.today()+timedelta(days=1))
     assert reserva.verify_fecha() == False
-
 
 ########
