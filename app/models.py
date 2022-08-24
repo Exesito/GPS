@@ -87,19 +87,6 @@ class domo_reserva(db.Model):
                                             domo_reserva.rsv_hora >= datetime.time(8,0,0), 
                                             domo_reserva.rsv_estado == "REALIZADA")
 
-class domo_restaurante(db.Model):
-    __tablename__ = 'domo_restaurante'
-    rtr_id = db.Column('rtr_id', db.Integer, primary_key = true)
-    dir_id = db.Column('dir_id', db.Integer, db.ForeignKey('domo_direccion.dir_id'))
-    tpr_id = db.Column('tpr_id', db.Integer)
-    rtr_nombre = db.Column('rtr_nombre', db.String(50))
-    rtr_descripcion = db.Column('rtr_descripcion', db.Text)
-    rtr_opvega = db.Column('rtr_opvega', db.Boolean)
-    rtr_opvege = db.Column('rtr_opvege', db.Boolean)
-    rtr_duenonombre = db.Column('rtr_duenonombre', db.String(40))
-    rtr_duenoapellido = db.Column('rtr_duenoapellido', db.String(40))
-
-
 class domo_direccion(db.Model):
     __tablename__ = 'domo_direccion'
     dir_id = db.Column('dir_id', db.Integer, primary_key = true)
