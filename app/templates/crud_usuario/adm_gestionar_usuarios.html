@@ -69,7 +69,7 @@ Gestionar Usuarios
                                     </a>
                                     </li>
                                     {% endif %}
-                                <li><a href="{{url_for('eliminar_usuario',id=item.usr_id)}}" data-tip="delete" id="{{loop.index}}" onclick="confirmar(this.id)">
+                                <li><a href="{{url_for('eliminar_usuario',id=item.usr_id)}}" data-tip="delete" id="{{loop.index}}" onclick="return confirmar(this.id)">
                                     <i class="fa fa-trash" ></i>
                                     </a>
                                 </li>
@@ -118,8 +118,10 @@ Gestionar Usuarios
         let text;
         if (confirm(mensaje) == true) {
             text = "El usuario será eliminado";
+            return true;
         } else {
             text = "Cancelar la acción";
+            return false;
         }
     }
 </script>
