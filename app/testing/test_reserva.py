@@ -28,21 +28,13 @@ def app():
         db.drop_all()
 
     # clean up / reset resources here
-@pytest.fixture(scope="session")
-def connection():
-    engine = get_engine()
-    connection = engine.connect()
-
-    yield connection
-
-    connection.close()
 
 @pytest.fixture()
 def client(app):
     return app.test_client()
 
 #### Reservas ####
-def test_get_reserva():
+def test_create_reserva():
 
     reserva = domo_reserva(rsv_id = 277, rsv_estado = "PRUEBA")
     

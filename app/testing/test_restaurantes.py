@@ -1,7 +1,5 @@
 import unittest
-
-from . import app
-from module import gestionar_restaurante 
+from app.module import gestionar_restaurante 
 
 
 
