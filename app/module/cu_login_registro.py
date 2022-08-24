@@ -111,6 +111,12 @@ def login():
                     return redirect(url_for('dashboard'))
                 
                 elif session['tipo']==2:
+                    session["rtr_id"] = db.db.session.query(db.domo_usuario, db.domo_encargadortr).filter(
+                        db.domo_usuario.usr_id == db.domo_encargadortr.usr_id,
+                        db.domo_usuario.usr_id == usuario.usr_id
+                    ).first().domo_encargadortr.rtr_id
+                    print(session["rtr_id"])
+                    
                     return redirect(url_for('dashboard'))
                 elif session['tipo'] ==3:
                     return redirect(url_for('dashboard'))
