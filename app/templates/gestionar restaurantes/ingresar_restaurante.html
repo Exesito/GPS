@@ -144,45 +144,45 @@ Ingresar Restaurante
 {% endblock %}
 
 {% block script %}
-<script type="text/javascript">
-  $(document).ready(function () {
-    $('#regionsita').select2({ placeholder: 'Seleccione Región', allowClear: true });
-  });
+<script>
+$(document).ready(function() {
+  $('#regionsita').select2({placeholder: 'Seleccione Región', allowClear: true});
+});
 
-  $(document).ready(function () {
-    $('#ciudad').select2();
-  });
+$(document).ready(function() {
+  $('#ciudad').select2();
+});
 
-  $(document).ready(function () {
-    let i = 1;
-    $($('#regionsita').children('option')).each(function () {
-      $('#' + i).select2().next().hide();
+$(document).ready(function(){
+  let i=0;
+  $($('#regionsita').children('option')).each(function(){
+    $('#'+i).select2().next().hide();
+    i++;
+  });
+});
+
+$('#regionsita').change(function(){
+    console.log("xD");
+    if($('#regionsita').val()==0){
+    $('#ciudad').select2().next().show();
+    let i=1;
+    $($('#regionsita').children('option')).each(function(){
+      $('#'+i).select2().next().hide();
       i++;
     });
-  });
-
-  $('#regionsita').change(function () {
-    if ($('#regionsita').val() == 0) {
-      $('#ciudad').select2().next().show();
-      let i = 1;
-      $($('#regionsita').children('option')).each(function () {
-        $('#' + i).select2().next().hide();
-        i++;
-      });
-    } else {
-      $('#ciudad').select2().next().hide();
-      let i = 1;
-      $($('#regionsita').children('option')).each(function () {
-        if (i == $('#regionsita').val()) {
-          $('#' + i).select2().next().show();
-        } else {
-          $('#' + i).select2().next().hide();
-        }
-        i++;
-      });
-    }
-  });
-
+  }else{
+    $('#ciudad').select2().next().hide();
+    let i=1;
+    $($('#regionsita').children('option')).each(function(){
+      if(i==$('#regionsita').val()){
+        $('#'+i).select2().next().show();
+      }else{
+        $('#'+i).select2().next().hide();
+      }
+      i++;
+    });
+  }
+}); 
 
 
   (function () {
