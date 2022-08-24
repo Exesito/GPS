@@ -177,7 +177,7 @@ Actualizar Usuario Cliente
         
         if($('#regioness').val()==0){
         $('#ciudad').select2().next().show();
-        let i=1;
+        let i=0;
         $($('#regioness').children('option')).each(function(){
           $('#'+i).select2().next().hide();
           i++;
