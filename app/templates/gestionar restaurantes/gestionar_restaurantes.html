@@ -67,7 +67,7 @@ Gestionar Restaurantes
                                 <ul class="action-list">
                                     <li><a href="{{url_for('editar_template',id=item.domo_restaurante.rtr_id)}}"
                                             data-tip="edit"><i class="fa fa-edit"></i></a></li>
-                                    <li><a href="{{url_for('eliminar_rest',id=item.domo_restaurante.rtr_id)}}" data-tip="delete" id="{{loop.index}}" onclick="confirmar(this.id)">
+                                    <li><a href="{{url_for('eliminar_rest',id=item.domo_restaurante.rtr_id)}}" data-tip="delete" id="{{loop.index}}" onclick="return confirmar(this.id)">
                                         <i class="fa fa-trash" ></i></a></li>
                                     <input type="hidden" name="{{loop.index}}" value="¿Está seguro que quiere eliminar el restaurante {{item.domo_restaurante.rtr_nombre}} ubicado en {{item.domo_direccion.dir_nombrecalle}} {{item.domo_direccion.dir_numerocalle}}, {{item.domo_ciudad.ciu_nombre}}?">
                                 </ul>
@@ -108,11 +108,12 @@ Gestionar Restaurantes
 
     function confirmar(id) {
         var mensaje = document.getElementsByName(id)[0].value;
-        let text;
-        if (confirm(mensaje) == true) {
+        if (confirm(mensaje)) {
             text = "El restaurante será eliminado";
+            return true;
         } else {
             text = "Se cancela la acción";
+            return false;
         }
     }
 </script>
