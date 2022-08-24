@@ -1,0 +1,19 @@
+<form method ="post" action ="{{url_for('valorar_add', rsv_id = rsv_id)}}">
+<div class="form-group">
+    <label for="valoracion">Valoración</label>
+    <select class="form-control" id="valoracion" name="valoracion">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+</select>
+</div>
+
+<div class="form-group">
+    <label for="comentario">Comentario</label>
+    <textarea class="form-control" id="comentario" name="comentario" rows="3"></textarea>
+</div>
+
+<button type="submit" class="btn btn-primary mb-2">Valorar</button>
+</form>

@@ -111,10 +111,21 @@
     padding: 1rem;
 }
 
+
 .reserva-exitosa-img{
     transform: scaleX(-1);
     display: block;
     margin-left: auto;
     margin-right: auto;
-    
+}
+
+.black-background-val{
+    margin-left:3rem;
+    margin-right:3rem;
+    margin-bottom:1rem;
+    background-color: rgba(0,0,0,0.7);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    max-width: 100%;
+    margin-top:0.2rem;
 }

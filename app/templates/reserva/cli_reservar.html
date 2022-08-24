@@ -59,7 +59,17 @@
         <p>Descargué su carta <a href="{{ url_for('static', filename='menu/menu_test.pdf') }}" download>aquí</a>.</p>
       </div>
     </div>
+  </div>
 
-    </div>
+  <div class="black-background-val" class="">
+    <h1 class="display-6">Ultimas Valoraciones</h1>
+  <div class="row">
+    {% for item in valoraciones %}
+     {% include "valorar/item_valorar.html"%}
+    {% endfor %}
+  </div>
+  <a href="{{url_for('valorar_list', rtr_id = data.get('RESTAURANTE_ID'))}}">Ver más</a>
+</div>
+
   </div>
 {% endblock %}

@@ -1,0 +1,34 @@
+{% extends "index.html" %}
+
+{% block title %}
+Valorar
+{% endblock %}
+
+{% block body %}
+    <div class="reserva-container img-0">
+
+    <div class="card" style="margin: 2rem">
+        <div class="card-header">
+            Valorar
+        </div>
+        <div style="padding: 2rem">
+            <div class="card">
+                <div class="card-header">
+                    Valorar
+                </div>
+
+                <div class="card-body">
+
+                    {% include "valorar/valoracion.html" %}
+                    <br>
+                    <div class="text-center">
+                        <a href="{{url_for('valorar_add', rsv_id = rsv_id)}}" class="btn btn-primary">Editar</a>
+                        <a href="{{url_for('valorar_delete', rsv_id = rsv_id)}}" onclick="return confirm('¿Seguro quiere elininar la valoracion?')" class="btn btn-danger">Eliminar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  </div>
+{% endblock %}

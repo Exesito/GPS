@@ -34,7 +34,6 @@ body {
 .bg-dark-x { background-color: var(--dark-x); }
 
 .btn {
-    min-height: 3.125rem;
     font-weight: 600;
 }
 
