@@ -81,6 +81,10 @@ Actualizar perfil
             <input type="text" name="telefono" placeholder="{{cliente.domo_cliente.cli_telefono}}"
               class="form-control" />
           </div>
+          <div class="mb-4">
+            <label for="rut">Rut:</label>
+            <input type="text" class="form-control" name="rut" id="rut" placeholder="{{cliente.domo_cliente.cli_rut}}">
+          </div>
           <!--Boton-->
           <div class="mb-4" id="botonsito">
             <input class="btn btn-submit" type="submit" value="[ACTUALIZAR]" style="justify-content:center" />
@@ -143,6 +147,8 @@ Actualizar perfil
       });
     }
   });
+
+  $("#rut").rut({formatOn: 'keyup'});
 
 </script>
 {% endblock %}
