@@ -14,6 +14,7 @@ class ClientForm(Form):
     telefono = StringField('Telefono', [validators.Length(min=1, max=12)])
     rut = StringField('Rut', [validators.Length(min=1, max=12)])
     direccion = StringField('Dirección', [validators.Length(min=1, max=60)])
+    email = StringField('Correo Eléctronico', [validators.DataRequired(message='Ingrese email'), validators.Email(), validators.Length(min=6, max=35)])
     medio_de_pago = RadioField("Medio de Pago", choices=[("DEBITO",'Débito (Presencial)'), ("EFECTIVO","Efectivo"), ("WEBPAY","")])
     
     submit = SubmitField("Completar Reserva y pagar")

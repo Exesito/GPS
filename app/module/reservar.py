@@ -62,6 +62,7 @@ def reserva_new_client(id_restaurante, id_reserva):
         telefono = request.form["telefono"]
         rut = request.form["rut"]
         medio_de_pago = request.form["medio_de_pago"]
+        email = request.form["email"]
         
         reserva = domo_reserva.get_by_id(id_reserva)
         
@@ -71,7 +72,7 @@ def reserva_new_client(id_restaurante, id_reserva):
             cliente.cli_telefono = telefono
         else:
             max_id_cli = models.db.session.query(func.max(models.domo_cliente.cli_id)).scalar() + 1
-            cliente = domo_cliente(cli_id = max_id_cli, cli_nombre=nombre, cli_apellido=apellido, cli_telefono=telefono, cli_rut = rut)
+            cliente = domo_cliente(cli_id = max_id_cli, cli_nombre=nombre, cli_apellido=apellido, cli_telefono=telefono, cli_rut = rut, cli_correo = email)
             db.session.add(cliente)
         
         dict_mdp = {
