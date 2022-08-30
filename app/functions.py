@@ -6,10 +6,7 @@ from email.mime.text import MIMEText
 
 def enviar_email(destinatario, mensaje, asunto):
 
-    print(destinatario,mensaje,asunto)
-
-    email_domo = "teamdomorestaurantes@gmail.com"
-    passw = "yuyfufiubxaeclpz"
+    email = models.domo_correo_produccion.get_main()
     message = MIMEText(mensaje)
     message['Subject'] = asunto
     message['From'] = "teamdomorestaurantes@gmail.com"
@@ -17,10 +14,10 @@ def enviar_email(destinatario, mensaje, asunto):
 
     server = smtplib.SMTP("smtp.gmail.com", 587)
     server.starttls()
-    server.login(email_domo, passw)
-    server.sendmail(email_domo, destinatario, message.as_string())
+    server.login(email.correo, email.contraseña)
+    server.sendmail(email.correo, destinatario, message.as_string())
     server.quit()
-
+    
 def enviar_email_cliente(cliente, mensaje, asunto):
     corr_destino = cliente.cli_correo
     
