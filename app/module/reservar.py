@@ -1,9 +1,10 @@
 from faulthandler import disable
 from app import app, models, functions
 from app.forms import RegisterForm, ReservaForm, MesaForm, ClientForm
-from app.models import domo_cliente, domo_reserva, domo_restaurante, domo_valoracion
+from app.models import domo_cliente, domo_reserva, domo_restaurante, domo_valoracion, domo_horario
 from flask import render_template, request, url_for, redirect, session
 from sqlalchemy import func
+from datetime import timedelta, date, datetime
 
 db = models.db
 
@@ -13,7 +14,17 @@ db = models.db
 def reservar(id):
     
     day_choice = [1,2,3]
-    hour_choice = [1,2,3]
+    
+    horario = domo_horario.query.filter(domo_horario.rtr_id == id).first()
+    
+    hour_choice = []
+    
+    i = horario.hor_horainicio.hour
+    print(i)
+    while i < horario.hor_horatermino.hour:
+        
+        hour_choice.append(i)
+        i = i + 1
     
     form = ReservaForm()
     mesa_form = MesaForm()
@@ -111,10 +122,10 @@ def reserva_create(id_restaurante):
         restaurante = domo_restaurante.get_by_id(id_restaurante)
         id_reserva = restaurante.generate_reserva(hora, fecha, mesa_id, estado)
         
+        reserva = domo_reserva.get_by_id(id_reserva)
+        
         if session.get('cli_id') is None:
             return redirect(url_for('reserva_not_registered', id_restaurante = id_restaurante, id_reserva = id_reserva))
-        
-        reserva = domo_reserva.get_by_id(id_reserva)
         
         medio_de_pago = request.form["medio_de_pago"]
         
