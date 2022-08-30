@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+
+{% block title %}
+Error 500
+{% endblock %}
+
+{% block body %}
+    <div class="reserva-container img-0">
+
+    <div class="card" style="margin: 2rem">
+        <div class="card-header">
+            ¡Ha ocurrido un error! Código: 500
+        </div>
+        <div style="padding: 2rem">
+            <div class="row">
+            <div class="col-4">
+                <img style="max-width: 100%;"
+                class="reserva-exitosa-img"
+                src="{{ url_for('static', filename='media/error.jpg') }}">
+            </div>
+
+            <div class="col-8">
+                <h2>Estimad@, acaba de ocurrir un error en nuestros servicios y estamos trabajando para solucionar estos.
+                    <br> Intentelo nuevamente más tarde.
+                </h2>
+            </div>
+        </div>
+        </div>
+    </div>
+
+  </div>
+{% endblock %}

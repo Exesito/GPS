@@ -1,4 +1,8 @@
-<div class="card style-form" style="width: 22rem;">
+<div class="card style-form 
+{% if disable_form %}
+  disabled-state
+{% endif %}
+" style="width: 22rem;">
     <div class="card-header">
       Seleccione Mesa
     </div>
@@ -9,8 +13,9 @@
 
       {% if session.get('cli_id') is not none %}
       {{ client_form.medio_de_pago.label }}
+
          <ul class="form-control">
-        <li><input id="medio_de_pago-0" name="medio_de_pago" type="radio" value="DEBITO">
+        <li><input id="medio_de_pago-0" name="medio_de_pago" type="radio" value="DEBITO" required>
           <label for="medio_de_pago-0">Débito (Presencial)</label>
         </li>
         <li><input id="medio_de_pago-1" name="medio_de_pago" type="radio" value="EFECTIVO">
@@ -23,10 +28,7 @@
       </ul>
       {% endif %}
 
-
       {{ mesa_form.submit(class_="btn btn-primary btn-color") }}
-      </ul>
-
-    
+      
+    </ul>    
 </div>
-  

@@ -22,9 +22,6 @@ def valorar_add(rsv_id):
     
     return render_template("valorar/valorar_add.html", rsv_id = rsv_id)
 
-def valorar_delete():
-    pass
-
 @app.route('/valoracion/<rsv_id>', methods=['GET','POST'])
 def valorar_view(rsv_id):
     

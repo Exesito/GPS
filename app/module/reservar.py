@@ -1,3 +1,4 @@
+from faulthandler import disable
 from app import app, models, functions
 from app.forms import RegisterForm, ReservaForm, MesaForm, ClientForm
 from app.models import domo_cliente, domo_reserva, domo_restaurante, domo_valoracion
@@ -23,6 +24,11 @@ def reservar(id):
     
     restaurante = models.domo_restaurante.get_by_id(id)
     mesas = restaurante.get_mesas()
+
+    disable_form = False
+    
+    if len(mesas) < 1:
+        disable_form = True
     
     for item in mesas:
         mesa_form.mesa.choices.append((item.msa_id, item.msa_numero))
@@ -35,7 +41,7 @@ def reservar(id):
     
     valoraciones = domo_restaurante.get_valoraciones_max(id, 3)
     
-    return render_template("reserva/cli_reservar.html", data = data, form = form, mesa_form = mesa_form, client_form = client_form, valoraciones=valoraciones)
+    return render_template("reserva/cli_reservar.html", data = data, form = form, mesa_form = mesa_form, client_form = client_form, valoraciones=valoraciones, disable_form = disable_form)
 
 @app.route('/reservar/<id_restaurante>/<id_reserva>/datos_cliente', methods=['GET','POST'])
 def reserva_not_registered(id_restaurante, id_reserva):
@@ -136,6 +142,9 @@ def reserva_exitosa(id_restaurante, id_reserva):
     cliente = models.domo_cliente.get_by_id(reserva.cli_id)
     mesa = models.domo_mesa.get_by_id(reserva.msa_id)
     
+    if reserva.rsv_estado != "PROCESANDO" :
+        return redirect(url_for('index'))
+    
     reserva.rsv_estado = "CREADA"
     db.session.commit()
     
@@ -153,6 +162,9 @@ def reserva_error():
 @app.route('/cliente/<cli_id>/ver_reservas', methods=['GET','POST'])
 def cli_ver_reservas(cli_id):
     
+    if int(session["cli_id"]) != int(cli_id):
+        return redirect(url_for('cli_ver_reservas', cli_id= cli_id))
+    
     reservas = domo_cliente.get_reservas(cli_id)
     
     return render_template("reserva/cli_ver_reservas.html", reservas=reservas, cli_id = cli_id)
@@ -160,12 +172,18 @@ def cli_ver_reservas(cli_id):
 @app.route('/restaurante/<rtr_id>/ver_reservas', methods=['GET','POST'])
 def res_ver_reservas(rtr_id):
     
+    if int(session["rtr_id"]) != int(rtr_id):
+        return redirect(url_for('res_ver_reservas', rtr_id = rtr_id))
+    
     reservas = domo_restaurante.get_reservas(rtr_id)
     
     return render_template("reserva/res_ver_reservas.html", reservas = reservas, rtr_id=rtr_id)
 
 @app.route('/restaurante/<rtr_id>/ver_reservas/aprobar/<rsv_id>')
 def aprobar_reserva(rtr_id, rsv_id):
+    
+    if int(session["rtr_id"]) != int(rtr_id):
+        return redirect(url_for('res_ver_reservas', rtr_id = rtr_id))
     
     domo_reserva.get_by_id(rsv_id).rsv_estado = "REALIZADA"
     db.session.commit()
@@ -175,6 +193,9 @@ def aprobar_reserva(rtr_id, rsv_id):
 @app.route('/restaurante/<rtr_id>/ver_reservas/cancelar/<rsv_id>')
 def cancelar_reserva(rtr_id, rsv_id):
     
+    if int(session["rtr_id"]) != int(rtr_id):
+        return redirect(url_for('res_ver_reservas', rtr_id = rtr_id))
+    
     domo_reserva.get_by_id(rsv_id).rsv_estado = "CANCELADA"
     db.session.commit()
     
@@ -182,6 +203,9 @@ def cancelar_reserva(rtr_id, rsv_id):
 
 @app.route('/cliente/<cli_id>/ver_reservas/cancelar/<rsv_id>')
 def cli_cancelar_reserva(cli_id, rsv_id):
+    
+    if int(session["cli_id"]) != int(cli_id):
+        return redirect(url_for('cli_ver_reservas', cli_id = cli_id))
     
     domo_reserva.get_by_id(rsv_id).rsv_estado = "CANCELADA"
     db.session.commit()

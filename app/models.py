@@ -359,7 +359,7 @@ class domo_valoracion(db.Model):
         return
 
 class domo_correo_produccion(db.Model):
-    __tablename__ = 'domo_correo_produccion'
+    __tablename__ = 'domo_correos_produccion'
     correo_id = db.Column('correo_id', db.Integer, primary_key = True)
     correo = db.Column('correo', db.String(50))
     contraseña = db.Column('contraseña', db.String(50))

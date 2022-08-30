@@ -1,12 +1,16 @@
-from app import app, models
-from app.forms import RegisterForm, ReservaForm, MesaForm, ClientForm
-from app.forms import EditForm1, EditForm2, EditForm3, IngresarRestaurante, RecoveryForm, ChangepasswordForm,RegisterForm, LoginForm, RegistroAdmin, RegistroEncargado
-from flask import render_template, request, url_for, redirect, session
-from sqlalchemy import func
-from app import models as db
-from sqlalchemy import func
+from app import app
+from flask import render_template, request
 
 @app.route('/')
 def index():
     return render_template("home.html")
 
+@app.errorhandler(404)
+def not_found(e):
+    
+    return render_template("errors/404.html")
+
+@app.errorhandler(500)
+def server_error(e):
+    
+    return render_template("errors/500.html")

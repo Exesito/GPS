@@ -49,3 +49,37 @@
     </div>
   </div>
 {% endblock %}
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    $("#cliente_form").validate({
+      rules: {
+        email: {
+          required: true,
+          email: true
+        },
+        telefono: {
+          required: true,
+          digits: true
+        }
+      },
+      messages: {
+        nombre: "Campo requerido",
+        telefono: {
+          required: "Campo requerido",
+          digits: "Ingrese un número de teléfono valido"
+        },  
+        medio_de_pago: "",
+        rut: "Campo requerido",
+        email: {
+            required: "Campo requerido",
+            email: "Ingrese un email valido"
+        }
+    }
+    });
+  });
+</script>
+{% endblock %}

@@ -73,3 +73,15 @@
 
   </div>
 {% endblock %}
+
+{% block script %}
+<script>
+  $(document).ready(function() {
+    
+    let date_min = new Date().toJSON().slice(0, 10);
+
+    $('#dia').attr('min' , date_min);
+  
+  });
+</script>
+{% endblock %}

@@ -2,7 +2,7 @@
     <div class="card-header">
       Rellene sus datos
     </div>
-  <form action="{{url_for('reserva_new_client', id_restaurante = data.get('RESTAURANTE_ID'), id_reserva = data.get('id_reserva'))}}" method=post>
+  <form action="{{url_for('reserva_new_client', id_restaurante = data.get('RESTAURANTE_ID'), id_reserva = data.get('id_reserva'))}}" method=post id="cliente_form">
     <ul class="list-group list-group-flush">
       <div class="row">
       <div class="col">
@@ -21,11 +21,14 @@
 
       {{ client_form.email.label }}
       {{ client_form.email(class_="form-control") }}
+      {% for error in client_form.email.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
 
       {{ client_form.medio_de_pago.label }}
 
       <ul class="form-control">
-        <li><input id="medio_de_pago-0" name="medio_de_pago" type="radio" value="DEBITO">
+        <li><input id="medio_de_pago-0" name="medio_de_pago" type="radio" value="DEBITO" required>
           <label for="medio_de_pago-0">Débito (Presencial)</label>
         </li>
         <li><input id="medio_de_pago-1" name="medio_de_pago" type="radio" value="EFECTIVO">
