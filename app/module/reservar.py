@@ -18,13 +18,17 @@ def reservar(id):
     horario = domo_horario.query.filter(domo_horario.rtr_id == id).first()
     
     hour_choice = []
+    disable_hour = False
     
-    i = horario.hor_horainicio.hour
-    print(i)
-    while i < horario.hor_horatermino.hour:
-        
-        hour_choice.append(i)
-        i = i + 1
+    if horario != None:
+        i = horario.hor_horainicio.hour
+        print(i)
+        while i < horario.hor_horatermino.hour:
+            
+            hour_choice.append(i)
+            i = i + 1
+    else:
+        disable_hour = True
     
     form = ReservaForm()
     mesa_form = MesaForm()
@@ -52,7 +56,7 @@ def reservar(id):
     
     valoraciones = domo_restaurante.get_valoraciones_max(id, 3)
     
-    return render_template("reserva/cli_reservar.html", data = data, form = form, mesa_form = mesa_form, client_form = client_form, valoraciones=valoraciones, disable_form = disable_form)
+    return render_template("reserva/cli_reservar.html", data = data, form = form, mesa_form = mesa_form, client_form = client_form, valoraciones=valoraciones, disable_form = disable_form, disable_hour = disable_hour)
 
 @app.route('/reservar/<id_restaurante>/<id_reserva>/datos_cliente', methods=['GET','POST'])
 def reserva_not_registered(id_restaurante, id_reserva):

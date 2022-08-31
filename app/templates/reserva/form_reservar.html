@@ -1,4 +1,8 @@
-<div class="card style-form" style="width: 22rem;">
+<div class="card style-form
+{% if disable_hour %}
+  disabled-state
+{% endif %}" style="width: 22rem;">
+
     <div class="card-header">
       Seleccione reserva
     </div>
