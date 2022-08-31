@@ -112,9 +112,6 @@ class domo_aforo(db.Model):
     afo_capacidadmax = db.Column('afo_capacidadmax', db.Integer)
     afo_capacidadactual = db.Column('afo_capacidadactual', db.Integer)
 
-    @staticmethod
-
-    @staticmethod
     def get_by_restaurante(id):
         aforo = domo_aforo.query.filter(domo_aforo.rtr_id == id).first()
         if aforo != None:
@@ -187,7 +184,7 @@ class domo_restaurante(db.Model):
         afo = domo_aforo.query.filter(domo_aforo.rtr_id == self.rtr_id).first()
         if  afo == None:
             max_aforo_id = db.session.query(func.max(domo_aforo.afo_id)).scalar() + 1
-            afo = domo_aforo(afo_id = max_aforo_id, rtr_id = self.rtr_id, afo_capacidadactual = 0, afo_capacidadmaxima = self.rtr_cantidadsillas)
+            afo = domo_aforo(afo_id = max_aforo_id, rtr_id = self.rtr_id, afo_capacidadactual = 0, afo_capacidadmax = self.rtr_cantidadsillas)
             db.session.add(afo)
             db.session.commit()
         return afo

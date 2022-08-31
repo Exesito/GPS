@@ -6,19 +6,21 @@ from sqlalchemy import func
 
 db = models.db
 
-@app.route('/ver_aforo/', methods = ['GET', 'POST'])
+@app.route('/ver_aforo')
 def ver_aforo():
-    rtr_id = session["rtr_id"]
-    afo = domo_aforo.get_by_restaurante(rtr_id)
+    id = session["rtr_id"]
+    afo = domo_aforo.query.filter(domo_aforo.rtr_id == id).first()
     if afo == None:
-        afo = domo_restaurante.get_by_id(rtr_id).get_aforo()
-    aforoMax = afo.afo_capacidadmaxima
+        afo = domo_restaurante.get_by_id(id).get_aforo()
+    aforoMax = afo.afo_capacidadmax
     aforo = afo.afo_capacidadactual
-    return render_template('aforo/ver_aforo.html', afoM = aforoMax, afo = aforo, rtr_id = rtr_id)
+    return render_template("aforo/ver_aforo.html", afoM = aforoMax, afo = aforo, rtr_id = id)
 
-@app.route('/ver_aforo/actualizar')
+@app.route('/ver_aforo/actualizar', methods = ['POST'])
 def actualizar_aforo():
+    print("Se intenta actualizar el restaurante ")
     if request.method == 'POST':
+        print("llega al request method")
         id_restaurante = request.form["id"]
         aforo_nuevo = request.form["aforo"]
         afororest = db.session.query(domo_aforo).filter(domo_aforo.rtr_id == id_restaurante).first()
@@ -29,6 +31,6 @@ def actualizar_aforo():
             else:
                 afororest.afo_capacidadactual = 0
             db.session.commit()
-    return redirect(url_for('aforo/ver_aforo.html'))
+    return redirect(url_for("aforo/ver_aforo.html"))
 
 
