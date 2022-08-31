@@ -201,3 +201,7 @@ body {
 .flex{
     display: flex;
 }
+
+.card-overlay {
+    background: rgba(0, 0, 0, 0.7);
+}

@@ -4,12 +4,39 @@
 Home
 {% endblock %}
 
+{% macro button(text, img) %}
+<div class="card bg-dark text-white text-center" style="max-width: 26rem;">
+    <img class="card-img" src="{{ url_for('static', filename=('media/' + img +'.jpg')) }}" alt="Card image">
+    <div class="card-img-overlay card-overlay">
+            <h2 class="card-title" style="padding-top: 6rem;">{{text}}</h2>
+    </div>
+</div>
+{% endmacro %}
+
 {% block body %}
 
-<div class="col-lg-0 d-none d-lg-block">
-    <br><br><br>
-    <div class="mb-5"><p>Hola Usuario ! estamos en home</p></div>
-    
-</div>
+{% if session['tipo'] == 1 %} 
+
+    <div class="col-lg-0 d-none d-lg-block">
+        <br><br><br>
+        <div class="mb-5">
+            <div class="row">
+                <div class="col" align="center">
+                    <a href="{{url_for('cli_ver_reservas', cli_id = session['cli_id'])}}">
+                        {{ button('Mis Reservas', 'img3') }}
+                    </a>
+                </div>
+
+                <div class="col" align="center">
+                    <a href="{{url_for('buscar_restaurante')}}">
+                        {{ button('Buscar Restaurantes', 'img44')}}
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+{% endif %}
     
 {% endblock %}
