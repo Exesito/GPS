@@ -1,0 +1,27 @@
+{% extends "index.html" %}
+
+{% block title %}
+Aforo restaurante
+{% endblock %}
+
+{% block body %}
+<head>
+    <script>
+    </script>
+</head>
+<div class="container">
+    <div class="Numero-Aforo">
+        <h1 style="font-size: 10vw">
+            {{afo}}/{{afoM}}
+        
+        </h1>
+    </div>
+
+    <div class="\+"><button type="button" onclick="incrementar()" class="btn btn-primary btn-lg">+</button></div>
+    <div class="\-"><button type="button" onclick="reducir()" class="btn btn-primary btn-lg">-</button></div>
+  </div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
