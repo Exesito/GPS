@@ -1,16 +1,16 @@
 setInterval(comprometer(), 20000);
-a = document.getElementById("afo").innerHTML;
+a = parseInt(document.getElementById("afo").innerHTML);
+afoMax = parseInt(document.getElementById("afoM").innerHTML);
 
 function incrementar(){
-    var textBox = document.getElementById("text");
-    textBox.value = a;
-    a++;
+    a = min(a+1, afoMax);
+    display()
+
 }
 
 function reducir(){
-    var textBox = document.getElementById("text");
-    textBox.value = a;
-    a--;
+    a = max(a-1, 0);
+    display()
 }
 
 function display(aforomax, aforo){
@@ -19,10 +19,11 @@ function display(aforomax, aforo){
 }
 
 function comprometer(){
-    display(document.getElementById("afoM").innerHTML, a);
+    display(parseInt(document.getElementById("afoM").innerHTML), a);
+    urlact = window.location.pathname + "/actualizar"
     $.ajax({
         type: "POST",
-        url: url,
+        url: urlact,
         contentType: "application/json",
         data: JSON.stringify(
         {   "id": document.getElementById("rtr_id").innerHTML,
