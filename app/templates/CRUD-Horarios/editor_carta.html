@@ -28,7 +28,7 @@ Carta Restaurante
         {%for dato in lista_cartas%}
           <tr> 
           <form id="dataa" href="{{url_for('nueva_carta', car_id = dato.domo_carta.car_id)}}", method = "post" enctype="multipart/form-data">
-            <th scope="row">{{dato.domo_carta.car_id}} </th>
+            <th id="car_id" scope="row">{{dato.domo_carta.car_id}} </th>
             <td id="id" hidden>{{dato.domo_restaurante.rtr_id}}</td>
             <th scope="row">{{dato.domo_restaurante.rtr_nombre}}</th>
             <td id="car_nombre"> {{dato.domo_carta.car_nombre}} <input id="car_nombre" type="text" hidden/></td>

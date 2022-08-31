@@ -140,8 +140,9 @@ $(document).ready( function () {
 
     $("body").on("click", ".btn-delete", function(){  
         if(confirm('¿Estás seguro de eliminar esta carta?')){
-           
-        id = $(this).parents('tr').find('#id').html()
+        
+        //id = $(this).parents('tr').find('#id').html()
+        id = $(this).parents('tr').find('#car_id').html()
         console.log(id);
         delData(id)
         $(this).parents("tr").remove(); 
