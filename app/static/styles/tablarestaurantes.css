@@ -11,6 +11,7 @@
     border: none;
     box-shadow: 0 0 0 5px rgba(0,0,0,0.05),0 0 0 10px rgba(0,0,0,0.05);
     margin:auto;
+    max-width: fit-content;
     width: 100%;
 }
 

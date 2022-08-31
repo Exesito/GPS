@@ -173,8 +173,6 @@ $("#formulario-registro").validate({
             equalTo: "#password"
     },
     regiones: { 
-      valueNotEquals: "0" },
-    ciudad: { 
       valueNotEquals: "0" }
     
   },
@@ -193,7 +191,6 @@ $("#formulario-registro").validate({
         email: "Ingrese un email valido"
     },
    regiones: { valueNotEquals: "Selecciona una region valida" },
-   ciudad: { valueNotEquals: "Selecciona una ciudad valida" },
     password:{
             required: "Campo requerido",
             minlength: "El largo de la contraseña es de 6 a 16 caracteres"
