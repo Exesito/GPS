@@ -13,7 +13,7 @@ Actualizar perfil
 
     </div>
 
-    <div class="form-register col-lg-4 bg-dark d-flex flex-column align-items-end min-vh-100" id="formulariosito">
+    <div class="form-register col-lg-4 bg-dark d-flex flex-column align-items-end min-vh-100 " id="actualizar_perfil">
 
       <div class="px-lg-5 pt-lg-4 pb-lg-3 p-4 mb-auto w-100">
         <img src="{{url_for('static',filename='Logo.svg')}}" class="img-fluid" />
@@ -22,33 +22,35 @@ Actualizar perfil
         <h1 class="font-weight-bold mb-4">Actualice sus datos:</h1>
         <!--Acción de la forma-->
         <form action="{{url_for('subir_nuevo_perfil',id=cliente.domo_cliente.cli_id)}}" , method="post"
-          id="actualizar_perfil" class="mb-5">
+          id="actualizar_perfil" class="mb-5 was-validated">
           <!--Nombre-->
           <div class="mb-4">
             <label for="nombre">Nombre:</label>
-            <input type="text" class="form-control" name="nombre" placeholder="{{cliente.domo_cliente.cli_nombre}}"/>
+            <input type="text" class="form-control" name="nombre" placeholder="{{cliente.domo_cliente.cli_nombre}}" required/>
+            <div class="invalid-feedback">Por favor, ingresa un Nombre de Restaurante</div>
+            <div class="valid-feedback">Genial!!</div>
           </div>
           <!--Apellido-->
           <div class="mb-4">
             <label for="apellido">Apellido:</label>
-            <input type="text" class="form-control" name="apellido" placeholder="{{cliente.domo_cliente.cli_apellido}}"/>
+            <input type="text" class="form-control" name="apellido" placeholder="{{cliente.domo_cliente.cli_apellido}}" required/>
             <!--Calle-->
           </div>
           <div class="mb-4">
             <label for="calle">Calle:</label>
             <input type="text" name="calle" placeholder="{{cliente.domo_direccion.dir_nombrecalle}}"
-              class="form-control" />
+              class="form-control" required/>
           </div>
           <!--Numero de domicilio-->
           <div class="mb-4">
             <label for="numero">Número de domicilio:</label>
             <input type="text" name="numero" placeholder="{{cliente.domo_direccion.dir_numerocalle}}"
-              class="form-control" />
+              class="form-control" required/>
           </div>
           <!--Region-->
           <div class="mb-4">
             <label for="region">Región:</label>
-            <select name="region" id="regionsita" class="js-example-basic-single" style="width: 100%;">
+            <select name="region" id="regionsita" class="js-example-basic-single" style="width: 100%;" required>
               <option value="0">Seleccione una región</option>
               {% for item in regiones %}
               <option value="{{item.reg_id}}">{{item.reg_nombre}}</option>
@@ -63,7 +65,7 @@ Actualizar perfil
             </select>
             {% for item in regiones %}
             <select name="{{item.reg_id}}" id="{{item.reg_id}}" class="form-select js-example-basic-single form-select"
-              style="width: 100%;">
+              style="width: 100%;" required>
               <option value="0">Seleccione Ciudad</option>
               {% for ciudad in ciudades %}
               {% if ciudad.reg_id == item.reg_id %}
@@ -77,15 +79,15 @@ Actualizar perfil
           <div class="mb-4">
             <label for="telefono">Teléfono:</label>
             <input type="text" name="telefono" placeholder="{{cliente.domo_cliente.cli_telefono}}"
-              class="form-control" />
+              class="form-control" required/>
           </div>
           <div class="mb-4">
             <label for="rut">Rut:</label>
-            <input type="text" class="form-control" name="rut" id="rut" placeholder="{{cliente.domo_cliente.cli_rut}}">
+            <input type="text" class="form-control" name="rut" id="rut" placeholder="{{cliente.domo_cliente.cli_rut}}" required/>
           </div>
           <!--Boton-->
           <div class="mb-4" id="botonsito">
-            <input class="btn btn-submit" type="submit" value="[ACTUALIZAR]" style="justify-content:center" />
+            <input class="btn btn-submit" type="submit" value="ACTUALIZAR" style="justify-content:center" />
           </div>
         </form>
       </div>
@@ -124,7 +126,6 @@ Actualizar perfil
   });
 
   $('#regionsita').change(function () {
-    console.log("xD");
     if ($('#regionsita').val() == 0) {
       $('#ciudad').select2().next().show();
       let i = 1;
@@ -148,6 +149,26 @@ Actualizar perfil
 
   $("#rut")
   .rut({formatOn: 'keyup', validateOn: 'keyup'})
+
+  (function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
 
 </script>
 {% endblock %}

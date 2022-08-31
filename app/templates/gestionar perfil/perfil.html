@@ -1,0 +1,143 @@
+{% extends "index.html" %}
+
+{% block title %}
+Perfil de Usuario
+{% endblock %}
+
+{% block body %}
+
+<section class="registro-fondo login perfil container-fluid">
+    <div class="container-fluid">
+       <div class="row" style="justify-content: center;">
+        <div class="card" style="margin-bottom:2%;">
+            <div class="row" style="margin-top: 2%;">
+                <div class="col-md-4">
+                    <div class="profile-img">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt=""/>
+                        <div class="file btn btn-lg btn-primary foto">
+                            Cambiar Foto
+                            <input type="file" name="file"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="profile-head">
+                        <h5>
+                            {{cliente.cli_nombre}} {{cliente.cli_apellido}}
+                        </h5>
+                        <h6>
+                           {{usuario.usr_login}}
+                        </h6>
+                        <p class="reservas" style="font-size: 12px; color: #818182; margin-top: 5%;">Reservas: <span>NOSE</span></p>
+                    </div>
+                    <ul class="nav nav-tabs" id="tablaperfil" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Información Básica</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Información Personal</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-2">
+                    <a class="btn btn-primary"
+                    href="{{url_for('actualizar_perfil',id=cliente.cli_id)}}">Editar
+                    perfil</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="preferencias">
+                        <p>GUSTOS</p>
+                        <a href="">xdd</a><br/>
+                        <a href="">lol</a><br/>
+                        <a href="">123</a><br/>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="tab-content profile-tab" id="contenidotabla">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Nombre </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{cliente.cli_nombre}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Apellido</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{cliente.cli_apellido}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Correo</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{usuario.usr_login}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Calle</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{direccion.dir_nombrecalle}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Numero domicilio</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{direccion.dir_numerocalle}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Ciudad</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{ciudad.ciu_nombre}}<p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Region</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{region.reg_nombre}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Rut </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{cliente.cli_rut}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label>Telefono</label>
+                                </div>
+                                <div class="col-md-6">
+                                    <p>{{cliente.cli_telefono}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>       
+                </div>
+            </div>
+        </div>
+       </div>
+    </div>
+</section>
+
+{%endblock%}

@@ -17,11 +17,6 @@ def ingresar_restaurante():
 @app.route('/ingresar_restaurante', methods=['POST'])
 def ingresar_restaurante_post():
 
-    tipo_restaurante=db.domo_tiporestaurante.query.all()
-    ciudades = db.db.session.query(db.domo_ciudad.ciu_id,db.domo_ciudad.ciu_nombre).all()
-    regiones = db.db.session.query(db.domo_region.reg_id,db.domo_region.reg_nombre).all()
-
-    form = IngresarRestaurante()
     if (request.method=='POST'):
         nombre = request.form.get('nombre')
         calle = request.form.get('calle')
@@ -35,39 +30,42 @@ def ingresar_restaurante_post():
         vegetariana = request.form.get('vegetariana')
         vegana = request.form.get('vegana')
 
+        if(db.db.session.query(db.domo_direccion).filter(db.domo_direccion.dir_nombrecalle==calle,db.domo_direccion.dir_numerocalle==numero) is none):
 
-        if (db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() == None):
-            max_id_dir = 1
+            if (db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() == None):
+                max_id_dir = 1
+            else:
+                max_id_dir = db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() + 1
+            direccion = db.domo_direccion(dir_id=max_id_dir, ciu_id=ciudad, dir_numerocalle=numero, dir_nombrecalle=calle) 
+            
+
+            db.db.session.add(direccion)
+            db.db.session.commit()
+
+            if(db.db.session.query(func.max(db.domo_restaurante.rtr_id)).scalar() == None):
+                max_id = 1
+            else:
+                max_id = db.db.session.query(func.max(db.domo_restaurante.rtr_id)).scalar() + 1
+
+            if(vegetariana == "true"):
+                vegetariana = True
+            else:
+                vegetariana = False
+
+            if(vegana == "true"):
+                vegana = True
+            else:
+                vegana = False
+            
+            new_rest = db.domo_restaurante(rtr_id=max_id,dir_id=max_id_dir,tpr_id=tipo_rest,
+                                        rtr_nombre=nombre,rtr_descripcion=descripcion, rtr_opvege=vegetariana, 
+                                        rtr_opvega=vegana,rtr_duenonombre=nombre_dueno,rtr_duenoapellido=apellido_dueno)
+            
+            db.db.session.add(new_rest)
+            db.db.session.commit()
+            return redirect(url_for('gestionar_restaurantes'))
         else:
-            max_id_dir = db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() + 1
-        direccion = db.domo_direccion(dir_id=max_id_dir, ciu_id=ciudad, dir_numerocalle=numero, dir_nombrecalle=calle) 
-        
-
-        db.db.session.add(direccion)
-        db.db.session.commit()
-
-        if(db.db.session.query(func.max(db.domo_restaurante.rtr_id)).scalar() == None):
-            max_id = 1
-        else:
-            max_id = db.db.session.query(func.max(db.domo_restaurante.rtr_id)).scalar() + 1
-
-        if(vegetariana == "true"):
-            vegetariana = True
-        else:
-            vegetariana = False
-
-        if(vegana == "true"):
-            vegana = True
-        else:
-            vegana = False
-        
-        new_rest = db.domo_restaurante(rtr_id=max_id,dir_id=max_id_dir,tpr_id=tipo_rest,
-                                       rtr_nombre=nombre,rtr_descripcion=descripcion, rtr_opvege=vegetariana, 
-                                       rtr_opvega=vegana,rtr_duenonombre=nombre_dueno,rtr_duenoapellido=apellido_dueno)
-        
-        db.db.session.add(new_rest)
-        db.db.session.commit()
-        return redirect(url_for('gestionar_restaurantes'))
+            return redirect(url_for('ingresar_restaurante'))
 
 @app.route('/gestionar_restaurantes')
 def gestionar_restaurantes():
