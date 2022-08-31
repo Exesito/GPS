@@ -13,6 +13,11 @@ def editor_cartas():
         
         file = request.files
         print('archivo recibido: ', file)
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        
+
+        
 
     cartas = db.db.session.query(db.domo_carta, db.domo_restaurante, db.domo_encargadortr, db.domo_usuario).filter(
         db.domo_usuario.usr_login == email,
@@ -37,7 +42,7 @@ def nueva_carta(car_id):
     if request.method == 'POST':
         
         if 'file' not in request.files:
-            print('No file part')
+            print('No file part tho')
         file = request.files['new_carta']
         # If the user does not select a file, the browser submits an
         # empty file without a filename.
@@ -46,17 +51,9 @@ def nueva_carta(car_id):
         if file:
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('download_file', name=filename))
+            return redirect(url_for('editor_cartas'))
 
     return render_template("CRUD-Horarios/agregar_carta.html")
-
-@app.route('/editor_cartas/del/<car_id>',methods=['POST'])
-def del_carta(car_id):
-    
-    db.db.session.query(db.domo_carta).filter(db.domo_carta.car_id == car_id).delete()
-    db.db.session.commit()
-    return redirect(url_for('editor_cartas'))
-
 
 @app.route('/editor_cartas/add<rtr_names>',methods=['GET','POST'])
 def add_carta(rtr_names):
@@ -76,3 +73,12 @@ def add_carta(rtr_names):
             new_carta = db.domo_carta()
             return redirect(url_for('editor_cartas'))
     return render_template('/CRUD-Horarios/add_carta.html', rtr_names = rtr_names)
+
+@app.route('/editor_cartas/del', methods=['GET','POST'])
+def del_carta():
+    if request.method =='POST':
+        id = request.json['id']
+        print("request para borrar", id)
+        db.db.session.query(db.domo_carta).filter(db.domo_carta.car_id == id).delete()
+        db.db.session.commit()
+    return redirect(url_for('editor_cartas'))

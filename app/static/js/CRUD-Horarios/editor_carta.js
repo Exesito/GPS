@@ -187,3 +187,26 @@ function replaceAll(str, find, replace) {
 
 }
 
+function delData(id){
+    if(id){
+        var url= window.location.pathname;
+        url += '/del'
+        $.ajax({
+            type: "POST",
+            url: url,
+            contentType: "application/json",
+            data: JSON.stringify(
+            {   "id": id
+            },
+            ),
+            dataType: "json",
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(err) {
+                console.log(err);
+            }
+        })
+       }    
+}
+

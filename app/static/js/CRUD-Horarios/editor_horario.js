@@ -175,10 +175,6 @@ jQuery(document).ready( function () {
         $('.edit-button').data('editar', false)
     })
 
-   
-        
-    
-
     $('body').on('change', function(){
         styleTableButtons()
     })

@@ -14,13 +14,13 @@ Ingresar Carta
     </div>
     <div class="form-register col-lg-4 bg-dark d-flex flex-column align-items-end min-vh-100" id="formulariosito">
 
-      <div class="px-lg-5 pt-lg-4 pb-lg-3 p-4 mb-auto w-100">
+      <div class="px-lg-5 pt-lg-4 pb-lg-3 p-4 w-100">
         <img src="{{url_for('static',filename='Logo.svg')}}" class="img-fluid" />
       </div>
       <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
         <h1 class="font-weight-bold mb-4">Ingrese datos de la carta:</h1>
         <!--Acción de la forma-->
-        <form action="{{url_for('add_carta', rtr_names = rtr_names)}}" , method="post" id="ingresar_carta" class="mb-5" enctype="multipart/form-data">
+        <form action="{{url_for('nueva_carta', car_id = -1)}}" , method="post" id="ingresar_carta" class="mb-5" enctype="multipart/form-data">
           <!--Nombre Restaurante-->
           <div class="mb-4">
             <label for="nombre">Nombre de la carta:</label>
