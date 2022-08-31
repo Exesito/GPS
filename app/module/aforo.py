@@ -9,6 +9,8 @@ db = models.db
 @app.route('/ver_aforo/<id>', methods = ['GET', 'POST'])
 def ver_aforo(id):
     afo = domo_aforo.get_by_restaurante(id)
+    if afo == None:
+        afo = domo_restaurante.get_by_id(id).get_aforo()
     aforoMax = afo.afo_capacidadmaxima
     aforo = afo.afo_capacidadactual
     return render_template('ver_aforo.html', afoM = aforoMax, afo = aforo, rtr_id = id)

@@ -88,25 +88,39 @@ class domo_reserva(db.Model):
                                             domo_reserva.rsv_estado == "REALIZADA")
 
 class domo_direccion(db.Model):
+
     __tablename__ = 'domo_direccion'
     dir_id = db.Column('dir_id', db.Integer, primary_key = true)
     ciu_id = db.Column('ciu_id', db.Integer, db.ForeignKey('domo_ciudad.ciu_id'))
     dir_nombrecalle = db.Column('dir_nombrecalle', db.String(50))
     dir_numerocalle = db.Column('dir_numerocalle', db.Integer)
+
 class domo_ciudad(db.Model):
     __tablename__ = 'domo_ciudad'
     ciu_id = db.Column('ciu_id', db.Integer, primary_key = true)
     reg_id = db.Column('reg_id', db.Integer, db.ForeignKey('domo_region.reg_id'))
     ciu_nombre = db.Column('ciu_nombre', db.String(40))
+
 class domo_region(db.Model):
     __tablename__ = 'domo_region'
     reg_id = db.Column('reg_id', db.Integer, primary_key = true)
     reg_nombre = db.Column('reg_nombre', db.String(30))
+
 class domo_aforo(db.Model):
     afo_id = db.Column('afo_id', db.Integer, primary_key = true)
     rtr_id = db.Column('rtr_id', db.Integer, db.ForeignKey('domo_region.reg_id'))
     afo_capacidadmax = db.Column('afo_capacidadmax', db.Integer)
     afo_capacidadactual = db.Column('afo_capacidadactual', db.Integer)
+
+    @staticmethod
+
+    @staticmethod
+    def get_by_restaurante(id):
+        aforo = domo_aforo.query.filter(domo_aforo.rtr_id == id).first()
+        if aforo != None:
+            return aforo    
+        
+
 class domo_tiporestaurante(db.Model):
     __tablename__ = 'domo_tiporestaurante'
     tpr_id = db.Column('tpr_id', db.Integer, primary_key = true)
@@ -153,6 +167,30 @@ class domo_restaurante(db.Model):
         
         return new_reserva.rsv_id
         
+    def calcular_mesas(self):
+        mesas = 0
+        sillas = 0
+        mesaQuery = self.get_mesas()
+        
+        for n in mesaQuery:
+            mesas  += 1
+            sillas += n.msa_capacidad
+        
+        self.rtr_cantidadmesas = mesas
+        self.rtr_cantidadsillas = sillas
+        aforo = self.get_aforo()
+        aforo.afo_capacidadmax = sillas
+        db.session.commit()
+
+    def get_aforo(self):
+        afo = domo_aforo.query.filter(domo_aforo.rtr_id == self.rtr_id).first()
+        if  afo == None:
+            max_aforo_id = db.session.query(func.max(domo_aforo.afo_id)).scalar() + 1
+            afo = domo_aforo(afo_id = max_aforo_id, rtr_id = self.rtr_id, afo_capacidadactual = 0, afo_capacidadmaxima = self.rtr_cantidadsillas)
+            db.session.add(afo)
+            db.session.commit()
+        return afo
+
     @staticmethod
     def get_reservas(id):
         
@@ -192,18 +230,19 @@ class domo_restaurante(db.Model):
     @staticmethod
     def get_by_id(id):
         return domo_restaurante.query.filter_by(rtr_id = id).first()
-
     
 class domo_tipodepago(db.Model):
     __tablename__ = 'domo_tipodepago'
     tpg_id = db.Column('tpg_id', db.Integer, primary_key = true)
     tpg_etiqueta =  db.Column('tpg_etiqueta', db.String(30))
     tpg_descripcion = db.Column('tpg_descripcion', db.String(50))
+
 class domo_tipousuario(db.Model):
     __tablename__ = 'domo_tipousuario'
     tip_id = db.Column('tip_id', db.Integer, primary_key = true)
     tip_nombre = db.Column('tip_nombre', db.String(20))
     tip_descripcion = db.Column('tip_descripcion', db.Text)
+
 class domo_usuario(db.Model, UserMixin):
     __tablename__ = 'domo_usuario'
     usr_id = db.Column('usr_id', db.Integer, primary_key = true)
@@ -249,6 +288,7 @@ class domo_encargadortr(db.Model):
     enc_rut = db.Column('enc_rut', db.String(13))
     enc_nombre = db.Column('enc_nombre', db.String(40))
     enc_apellido = db.Column('enc_apellido', db.String(40))
+
 class domo_cliente(db.Model):
     __tablename__ = 'domo_cliente'
     cli_id = db.Column('cli_id', db.Integer, primary_key = True, autoincrement=True)
@@ -321,7 +361,6 @@ class domo_carta(db.Model):
     car_url = db.Column('car_url', db.String(255))
     car_activa = db.Column('car_activa', db.Boolean)
 
-    
 class domo_valoracion(db.Model):
     __tablename__ = 'domo_valoracion'
     val_id = db.Column('val_id', db.Integer, primary_key = True)
