@@ -33,10 +33,21 @@ Home
                     </a>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col" align="center">
+                    <a href="{{url_for('perfil',login=session['user'])}}">
+                        {{ button('Perfil', 'img3') }}
+                    </a>
+                </div>
+
+                <div class="col" align="center">
+                </div>
+            </div>
         </div>
         
     </div>
-
+    
 {% endif %}
     
 {% endblock %}
