@@ -21,8 +21,8 @@ def actualizar_aforo():
     print("Se intenta actualizar el restaurante ")
     if request.method == 'POST':
         print("llega al request method")
-        id_restaurante = request.form["id"]
-        aforo_nuevo = request.form["aforo"]
+        id_restaurante = request.json["id"]
+        aforo_nuevo = request.json["aforo"]
         afororest = db.session.query(domo_aforo).filter(domo_aforo.rtr_id == id_restaurante).first()
 
         if(aforo_nuevo != afororest.afo_capacidadactual):    
@@ -31,6 +31,6 @@ def actualizar_aforo():
             else:
                 afororest.afo_capacidadactual = 0
             db.session.commit()
-    return redirect(url_for("aforo/ver_aforo.html"))
+    return redirect(url_for("ver_aforo"))
 
 
