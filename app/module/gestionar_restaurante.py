@@ -113,6 +113,13 @@ def actualizar_rest(id):
         descripcion = request.form.get('descripcion')
         vegetariana = request.form.get('vegetariana')
         vegana = request.form.get('vegana')
+        visible = request.form.get('visible')
+        
+        restaurante = db.domo_restaurante.query.filter_by(rtr_id=id).first()
+        if (visible == 1):
+            restaurante.rtr_visible=True
+        else:
+            restaurante.rtr_visible=False
 
         restaurante = db.domo_restaurante.query.filter_by(rtr_id=id).first()
         
@@ -177,3 +184,4 @@ def eliminar_rest(id):
     return redirect(url_for('gestionar_restaurantes'))
 
 
+    

@@ -37,6 +37,7 @@ Gestionar Restaurantes
                                 <th>Opción<br> Vegana</th>
                                 <th>Nombre<br> Dueño</th>
                                 <th>Apellido<br> Dueño</th>
+                                <th>Visibilidad</th>
                                 <th>Opciones</th>
 
                             </tr>
@@ -63,11 +64,19 @@ Gestionar Restaurantes
                             {% endif %}
                             <td>{{item.domo_restaurante.rtr_duenonombre}}</td>
                             <td>{{item.domo_restaurante.rtr_duenoapellido}}</td>
+                            
+                            <td>{% if item.domo_restaurante.rtr_visible == true %}
+                                Visible
+                                {% else %}
+                                Oculto
+                                {%endif%}
+                            </td>
+
                             <td>
                                 <ul class="action-list">
                                     <li><a href="{{url_for('editar_template',id=item.domo_restaurante.rtr_id)}}"
                                             data-tip="edit"><i class="fa fa-edit"></i></a></li>
-                                    <li><a href="{{url_for('eliminar_rest',id=item.domo_restaurante.rtr_id)}}" data-tip="delete" id="{{loop.index}}" onclick="return confirmar(this.id)">
+                                    <li><a href="{{url_for('eliminar_rest',id=item.domo_restaurante.rtr_id)}}" data-tip="delete" id="{{loop.index}}" onclick="confirmar(this.id)">
                                         <i class="fa fa-trash" ></i></a></li>
                                     <input type="hidden" name="{{loop.index}}" value="¿Está seguro que quiere eliminar el restaurante {{item.domo_restaurante.rtr_nombre}} ubicado en {{item.domo_direccion.dir_nombrecalle}} {{item.domo_direccion.dir_numerocalle}}, {{item.domo_ciudad.ciu_nombre}}?">
                                 </ul>
