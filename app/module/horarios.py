@@ -24,7 +24,14 @@ def editor_horarios():
             hor_horainicio = apertura, hor_horatermino = cierre, hor_activo = False)
             db.db.session.add(new_horario)
             db.db.session.commit()
-
+        else:
+            horario = db.db.session.query(db.domo_horario).filter(db.domo_horario.hor_id == id).first()
+            horario.hor_nombre = nombre
+            horario.hor_diainicio = dia_inicio
+            horario.hor_diatermino = dia_fin
+            horario.hor_horainicio = apertura
+            horario.hor_horatermino = cierre
+            db.db.session.commit()
         print( id, rtr_id, nombre, apertura, cierre, dia_inicio, dia_fin) # esta linea es para verificar que llegan los datos desde el frontend al backend a traves de ajax. Falta ingresar datos a bdd
 
     horarios = db.db.session.query(db.domo_horario, db.domo_encargadortr, db.domo_restaurante, db.domo_usuario).filter(
