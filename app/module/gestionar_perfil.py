@@ -59,7 +59,7 @@ def subir_nuevo_perfil(id):
         region = request.form.get('region')
         ciudad = request.form.get(region)
 
-        if (region!="" and calle !="" and numero !=""):
+        if (region!="" and calle !="" and numero !="" and ciudad!=""):
         
             direccion = db.domo_direccion.query.filter_by(dir_id=cliente.dir_id).first()
 
@@ -69,9 +69,6 @@ def subir_nuevo_perfil(id):
                 db.db.session.add(new_direccion)
                 db.db.session.commit()
                 cliente.dir_id = max_id
-
-            
-
 
         rut = request.form.get('rut')
         if(rut != ""):

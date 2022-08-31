@@ -40,9 +40,13 @@ Actualizar Restaurante
             <div class="mb-4">
               <label for="region">Región:</label>
               <select name="region" id="regionsita" class="js-example-basic-single" style="width: 100%;">
-                <option value="0">Seleccione una región</option>
+                <option value="" hidden disabled>Seleccione una región</option>
                 {% for item in regiones %}
+                {% if item.reg_id == restaurante.domo_region.reg_id %}
+                  <option value="{{item.reg_id}}" selected>{{item.reg_nombre}}</option>
+                {% else %}
                 <option value="{{item.reg_id}}">{{item.reg_nombre}}</option>
+                {% endif %}
                 {% endfor %}
               </select>
             </div>
@@ -50,14 +54,18 @@ Actualizar Restaurante
             <div class="mb-4">
               <label for="ciudad">Ciudad:</label>
               <select name="ciudad" class="form-select js-example-basic-single" id="ciudad" style="width: 100%;">
-                <option value="0">Seleccione Región</option>
+                <option value="" selected disabled hidden>Seleccione Región</option>
               </select>
               {% for item in regiones %}
               <select name="{{item.reg_id}}" id="{{item.reg_id}}" class="form-select js-example-basic-single form-select" style="width: 100%;" >
-                <option value="0">Seleccione Ciudad</option>
+                <option value="" selected disabled hidden>Seleccione Ciudad</option>
                 {% for ciudad in ciudades %}
                 {% if ciudad.reg_id == item.reg_id %}
-                    <option value="{{ciudad.ciu_id}}">{{ciudad.ciu_nombre}}</option>
+                {% if ciudad.ciu_id == restaurante.domo_ciudad.ciu_id and item.reg_id == restaurante.domo_region.reg_id %}
+                  <option value="{{ciudad.ciu_id}}" selected>{{ciudad.ciu_nombre}}</option>
+                {% else %}
+                  <option value="{{ciudad.ciu_id}}">{{ciudad.ciu_nombre}}</option>
+                {% endif %}
                 {% endif %}
                 {%endfor%}
               </select>
@@ -129,24 +137,19 @@ Actualizar Restaurante
       </div>
       <div class="col-lg-4 d-none d-lg-block">
       </div>
-    </div>
-  
-  
+    </div>  
   </section>
-
-
-
 
 {% endblock%}
 
 {% block script %}
 <script type="text/javascript">
     $(document).ready(function() {
-      $('#regionsita').select2({placeholder: 'Seleccione Región', allowClear: true});
+      $('#regionsita').select2({placeholder: 'Seleccione Región'});
     });
   
     $(document).ready(function() {
-      $('#ciudad').select2();
+      $('#ciudad').select2().next().hide();
     });
   
     $(document).ready(function(){
@@ -162,7 +165,6 @@ Actualizar Restaurante
     });
   
     $('#regionsita').change(function(){
-        console.log("xD");
         if($('#regionsita').val()==0){
         $('#ciudad').select2().next().show();
         let i=1;

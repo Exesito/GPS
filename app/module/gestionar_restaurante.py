@@ -30,7 +30,10 @@ def ingresar_restaurante_post():
         vegetariana = request.form.get('vegetariana')
         vegana = request.form.get('vegana')
 
-        if(db.db.session.query(db.domo_direccion).filter(db.domo_direccion.dir_nombrecalle==calle,db.domo_direccion.dir_numerocalle==numero) is none):
+        direccion_exist = db.db.session.query(db.domo_direccion).filter(db.domo_direccion.dir_nombrecalle==calle,db.domo_direccion.dir_numerocalle==numero,
+                                            db.domo_direccion.ciu_id==db.domo_ciudad.ciu_id).first() 
+
+        if(direccion_exist is None):
 
             if (db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() == None):
                 max_id_dir = 1
@@ -111,19 +114,20 @@ def actualizar_rest(id):
         vegetariana = request.form.get('vegetariana')
         vegana = request.form.get('vegana')
 
-
-    
         restaurante = db.domo_restaurante.query.filter_by(rtr_id=id).first()
         
         direccion = db.domo_direccion.query.filter_by(dir_id=restaurante.dir_id).first()
 
-        if(direccion.dir_numerocalle != numero and direccion.dir_nombrecalle != calle and direccion.ciu_id != ciudad):
-            if(numero!="" and calle !="" and calle!=""):
-                max_id = db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() + 1
-                new_direccion = db.domo_direccion(dir_id=max_id, ciu_id=ciudad, dir_numerocalle=numero, dir_nombrecalle=calle)
-                db.db.session.add(new_direccion)
-                db.db.session.commit()
-                restaurante.dir_id = max_id
+        ciudad_e = db.domo_ciudad.query.filter_by(ciu_id=direccion.ciu_id).first()
+
+        if(direccion.ciu_id != ciudad and ciudad_e.reg_id != region):
+            if(numero!="" and calle !=""):
+                if(direccion.dir_numerocalle!=numero and direccion.dir_nombrecalle!=calle):
+                    max_id = db.db.session.query(func.max(db.domo_direccion.dir_id)).scalar() + 1
+                    new_direccion = db.domo_direccion(dir_id=max_id, ciu_id=ciudad, dir_numerocalle=numero, dir_nombrecalle=calle)
+                    db.db.session.add(new_direccion)
+                    db.db.session.commit()
+                    restaurante.dir_id = max_id
 
 
         if(nombre !=""):

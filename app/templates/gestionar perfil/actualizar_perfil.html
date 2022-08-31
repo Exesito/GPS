@@ -22,38 +22,40 @@ Actualizar perfil
         <h1 class="font-weight-bold mb-4">Actualice sus datos:</h1>
         <!--Acción de la forma-->
         <form action="{{url_for('subir_nuevo_perfil',id=cliente.domo_cliente.cli_id)}}" , method="post"
-          id="actualizar_perfil" class="mb-5 was-validated">
+          id="actualizar_perfil" class="mb-5">
           <!--Nombre-->
           <div class="mb-4">
             <label for="nombre">Nombre:</label>
-            <input type="text" class="form-control" name="nombre" placeholder="{{cliente.domo_cliente.cli_nombre}}" required/>
-            <div class="invalid-feedback">Por favor, ingresa un Nombre de Restaurante</div>
-            <div class="valid-feedback">Genial!!</div>
+            <input type="text" class="form-control" name="nombre" placeholder="{{cliente.domo_cliente.cli_nombre}}"/>
           </div>
           <!--Apellido-->
           <div class="mb-4">
             <label for="apellido">Apellido:</label>
-            <input type="text" class="form-control" name="apellido" placeholder="{{cliente.domo_cliente.cli_apellido}}" required/>
+            <input type="text" class="form-control" name="apellido" placeholder="{{cliente.domo_cliente.cli_apellido}}" />
             <!--Calle-->
           </div>
           <div class="mb-4">
             <label for="calle">Calle:</label>
             <input type="text" name="calle" placeholder="{{cliente.domo_direccion.dir_nombrecalle}}"
-              class="form-control" required/>
+              class="form-control"/>
           </div>
           <!--Numero de domicilio-->
           <div class="mb-4">
             <label for="numero">Número de domicilio:</label>
             <input type="text" name="numero" placeholder="{{cliente.domo_direccion.dir_numerocalle}}"
-              class="form-control" required/>
+              class="form-control" />
           </div>
           <!--Region-->
           <div class="mb-4">
             <label for="region">Región:</label>
-            <select name="region" id="regionsita" class="js-example-basic-single" style="width: 100%;" required>
-              <option value="0">Seleccione una región</option>
+            <select name="region" id="regionsita" class="js-example-basic-single" style="width: 100%;" >
+              <option value="" hidden disabled>Seleccione una región</option>
               {% for item in regiones %}
+              {% if item.reg_id == cliente.domo_region.reg_id %}
+              <option value="{{item.reg_id}}" selected>{{item.reg_nombre}}</option>
+              {% else %}
               <option value="{{item.reg_id}}">{{item.reg_nombre}}</option>
+              {% endif %}
               {% endfor %}
             </select>
           </div>
@@ -61,15 +63,19 @@ Actualizar perfil
           <div class="mb-4">
             <label for="ciudad">Ciudad:</label>
             <select name="ciudad" class="form-select js-example-basic-single" id="ciudad" style="width: 100%;">
-              <option value="0">Seleccione Región</option>
+              <option value="" selected hidden disabled>Seleccione Región</option>
             </select>
             {% for item in regiones %}
             <select name="{{item.reg_id}}" id="{{item.reg_id}}" class="form-select js-example-basic-single form-select"
               style="width: 100%;" required>
-              <option value="0">Seleccione Ciudad</option>
+              <option value="" selected hidden disabled>Seleccione Ciudad</option>
               {% for ciudad in ciudades %}
               {% if ciudad.reg_id == item.reg_id %}
+              {% if ciudad.ciu_id == cliente.domo_ciudad.ciu_id and item.reg_id == cliente.domo_region.reg_id %}
+              <option value="{{ciudad.ciu_id}}" selected>{{ciudad.ciu_nombre}}</option>
+              {% else %}
               <option value="{{ciudad.ciu_id}}">{{ciudad.ciu_nombre}}</option>
+              {% endif %}
               {% endif %}
               {%endfor%}
             </select>
@@ -79,11 +85,11 @@ Actualizar perfil
           <div class="mb-4">
             <label for="telefono">Teléfono:</label>
             <input type="text" name="telefono" placeholder="{{cliente.domo_cliente.cli_telefono}}"
-              class="form-control" required/>
+              class="form-control" />
           </div>
           <div class="mb-4">
             <label for="rut">Rut:</label>
-            <input type="text" class="form-control" name="rut" id="rut" placeholder="{{cliente.domo_cliente.cli_rut}}" required/>
+            <input type="text" class="form-control" name="rut" id="rut" placeholder="{{cliente.domo_cliente.cli_rut}}" />
           </div>
           <!--Boton-->
           <div class="mb-4" id="botonsito">
@@ -106,11 +112,11 @@ Actualizar perfil
 {% block script %}
 <script type="text/javascript">
   $(document).ready(function () {
-    $('#regionsita').select2({ placeholder: 'Seleccione Región', allowClear: true });
+    $('#regionsita').select2({ placeholder: 'Seleccione Región'});
   });
 
   $(document).ready(function () {
-    $('#ciudad').select2();
+    $('#ciudad').select2().next().hide();
   });
 
   $(document).ready(function () {
@@ -126,7 +132,7 @@ Actualizar perfil
   });
 
   $('#regionsita').change(function () {
-    if ($('#regionsita').val() == 0) {
+    if ($('#regionsita').val() == "") {
       $('#ciudad').select2().next().show();
       let i = 1;
       $($('#regionsita').children('option')).each(function () {
@@ -149,26 +155,6 @@ Actualizar perfil
 
   $("#rut")
   .rut({formatOn: 'keyup', validateOn: 'keyup'})
-
-  (function () {
-  'use strict'
-
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  var forms = document.querySelectorAll('.needs-validation')
-
-  // Loop over them and prevent submission
-  Array.prototype.slice.call(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
-
-        form.classList.add('was-validated')
-      }, false)
-    })
-})()
 
 </script>
 {% endblock %}
