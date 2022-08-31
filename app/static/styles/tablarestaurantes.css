@@ -2,6 +2,7 @@
 
 #tablita{
     margin-top: 3%;
+    padding-bottom: 3%;
 }
 .panel{
     background: linear-gradient(to right, #310746, #9117A6);
@@ -10,6 +11,7 @@
     border: none;
     box-shadow: 0 0 0 5px rgba(0,0,0,0.05),0 0 0 10px rgba(0,0,0,0.05);
     margin:auto;
+    max-width: fit-content;
     width: 100%;
 }
 
@@ -78,9 +80,11 @@
     font-size: 16px;
     font-weight: 500;
     text-transform: uppercase;
-    padding: 5px;
     border: none;
+    max-width: 100%;
+    width: 100%;
 }
+
 
 .panel .panel-body .table tbody tr td{
     color: #fff;
@@ -243,3 +247,6 @@ ul.pagination{
     border-color: #fff !important;
 }
 
+.dataTables_info{
+    margin-left: 5px !important;
+}

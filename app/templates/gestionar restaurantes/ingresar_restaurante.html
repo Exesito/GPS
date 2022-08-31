@@ -25,8 +25,7 @@ Ingresar Restaurante
           <!--Nombre Restaurante-->
           <div class="mb-4">
             <label for="nombre">Nombre del Restaurante:</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="La picá de Alcachofas"
-              required />
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="La picá de Alcachofas" required />
             <div class="invalid-feedback">Por favor, ingresa un Nombre de Restaurante</div>
             <div class="valid-feedback">Genial!!</div>
           </div>
@@ -47,12 +46,13 @@ Ingresar Restaurante
           <!--Region-->
           <div class="mb-4">
             <label for="region">Región:</label>
-            <select name="region" id="regionsita" class="js-example-basic-single" style="width: 100%;">
+            <select name="region" id="regionsita" class="form-select js-example-basic-single" style="width: 100%;">
               <option value="" selected hidden disabled>Seleccione una región</option>
               {% for item in regiones %}
               <option value="{{item.reg_id}}">{{item.reg_nombre}}</option>
               {% endfor %}
             </select>
+            <div id="error_region"></div>
           </div>
           <!--Ciudad-->
           <div class="mb-4">
@@ -70,7 +70,9 @@ Ingresar Restaurante
               {% endif %}
               {%endfor%}
             </select>
+            <div id="error_ciudad"></div>
             {% endfor %}
+            
           </div>
           <!--Nombre del Dueño-->
           <div class="mb-4">
@@ -128,8 +130,7 @@ Ingresar Restaurante
           </div>
           <!--Boton-->
           <div class="mb-4" id="botonsito">
-            <input class="btn btn-submit" type="submit" value="[INGRESAR]" style="justify-content:center" />
-
+            <input class="btn btn-submit" type="submit" value="[INGRESAR]" style="justify-content:center" onclick="return validate()"/>
           </div>
         </form>
       </div>
@@ -147,22 +148,22 @@ Ingresar Restaurante
 <script>
 $(document).ready(function() {
   $('#regionsita').select2({placeholder: 'Seleccione Región', allowClear: true});
+
 });
 
 $(document).ready(function() {
-  $('#ciudad').select2();
+  $('#ciudad').select2({placeholder: 'Seleccione Región', allowClear: true});
 });
 
 $(document).ready(function(){
   let i=0;
   $($('#regionsita').children('option')).each(function(){
-    $('#'+i).select2().next().hide();
+    $('#'+i).select2({placeholder: 'Seleccione Ciudad', allowClear: true}).next().hide();
     i++;
   });
 });
 
 $('#regionsita').change(function(){
-    console.log("xD");
     if($('#regionsita').val()==0){
     $('#ciudad').select2().next().show();
     let i=1;
@@ -205,7 +206,29 @@ $('#regionsita').change(function(){
       })
   })
 
+  function validate(){
 
+    var error = document.getElementById('error_region');
+    var ec = document.getElementById('error_ciudad');
+    var select = document.getElementById('regionsita');
+    var value = select.value;
+    ec.style.color='red';
+    error.style.color='red';
+
+    if(value==""){
+      error.innerHTML='Seleccione Región'
+      return false;
+    }else{
+      var ciudad = document.getElementById(value);
+      var valor = ciudad.value;
+      if(valor==""){
+        ec.innerHTML='Seleccione Ciudad'
+        return false;
+      }else{
+        return true;
+      }
+    }
+  }
 </script>
 
 {% endblock %}

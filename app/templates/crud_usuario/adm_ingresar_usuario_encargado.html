@@ -20,7 +20,7 @@ Ingresar Usuario Administrador
       <div class="align-self-center w-100 px-lg-5 py-lg-4 p-4">
         <h1 class="font-weight-bold mb-4">Ingrese datos <br>del encargado <br>nuevo:</h1>
         <!--Acción de la forma-->
-        <form action="{{url_for('ingresar_usuario_encargado')}}" method="post" class="mb-5">
+        <form action="{{url_for('ingresar_usuario_encargado')}}" method="post" class="mb-5" id="formulario-registro">
             
             <div class="mb-4">
               {{form.email.label}}
@@ -91,6 +91,7 @@ Ingresar Usuario Administrador
 {% endblock %}
 
 {% block script %}
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
 <script type="text/javascript">
   $(document).ready(function() {
     $('#restaurante').select2({placeholder: 'Seleccione Restaurante', allowClear: true});
@@ -103,6 +104,76 @@ Ingresar Usuario Administrador
       i++;
     });
   });
+
+  $(document).ready(function() {
+
+$.validator.addMethod("valueNotEquals", function(value, element, arg){
+   return arg !== value;
+}, "No debe seleccionar el valor por defecto");
+
+$("#formulario-registro").validate({
+rules: {
+email: {
+  required: true,
+  email: true
+},
+password: {
+        required: true,
+        minlength: 6
+},
+confirm: {
+        required: true,
+        minlength: 6,
+        equalTo: "#password"
+},
+restaurante: { 
+  valueNotEquals: "0" }
+},
+messages: {
+    nombre: "Campo requerido",
+    apellido: "Campo requerido",
+    rut: "Campo requerido",
+    email: {
+        required: "Campo requerido",
+        email: "Ingrese un email valido"
+    },
+    restaurante: { valueNotEquals: "Selecciona un restaurante valido" },
+    password:{
+            required: "Campo requerido",
+            minlength: "El largo de la contraseña es de 6 a 16 caracteres"
+
+    },
+    confirm:{
+            required: "Campo requerido",
+            minlength: "El largo de la contraseña es de 6 a 16 caracteres",
+            equalTo: "Las contraseñas deben coincidir"
+    }
+  }
+});
+});
+
+$("#rut")
+.rut({formatOn: 'keyup', validateOn: 'keyup'})
+
+(function () {
+'use strict'
+
+// Fetch all the forms we want to apply custom Bootstrap validation styles to
+var forms = document.querySelectorAll('.needs-validation')
+
+// Loop over them and prevent submission
+Array.prototype.slice.call(forms)
+.forEach(function (form) {
+  form.addEventListener('submit', function (event) {
+    if (!form.checkValidity()) {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+
+    form.classList.add('was-validated')
+  }, false)
+})
+})
 
 
 </script>

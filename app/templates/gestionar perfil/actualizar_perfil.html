@@ -13,7 +13,7 @@ Actualizar perfil
 
     </div>
 
-    <div class="form-register col-lg-4 bg-dark d-flex flex-column align-items-end min-vh-100" id="formulariosito">
+    <div class="form-register col-lg-4 bg-dark d-flex flex-column align-items-end min-vh-100 " id="actualizar_perfil">
 
       <div class="px-lg-5 pt-lg-4 pb-lg-3 p-4 mb-auto w-100">
         <img src="{{url_for('static',filename='Logo.svg')}}" class="img-fluid" />
@@ -31,13 +31,13 @@ Actualizar perfil
           <!--Apellido-->
           <div class="mb-4">
             <label for="apellido">Apellido:</label>
-            <input type="text" class="form-control" name="apellido" placeholder="{{cliente.domo_cliente.cli_apellido}}"/>
+            <input type="text" class="form-control" name="apellido" placeholder="{{cliente.domo_cliente.cli_apellido}}" />
             <!--Calle-->
           </div>
           <div class="mb-4">
             <label for="calle">Calle:</label>
             <input type="text" name="calle" placeholder="{{cliente.domo_direccion.dir_nombrecalle}}"
-              class="form-control" />
+              class="form-control"/>
           </div>
           <!--Numero de domicilio-->
           <div class="mb-4">
@@ -48,10 +48,14 @@ Actualizar perfil
           <!--Region-->
           <div class="mb-4">
             <label for="region">Región:</label>
-            <select name="region" id="regionsita" class="js-example-basic-single" style="width: 100%;">
-              <option value="0">Seleccione una región</option>
+            <select name="region" id="regionsita" class="js-example-basic-single" style="width: 100%;" >
+              <option value="" hidden disabled>Seleccione una región</option>
               {% for item in regiones %}
+              {% if item.reg_id == cliente.domo_region.reg_id %}
+              <option value="{{item.reg_id}}" selected>{{item.reg_nombre}}</option>
+              {% else %}
               <option value="{{item.reg_id}}">{{item.reg_nombre}}</option>
+              {% endif %}
               {% endfor %}
             </select>
           </div>
@@ -59,15 +63,19 @@ Actualizar perfil
           <div class="mb-4">
             <label for="ciudad">Ciudad:</label>
             <select name="ciudad" class="form-select js-example-basic-single" id="ciudad" style="width: 100%;">
-              <option value="0">Seleccione Región</option>
+              <option value="" selected hidden disabled>Seleccione Región</option>
             </select>
             {% for item in regiones %}
             <select name="{{item.reg_id}}" id="{{item.reg_id}}" class="form-select js-example-basic-single form-select"
-              style="width: 100%;">
-              <option value="0">Seleccione Ciudad</option>
+              style="width: 100%;" required>
+              <option value="" selected hidden disabled>Seleccione Ciudad</option>
               {% for ciudad in ciudades %}
               {% if ciudad.reg_id == item.reg_id %}
+              {% if ciudad.ciu_id == cliente.domo_ciudad.ciu_id and item.reg_id == cliente.domo_region.reg_id %}
+              <option value="{{ciudad.ciu_id}}" selected>{{ciudad.ciu_nombre}}</option>
+              {% else %}
               <option value="{{ciudad.ciu_id}}">{{ciudad.ciu_nombre}}</option>
+              {% endif %}
               {% endif %}
               {%endfor%}
             </select>
@@ -81,11 +89,11 @@ Actualizar perfil
           </div>
           <div class="mb-4">
             <label for="rut">Rut:</label>
-            <input type="text" class="form-control" name="rut" id="rut" placeholder="{{cliente.domo_cliente.cli_rut}}">
+            <input type="text" class="form-control" name="rut" id="rut" placeholder="{{cliente.domo_cliente.cli_rut}}" />
           </div>
           <!--Boton-->
           <div class="mb-4" id="botonsito">
-            <input class="btn btn-submit" type="submit" value="[ACTUALIZAR]" style="justify-content:center" />
+            <input class="btn btn-submit" type="submit" value="ACTUALIZAR" style="justify-content:center" />
           </div>
         </form>
       </div>
@@ -104,11 +112,11 @@ Actualizar perfil
 {% block script %}
 <script type="text/javascript">
   $(document).ready(function () {
-    $('#regionsita').select2({ placeholder: 'Seleccione Región', allowClear: true });
+    $('#regionsita').select2({ placeholder: 'Seleccione Región'});
   });
 
   $(document).ready(function () {
-    $('#ciudad').select2();
+    $('#ciudad').select2().next().hide();
   });
 
   $(document).ready(function () {
@@ -124,8 +132,7 @@ Actualizar perfil
   });
 
   $('#regionsita').change(function () {
-    console.log("xD");
-    if ($('#regionsita').val() == 0) {
+    if ($('#regionsita').val() == "") {
       $('#ciudad').select2().next().show();
       let i = 1;
       $($('#regionsita').children('option')).each(function () {
