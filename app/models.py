@@ -178,6 +178,7 @@ class domo_restaurante(db.Model):
         
         self.rtr_cantidadmesas = mesas
         self.rtr_cantidadsillas = sillas
+        
         aforo = self.get_aforo()
         aforo.afo_capacidadmax = sillas
         db.session.commit()
