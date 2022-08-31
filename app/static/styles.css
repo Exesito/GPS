@@ -200,3 +200,8 @@ body {
 .flex{
     display: flex;
 }
+
+#formulario-registro .error{
+    color: rgb(250, 75, 75);
+    display:block;
+}
