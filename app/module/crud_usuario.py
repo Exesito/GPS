@@ -127,8 +127,16 @@ def eliminar_usuario(id):
         db.db.session.commit()
 
     elif usuario.tip_id==3:
-        db.db.session.delete(usuario)
-        db.db.session.commit()
+        if usuario.usr_id!=0: #usuario admin de admins
+            if usuario.usr_login!=session['user'] :
+                db.db.session.delete(usuario)
+                db.db.session.commit()
+            else:
+                print("No se puede borrar al usuario Admin en uso")
+            
+        else:
+            print("No se borra el usuario Super Admin")
+
         
     return redirect(url_for('gestionar_usuarios_admin'))
 
@@ -136,7 +144,7 @@ def eliminar_usuario(id):
     
 @app.route('/gesionar_usuarios_admin/editar1/<id>',methods=['GET','POST'])
 def actualizar_usuario1(id):
-    
+    notification=Notify()
     usuario= db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_id==id).first()
     form=EditForm1()
     cliente=db.domo_cliente.query.filter_by(usr_id=usuario.usr_id).first()
@@ -165,8 +173,15 @@ def actualizar_usuario1(id):
             direccion1.domo_direccion.dir_numerocalle=numero
             direccion1.domo_direccion.ciu_id=ciudad
             
-            if email!="":
-                usuario.usr_login = email
+            if (email!=None) and (email!=""):
+                if db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_login==email).first() == None :
+                    usuario.usr_login = email
+                else:
+                    
+                    notification.title= "Error"
+                    notification.message="Email ya en uso"
+                    notification.send()
+                    return redirect(url_for("gestionar_usuarios_admin"))
 
             if (contrasena!=None)and (contrasena!=""):
                 pw = bcrypt.hashpw(contrasena.encode('utf-8'), bcrypt.gensalt())
@@ -191,6 +206,7 @@ def actualizar_usuario2(id):
     usuario= db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_id==id).first()
     restaurantes=db.db.session.query(db.domo_restaurante.rtr_id,db.domo_restaurante.rtr_nombre).all()
     form=EditForm2()
+    notification=Notify()
     encargado=db.domo_encargadortr.query.filter_by(usr_id=usuario.usr_id).first()
     
     if (request.method=='POST' ):  
@@ -205,8 +221,15 @@ def actualizar_usuario2(id):
 
             
             if (email!=None) and (email!=""):
-                usuario.usr_login = email
-
+                if db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_login==email).first() == None :
+                    usuario.usr_login = email
+                else:
+                    
+                    notification.title= "Error"
+                    notification.message="Email ya en uso"
+                    notification.send()
+                    return redirect(url_for("gestionar_usuarios_admin"))
+                    
             if (estado!=None) and (estado!=""):
                 usuario.usr_estado=estado
 
@@ -236,6 +259,7 @@ def actualizar_usuario2(id):
 def actualizar_usuario3(id):
     usuario= db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_id==id).first()
     form=EditForm3()
+    notification=Notify()
     if (request.method=='POST'):
         if usuario.tip_id==3:
             email=request.form.get('email')
@@ -243,7 +267,20 @@ def actualizar_usuario3(id):
             estado=request.form.get('estado')
 
             if (email!=None) and (email!=""):
-                usuario.usr_login = email
+                if db.db.session.query(db.domo_usuario).filter(db.domo_usuario.usr_login==email).first() == None :
+                    if usuario.usr_id!=0: #usuario admin de admins                    
+                        if usuario.usr_login!=session['user'] :
+                            usuario.usr_login = email
+                        else:
+                            print("No se puede editar el correo del usuario Admin en uso")
+                    else:
+                        print ("No se puede cambiar el correo del usuario Super Admin")
+                else:
+                    
+                    notification.title= "Error"
+                    notification.message="Email ya en uso"
+                    notification.send()
+                    return redirect(url_for("gestionar_usuarios_admin"))
 
             if (contrasena!=None)and (contrasena!=""):
                 hash=bcrypt.hashpw(contrasena.encode('utf-8'),bcrypt.gensalt())
