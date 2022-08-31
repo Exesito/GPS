@@ -6,22 +6,26 @@ from sqlalchemy import func
 
 db = models.db
 
-@app.route('/ver_aforo/<id>')
+@app.route('/ver_aforo/<id>', methods = ['GET', 'POST'])
 def ver_aforo(id):
     afo = domo_aforo.get_by_restaurante(id)
     aforoMax = afo.afo_capacidadmaxima
     aforo = afo.afo_capacidadactual
-    return render_template('ver_aforo.html', afoM = aforoMax, afo = aforo)
+    return render_template('ver_aforo.html', afoM = aforoMax, afo = aforo, rtr_id = id)
 
-def actualizar_aforo(id, aforo_nuevo):
-    afororest = db.session.query(domo_aforo).filter(domo_aforo.rtr_id == id).first()
-    
-    if(aforo_nuevo != afororest.afo_capacidadactual):    
-        if(aforo_nuevo>0):
-            afororest.afo_capacidadactual = min(afororest.afo_capacidadmax, aforo_nuevo)
-        else:
-            afororest.afo_capacidadactual = 0
+@app.route('/ver_aforo/actualizar')
+def actualizar_aforo():
+    if request.method == 'POST':
+        id_restaurante = request.form["id"]
+        aforo_nuevo = request.form["aforo"]
+        afororest = db.session.query(domo_aforo).filter(domo_aforo.rtr_id == id_restaurante).first()
 
-        db.session.commit()
+        if(aforo_nuevo != afororest.afo_capacidadactual):    
+            if(aforo_nuevo>0):
+                afororest.afo_capacidadactual = min(afororest.afo_capacidadmax, aforo_nuevo)
+            else:
+                afororest.afo_capacidadactual = 0
+            db.session.commit()
+    return redirect(url_for('ver_aforo', id = id_restaurante))
 
 
