@@ -86,11 +86,13 @@ Gestionar Mesas
     <div><!--Editor de Local-->
         <div class="container-fluid py-4">
             <h1 style="margin-top: 0.6em;">Editor de Local</h1> 
-
+        
+            <form action="{{url_for('editar_mesas', rtr_id=rtr_id )}}" method=post >
             <div class="flex">
                 <h5>Mesas Disponibles: 
                     <span>
                         {{mesas.rtr_cantidadmesas}}
+                        <input type='number' name='mesas' min="1">
                     </span>
                 </h5>
             </div>
@@ -99,10 +101,14 @@ Gestionar Mesas
                 <h5>Sillas Disponibles: 
                     <span>
                         {{sillas.rtr_cantidadsillas}}
+                        <input type='number' name='sillas' min="1">
                     </span>
                 </h5>
             </div>
-            
+
+            <input type="submit" class="btn btn-primary" placeholder="Realizar cambios">
+            </form>
+
             <div class="flex">
                 <button onclick="
                 agregarSilla();
