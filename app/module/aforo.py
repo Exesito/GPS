@@ -13,7 +13,7 @@ def ver_aforo(id):
         afo = domo_restaurante.get_by_id(id).get_aforo()
     aforoMax = afo.afo_capacidadmaxima
     aforo = afo.afo_capacidadactual
-    return render_template('ver_aforo.html', afoM = aforoMax, afo = aforo, rtr_id = id)
+    return render_template('aforo/ver_aforo.html', afoM = aforoMax, afo = aforo, rtr_id = id)
 
 @app.route('/ver_aforo/actualizar')
 def actualizar_aforo():
@@ -28,6 +28,6 @@ def actualizar_aforo():
             else:
                 afororest.afo_capacidadactual = 0
             db.session.commit()
-    return redirect(url_for('ver_aforo', id = id_restaurante))
+    return redirect(url_for('aforo/ver_aforo', id = id_restaurante))
 
 
