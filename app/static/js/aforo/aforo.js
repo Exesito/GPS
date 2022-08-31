@@ -6,6 +6,7 @@ function incrementar(){
     a = Math.min(a+1, afoMax);
     display(afoMax, a);
     console.log(a);
+    comprometer();
 }
 
 function reducir(){
@@ -13,7 +14,7 @@ function reducir(){
     a = Math.max(a-1, 0);
     display(afoMax, a);
     console.log(a);
-
+    comprometer();
 }
 
 function display(aforomax, aforo){
@@ -24,6 +25,7 @@ function display(aforomax, aforo){
 function comprometer(){
     display(parseInt(document.getElementById("afoM").innerHTML), a);
     urlact = window.location.pathname + "/actualizar"
+    console.log(urlact),
     $.ajax({
         type: "POST",
         url: urlact,

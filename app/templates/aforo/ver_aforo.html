@@ -5,21 +5,30 @@ Aforo restaurante
 {% endblock %}
 
 {% block body %}
+<style>
+    .center{
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+</style>
 <head>
     
 </head>
 <div class="container">
     <div class="Numero-Aforo">
         <p id= "rtr_id" hidden>{{rtr_id}}</p>
-        <table>        
+        <table class="center">        
             <td id = "afo" style="font-size: 10vw">{{afo}}</td>
             <td style="font-size: 10vw">/</td>
             <td id = "afoM" style="font-size: 10vw">{{afoM}}</td>
         </table>
     </div>
-
-    <div class="\+"><button type="button" onclick="incrementar()" class="btn btn-primary btn-lg">+</button></div>
-    <div class="\-"><button type="button" onclick="reducir()" class="btn btn-primary btn-lg">-</button></div>
+    <table class="center">        
+        <td id = "afo" style="font-size: 10vw"><button type="button" onclick="incrementar()" class="btn btn-primary btn-lg">+</button></td>
+        <td style="font-size: 10vw">  </td>
+        <td id = "afoM" style="font-size: 10vw"><button type="button" onclick="reducir()" class="btn btn-primary btn-lg">-</button></td>
+    </table>
   </div>
 {% endblock %}
 
