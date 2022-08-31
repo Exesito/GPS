@@ -13,9 +13,9 @@ def perfil(login):
 
     direccion = db.db.session.query(db.domo_direccion).filter(db.domo_direccion.dir_id==cliente.dir_id).first()
     ciudad = db.db.session.query(db.domo_ciudad).filter(db.domo_ciudad.ciu_id==direccion.ciu_id).first()
-    region = db.db.session.query(db.domo_region).filter(db.domo_ciudad.ciu_id==direccion.ciu_id).first()
+    region = db.db.session.query(db.domo_region).filter(db.domo_region.reg_id==ciudad.reg_id).first()
 
-    return render_template("gestionar perfil/editar_perfil.html",cliente=cliente,direccion=direccion,ciudad=ciudad,region=region,usuario=usuario)
+    return render_template("gestionar perfil/perfil.html",cliente=cliente,direccion=direccion,ciudad=ciudad,region=region,usuario=usuario)
 
 @app.route('/perfil/actualizar_perfil/<id>')
 def actualizar_perfil(id):

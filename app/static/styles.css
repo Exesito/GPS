@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Rock+Salt');
 @import "styles/reservas.css";
 @import "styles/tablarestaurantes.css";
+@import "styles/perfil.css";
 
 :root {
     --dark: #601b90;
@@ -97,6 +98,7 @@ body {
 }
 
 
+
 .content{
     padding-top: 2rem; 
 }
@@ -120,9 +122,6 @@ body {
     background-color: rgb(0, 234, 234);
 }
 
-.dropdown{
-    margin-left: 80rem;
-}
 
 .login .card{
     margin-top: 2%;
