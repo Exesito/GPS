@@ -52,10 +52,12 @@ DOMO- Buscar Restaurantes
                               href="{{url_for('reservar',id=item.domo_restaurante.rtr_id)}}">
                               <h2>
                                 {{item.domo_restaurante.rtr_nombre}}
+                                {{item.domo_restaurante.rtr_visible}}
                               </h4></a>
                           </div>
                           <div class="card-footer col-md-2">
                             {{item.domo_tiporestaurante.tpr_nombre}}
+                            {{item.domo_restaurante.rtr_visible}}
                           </div>
                     </p>
                 </div>
@@ -78,37 +80,38 @@ DOMO- Buscar Restaurantes
 <script>
   var nombre_rest = [];
   {% for item in restaurantes %}
-  nombre_rest.push('{{item.domo_restaurante.rtr_nombre}}');
+  nombre_rest.push('{{item.domo_restaurante.rtr_nombre | trim}}');
   {% endfor %}
-
-  console.log(nombre_rest);
+  
+  //console.log(nombre_rest);
 
   var visible = [];
   {% for item in restaurantes %}
   visible.push('{{item.domo_restaurante.rtr_visible}}');
-  console.log('hola');
+  //console.log('hola');
   {% endfor %}
 
-  console.log(visible);
+  //console.log(visible);
 
   var tipo_rest = [];
   {% for item in restaurantes %}
-  tipo_rest.push('{{item.domo_tiporestaurante.tpr_nombre}}');
+  tipo_rest.push('{{item.domo_tiporestaurante.tpr_nombre | trim}}');
   {% endfor %}
 
-  console.log(tipo_rest);
+  //console.log(tipo_rest);
 
   var clases_rest = [];
   {% for item in tipo %}
-  clases_rest.push('{{item.tpr_nombre}}');
+  clases_rest.push('{{item.tpr_nombre | trim}}');
   {% endfor %}
-  console.log(clases_rest);
+  //console.log(clases_rest);
 
   var tpr_id = [];
   {% for item in tipo %}
   tpr_id.push('{{item.tpr_id}}');
   {% endfor %}
-  var last = tpr_id.length - 1;
+  //var last = tpr_id.length - 1;
+  //console.log(tpr_id);
 
   function Barra_Busqueda() {
 
@@ -118,7 +121,7 @@ DOMO- Buscar Restaurantes
     let x = document.getElementsByClassName('card');
 
     for (i = 0; i < nombre_rest.length; i++) {
-      console.log(x[i]);
+      //console.log(x[i]);
       if (!x[i].innerHTML.toLowerCase().includes(input)) {
         x[i].style.display = "none";
       }
@@ -141,17 +144,22 @@ DOMO- Buscar Restaurantes
     });
   }
 
+  console.log(clases_rest);
+
   //eventos de los checkbox
   tpr_id.forEach(function (value) {
     document.getElementById(value).onchange = function () {
-      if (this.checked) show(clases_rest[value - 1]);
-      else hide(clases_rest[value - 1]);
+      if (this.checked) {
+        show(clases_rest[value]);
+        console.log(value);
+      }
+        else hide(clases_rest[value]);
     }
   });
 
   document.getElementById(0).onchange = function () {
-    if (this.checked) show(clases_rest[last]);
-    else hide(clases_rest[last]);
+    if (this.checked) show(clases_rest[0]);
+    else hide(clases_rest[0]);
   }
 
 </script>
