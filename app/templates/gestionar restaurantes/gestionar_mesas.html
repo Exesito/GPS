@@ -85,36 +85,37 @@ Gestionar Mesas
 <body>
     <div><!--Editor de Local-->
         <div class="container-fluid py-4">
-            <h1 style="margin-top: 0.6em;">Editor de Local</h1> 
+            <h1>Editor de Local</h1> 
         
             <form action="{{url_for('editar_mesas', rtr_id=rtr_id )}}" method=post >
             <div class="flex">
                 <h5>Mesas Disponibles: 
                     <span>
-                        {{mesas.rtr_cantidadmesas}}
-                        <input type='number' name='mesas' min="1">
+                        
+                        <input style="width:3em;" type='number' name='mesas' min="1" value="{{mesas.rtr_cantidadmesas}}">
                     </span>
                 </h5>
             </div>
 
             <div class="flex">
                 <h5>Sillas Disponibles: 
-                    <span>
-                        {{sillas.rtr_cantidadsillas}}
-                        <input type='number' name='sillas' min="1">
+                    <span>&nbsp;&nbsp;
+                        <input style="width:3em;" type='number' name='sillas' min="1" value="{{sillas.rtr_cantidadsillas}}">
                     </span>
                 </h5>
             </div>
 
-            <input type="submit" class="btn btn-primary" placeholder="Realizar cambios">
+            <input type="submit" class="btn btn-danger">
             </form>
+
+            <h4 style="padding-top: 1em; padding-bottom: 0.5em;"><i>Editor Gráfico:</i></h4>
 
             <div class="flex">
                 <button onclick="
                 agregarSilla();
                 convertDraggables();
                 clamp_disable( {{sillas.rtr_cantidadsillas}}, '#btn-silla', '.silla');"
-                id="btn-silla" type="button" class="btn btn-default">+ Agregar Silla</button>
+                id="btn-silla" type="button" class="btn btn-default" style="">+ Agregar Silla</button>
 
                 <button onclick="
                 agregarMesa();
@@ -132,7 +133,7 @@ Gestionar Mesas
             </button>
             </div>
 
-            <div id="editor-grid">
+            <div id="editor-grid" style="margin: auto;">
                 <div id="grid"></div>
                 <div id="editor-dd"></div>
             </div>

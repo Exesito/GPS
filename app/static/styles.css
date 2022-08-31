@@ -159,8 +159,8 @@ body {
 }
 
 .draggable{
-    left: 12px;
-    top: 338px;
+    left: 350px;
+    top: 448px;
     position: absolute;
     cursor: move;
 }
@@ -184,7 +184,7 @@ body {
 
 #grid{
     margin-top: 40px;
-    width: 40.55em;
+    width: 40.57em;
     height: 40.56em;
     background-color: #603e86;
     background-image:
