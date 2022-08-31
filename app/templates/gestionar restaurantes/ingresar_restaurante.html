@@ -25,8 +25,7 @@ Ingresar Restaurante
           <!--Nombre Restaurante-->
           <div class="mb-4">
             <label for="nombre">Nombre del Restaurante:</label>
-            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="La picá de Alcachofas"
-              required />
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="La picá de Alcachofas" required />
             <div class="invalid-feedback">Por favor, ingresa un Nombre de Restaurante</div>
             <div class="valid-feedback">Genial!!</div>
           </div>
@@ -47,7 +46,7 @@ Ingresar Restaurante
           <!--Region-->
           <div class="mb-4">
             <label for="region">Región:</label>
-            <select name="region" id="regionsita" class="js-example-basic-single" style="width: 100%;">
+            <select name="region" id="regionsita" class="form-select js-example-basic-single" style="width: 100%;">
               <option value="" selected hidden disabled>Seleccione una región</option>
               {% for item in regiones %}
               <option value="{{item.reg_id}}">{{item.reg_nombre}}</option>
