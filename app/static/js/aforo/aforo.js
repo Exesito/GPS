@@ -1,16 +1,19 @@
-setInterval(comprometer(), 20000);
-a = parseInt(document.getElementById("afo").innerHTML);
-afoMax = parseInt(document.getElementById("afoM").innerHTML);
+var a = parseInt(document.getElementById("afo").innerHTML, 10);
+var afoMax = parseInt(document.getElementById("afoM").innerHTML, 10);
 
 function incrementar(){
-    a = min(a+1, afoMax);
-    display()
-
+    console.log(document.getElementById("afo").innerHTML);
+    a = Math.min(a+1, afoMax);
+    display(afoMax, a);
+    console.log(a);
 }
 
 function reducir(){
-    a = max(a-1, 0);
-    display()
+    console.log(document.getElementById("afo").innerHTML);
+    a = Math.max(a-1, 0);
+    display(afoMax, a);
+    console.log(a);
+
 }
 
 function display(aforomax, aforo){
@@ -27,15 +30,20 @@ function comprometer(){
         contentType: "application/json",
         data: JSON.stringify(
         {   "id": document.getElementById("rtr_id").innerHTML,
-            "aforo":nombre
+            "aforo":a
         },
         ),
         dataType: "json",
         success: function(response) {
+            console.log("se actualizó");
             console.log(response);
         },
         error: function(err) {
+            console.log("no se actualizó");
             console.log(err);
         }
     })
-}
+    }
+    
+setInterval(comprometer(), 20000);
+

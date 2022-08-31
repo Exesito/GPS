@@ -16,9 +16,11 @@ def ver_aforo():
     aforo = afo.afo_capacidadactual
     return render_template("aforo/ver_aforo.html", afoM = aforoMax, afo = aforo, rtr_id = id)
 
-@app.route('/ver_aforo/actualizar')
-def actualizar_aforo():
+@app.route('/ver_aforo/actualizar', methods = ['POST'])
+def actualizar_aforo(cambio):
+    print("Se intenta actualizar el restaurante ")
     if request.method == 'POST':
+        print("llega al request method")
         id_restaurante = request.form["id"]
         aforo_nuevo = request.form["aforo"]
         afororest = db.session.query(domo_aforo).filter(domo_aforo.rtr_id == id_restaurante).first()
