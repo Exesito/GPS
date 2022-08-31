@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+
+{% block title %}
+Aforo restaurante
+{% endblock %}
+
+{% block body %}
+<head>
+    <script src="{{ url_for('static',filename='js/aforo/aforo.js') }}"></script>
+</head>
+<div class="container">
+    <div class="Numero-Aforo">
+        <p id= "rtr_id" hidden>{{rtr_id}}</p>
+        <h1 id = "afo" style="font-size: 10vw">{{afo}}</h1>/<h1 id = "afoM" style="font-size: 10vw">{{afoM}}</h1>
+    </div>
+
+    <div class="\+"><button type="button" onclick="incrementar()" class="btn btn-primary btn-lg">+</button></div>
+    <div class="\-"><button type="button" onclick="reducir()" class="btn btn-primary btn-lg">-</button></div>
+  </div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
