@@ -16,18 +16,18 @@ $(document).ready( function () {
              </tr>)'
 
 
-    $('body').on('click', '#nuevo', function(){
-        var names = getrtrnames($('#rtr_names').html().split(','))
+    // $('body').on('click', '#nuevo', function(){
+    //     var names = getrtrnames($('#rtr_names').html().split(','))
         
         
-        $('#cartas > tbody:last-child').append(new_row)
+    //     $('#cartas > tbody:last-child').append(new_row)
 
-        for(j=0;j-names[0].length;j++){
-            $('.nuevo-combo').append("<option>" + names[0][j][1] + "</option>")
-        }
-         $('.nuevo-combo').toggleClass('nuevo-combo')
-        $('#cartas > tbody:last-child').find('.edit-btn').click()
-    });
+    //     for(j=0;j-names[0].length;j++){
+    //         $('.nuevo-combo').append("<option>" + names[0][j][1] + "</option>")
+    //     }
+    //      $('.nuevo-combo').toggleClass('nuevo-combo')
+    //     $('#cartas > tbody:last-child').find('.edit-btn').click()
+    // });
 
     // $('body').on('click', '#nuevo', function(){
     //     var names = getrtrnames($('#rtr_names').html().split(','))

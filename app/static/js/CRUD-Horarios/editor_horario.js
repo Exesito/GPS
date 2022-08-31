@@ -25,7 +25,7 @@ jQuery(document).ready( function () {
             $(this).data('editar', true);
             
             
-            var id = currentTD.get(1).textContent
+            var id = currentTD.get(1).textContent.trim('')
             var nombre = currentTD.get(2).textContent
             var apertura = currentTD.get(3).textContent
             var cierre = currentTD.get(4).textContent
@@ -56,9 +56,10 @@ jQuery(document).ready( function () {
             if(!rtr_id)
                 for(j=0;j-names[0].length;j++){
                     if( String(names[0][j][1]).trim(' ') === String($(this).parents('tr').find('#combo :selected').val()).trim(' '))
-                        rtr_id = names[0][j][0]
+                        rtr_id = names[0][j][0].replaceAll('"', '')
                 }
-                
+            
+            console.log('rtr_id: ' + rtr_id)
                 
             
             
@@ -119,7 +120,7 @@ jQuery(document).ready( function () {
         if(confirm('¿Estás seguro de eliminar este horario?'))
         var currentTD = $(this).parents('tr').find('td');
         id = currentTD[0].textContent
-        console.log(id);
+        
            if(id){
             var url= window.location.pathname;
             url += '/del'
@@ -147,7 +148,7 @@ jQuery(document).ready( function () {
     }); 
 
     $('body').on('click','#nuevo', function(){
-        var nuevo = $("horarios").load("CRUD-Horarios\nuevo_horario.html")
+        //var nuevo = $("horarios").load("CRUD-Horarios\nuevo_horario.html")
         var names = getrtrnames($('#rtr_names').html().split(','));
         
         new_row = '<tr> \n\
@@ -279,7 +280,6 @@ function replaceAll(str, find, replace) {
 function getrtrnames(jq){
     var names = []
     names.push(jq)
-    console.log(names);
     for(i = 0; i< names.length;i++){
         names[0][i] = replaceAll(names[0][i], ']', ' ')
         names[0][i] = replaceAll(names[0][i], '[', '')
